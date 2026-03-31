@@ -488,6 +488,44 @@ main {
     to { opacity: 1; clip-path: inset(0 0 0 0); }
 }
 
+.merge-split {
+    width: 38px;
+    height: 25px;
+    border-right: 2px solid #a855f7;
+    border-top: 2px solid #a855f7;
+    border-top-right-radius: 12px;
+    margin-left: 1.15rem; 
+    margin-bottom: -4px; 
+    opacity: 0;
+}
+
+.merge-commit {
+    margin-bottom: -3px; /* Overlap branch split top border */
+}
+
+/* Review Badge */
+.review-bubble {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid #10b981;
+    color: #10b981;
+    border-radius: 12px;
+    margin-left: 0.5rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+}
+.review-bubble svg { width: 12px; height: 12px; }
+.review-bubble.pop-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .feature-track {
     margin-left: 38px; /* Push right exactly the width of branch-split */
     margin-bottom: -3px; /* Ensure dot touches branch split top border */
@@ -504,13 +542,10 @@ main {
 }
 
 /* Override commit-msg margin if needed */
-.commit-msg { flex-grow: 1; margin-right: 0; }
-.commit-msg span {
-    display: block;
-}
+.commit-msg { flex-grow: 1; margin-right: 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.commit-msg > span:first-child { flex-grow: 1; display: flex; align-items: center; flex-wrap: wrap; }
 .commit-msg .commit-hash {
     font-size: 0.75rem;
     color: var(--text-muted);
     font-family: monospace;
-    margin-top: 0.2rem;
 }
