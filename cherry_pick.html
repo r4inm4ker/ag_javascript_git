@@ -7,36 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .track-left { margin-left: 0; }
-        .track-mid { margin-left: 38px; }
-        .track-right { margin-left: 76px; }
-
-        .split-mid-to-left {
-            width: 38px;
-            height: 25px;
-            border-right: 2px solid #10b981; 
-            border-top: 2px solid #06b6d4;  
-            border-top-right-radius: 12px;
-            margin-left: 1.15rem; 
-            margin-bottom: -4px;
-            z-index: 0;
-        }
-        
-        .split-mid-to-right {
-            width: 38px;
-            height: 25px;
-            border-left: 2px solid #10b981;
-            border-top: 2px solid #f59e0b;
-            border-top-left-radius: 12px;
-            margin-left: calc(1.15rem + 38px); 
-            margin-bottom: -4px;
-            z-index: 0;
-        }
-
         .wip-color { color: #06b6d4; }
         .wip-bg { background: #06b6d4; }
         .test-color { color: #f59e0b; }
         .test-bg { background: #f59e0b; }
+        
+        .wip-tag { background: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid #06b6d4; }
+        .test-tag { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
         
         .cherry-particle {
             position: absolute;
@@ -48,6 +25,18 @@
             opacity: 0;
             z-index: 1000;
             pointer-events: none;
+        }
+
+        /* Adjust split line colors for wip */
+        #wip-repo .branch-split {
+            border-left-color: #06b6d4;
+            border-top-color: #06b6d4;
+        }
+        
+        /* Adjust split line colors for test */
+        #test-repo .branch-split {
+            border-left-color: #f59e0b;
+            border-top-color: #f59e0b;
         }
     </style>
 </head>
@@ -64,27 +53,31 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">The Target Commit</h2>
                 </div>
-                <p id="step-description">You are currently checked out on the <code>wip</code> branch. You noticed a colleague committed a very useful test module on the <code>test</code> branch, and you need it right now without merging their whole branch.</p>
+                <p id="step-description">You are checked out on <code>wip</code> (left). Your colleague added a useful user auth test on <code>test</code> (right). You want that specific code without merging their whole branch.</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary" style="background: #06b6d4;">git cherry-pick z9y8x7w</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
                 
+                <!-- Nav Links -->
                 <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
                     <a href="squash.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Squash</a>
                     <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
                 </div>
             </section>
 
-            <section class="visualization-stage single-stage">
-                <div class="bg-glow local-glow full-glow" style="background: rgba(6, 182, 212, 0.05);"></div>
+            <section class="visualization-stage">
+                <!-- Background decorative elements -->
+                <div class="bg-glow remote-glow" style="background: rgba(6, 182, 212, 0.05);"></div>
+                <div class="bg-glow local-glow" style="background: rgba(245, 158, 11, 0.05);"></div>
 
-                <div class="repo-container local-repo active-repo" style="width: 100%; max-width: 700px; margin: 0 auto; box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
+                <!-- LEFT: WIP Branch -->
+                <div class="repo-container active-repo" id="wip-repo" style="box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
                     <div class="repo-header" style="border-bottom-color: rgba(6, 182, 212, 0.2);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #06b6d4;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                        <h3>Local Workspace</h3>
+                        <h3>WIP Workspace</h3>
                         <div class="repo-meta">
-                            <span class="badge">~/laptop/project</span>
+                            <span class="badge">branch: wip</span>
                             <span class="badge branch-badge transition-color" style="color: #06b6d4;">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                                 <span>wip</span>
@@ -92,60 +85,88 @@
                         </div>
                     </div>
                     
-                    <div class="repo-body tree-container" style="padding-left: 5%;">
-                        <!-- Commit 1 (Main) -->
-                        <div class="commit-node track-mid relative-node">
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Main Base) -->
+                        <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
                         </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Update styles</span><span class="commit-hash">j7k8l9m</span></div>
+                            <div class="labels-container">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
+                        </div>
                         
                         <!-- WIP Split -->
-                        <div class="split-mid-to-left"></div>
+                        <div class="branch-split" style="opacity: 1;"></div>
                         
-                        <!-- Commit 2 (WIP) -->
-                        <div class="commit-node track-left relative-node">
-                             <!-- Filler for main track -->
-                             <div style="position: absolute; left: 38px; top: -15px; bottom: -30px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                             
+                        <!-- Commit 3 (WIP) -->
+                        <div class="commit-node feature-track relative-node">
                              <div class="commit-dot wip-bg"></div>
                              <div class="commit-msg"><span class="wip-color">WIP: setup db</span><span class="commit-hash">u8v7w6x</span></div>
                              <div class="labels-container" id="wip-labels-base">
-                                 <span class="branch-tag branch-tag" id="wip-tag" style="background: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid #06b6d4;">wip</span>
+                                 <span class="branch-tag branch-tag wip-tag" id="wip-tag">wip</span>
                                  <span class="head-tag" id="head-tag">HEAD</span>
-                             </div>
-                        </div>
-                        
-                        <!-- Commit 3 (Main) -->
-                        <div class="commit-node track-mid relative-node">
-                             <!-- Filler for WIP track -->
-                             <div style="position: absolute; left: -38px; top: -15px; bottom: -30px; width: 2px; background: #06b6d4; z-index: -1;"></div>
-                             
-                             <div class="commit-dot main-bg"></div>
-                             <div class="commit-msg"><span>Update styles</span><span class="commit-hash">j7k8l9m</span></div>
-                             <div class="labels-container">
-                                 <span class="branch-tag main-tag">main</span>
-                             </div>
-                        </div>
-                        
-                        <!-- Test Split -->
-                        <div class="split-mid-to-right"></div>
-                        
-                        <!-- Commit 4 (Test) -->
-                        <div class="commit-node track-right relative-node" id="source-commit">
-                             <!-- Filler for main track -->
-                             <div style="position: absolute; left: -38px; top: -15px; bottom: -30px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                             <!-- Filler for WIP track -->
-                             <div style="position: absolute; left: -76px; top: -15px; bottom: -30px; width: 2px; background: #06b6d4; z-index: -1;"></div>
-                             
-                             <div class="commit-dot test-bg" id="source-dot"></div>
-                             <div class="commit-msg"><span class="test-color">Test: add user auth</span><span class="commit-hash">z9y8x7w</span></div>
-                             <div class="labels-container">
-                                 <span class="branch-tag test-tag" style="background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid #f59e0b;">test</span>
                              </div>
                         </div>
                         
                         <!-- Merge Target for new cherry-pick on WIP -->
                         <div id="wip-target" style="display: contents;"></div>
+                    </div>
+                </div>
+                
+                <!-- Center Transfer Path (optional styling) -->
+                <div class="transfer-path" id="transfer-path">
+                    <div class="transfer-line" style="border-top: 2px dashed rgba(245, 158, 11, 0.3);"></div>
+                </div>
+
+                <!-- RIGHT: Test Branch -->
+                <div class="repo-container test-repo dimmed" id="test-repo" style="box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);">
+                    <div class="repo-header" style="border-bottom-color: rgba(245, 158, 11, 0.2);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #f59e0b;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Test Workspace</h3>
+                        <div class="repo-meta">
+                            <span class="badge">branch: test</span>
+                            <span class="badge branch-badge transition-color" style="color: #f59e0b;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>test</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Main Base) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Update styles</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        
+                        <!-- Test Split -->
+                        <div class="branch-split" style="opacity: 1;"></div>
+                        
+                        <!-- Commit 3 (Test) -->
+                        <div class="commit-node feature-track relative-node" id="source-commit">
+                             <div class="commit-dot test-bg"></div>
+                             <div class="commit-msg"><span class="test-color">Test: add config</span><span class="commit-hash">a9b8c7d</span></div>
+                        </div>
+                        <div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #f59e0b; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem;"></div>
+                        
+                        <!-- Commit 4 (Test - The Target) -->
+                        <div class="commit-node feature-track relative-node">
+                             <div class="commit-dot test-bg" id="source-target-dot"></div>
+                             <div class="commit-msg"><span class="test-color">Test: add user auth</span><span class="commit-hash" id="source-hash">z9y8x7w</span></div>
+                             <div class="labels-container">
+                                 <span class="branch-tag test-tag">test</span>
+                             </div>
+                        </div>
                     </div>
                 </div>
             </section>

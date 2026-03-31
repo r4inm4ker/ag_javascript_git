@@ -8,15 +8,16 @@ const stepDescription = document.getElementById('step-description');
 const wipTag = document.getElementById('wip-tag');
 const headTag = document.getElementById('head-tag');
 
-const sourceDot = document.getElementById('source-dot');
+const sourceDot = document.getElementById('source-target-dot');
 const wipTarget = document.getElementById('wip-target');
 const wipLabels = document.getElementById('wip-labels-base');
+const testRepo = document.getElementById('test-repo');
 
 const steps = [
     {
         num: 1,
         title: "The Target Commit",
-        desc: "You are currently checked out on the 'wip' branch. You noticed a colleague committed a very useful test module on the 'test' branch, and you need it right now without merging their whole branch.",
+        desc: "You are checked out on 'wip' (left). Your colleague added a useful user auth test on 'test' (right). You want that specific code without merging their whole branch.",
         actionBtn: "git cherry-pick z9y8x7w",
         color: "#06b6d4" // Cyan
     },
@@ -52,15 +53,17 @@ btnNext.addEventListener('click', () => {
         btnNext.disabled = true;
         btnNext.style.opacity = '0.5';
         
-        // Setup target hidden node
-        const commitLine = `<div class="commit-line wip-bg track-left" style="margin-left: 1.2rem; display:none;" id="target-line"></div>`;
+        // Temporarily activate the right pane visually
+        testRepo.classList.remove('dimmed');
+        testRepo.classList.add('active-repo');
+        
+        // Setup target hidden node vertically on left track
+        // To match standard feature-track, margin-left: calc(1.2rem + 38px);
+        const commitLine = `<div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #06b6d4; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem; display:none;" id="target-line"></div>`;
         const commitNode = `
-            <div class="commit-node track-left relative-node" id="target-commit" style="z-index: 5; display:none;">
-                <div style="position: absolute; left: 38px; top: -15px; bottom: -45px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                <div style="position: absolute; left: 76px; top: -15px; bottom: -45px; width: 2px; background: #f59e0b; z-index: -1;"></div>
-                
-                <div class="commit-dot wip-bg transition-squash" id="target-dot"></div>
-                <div class="commit-msg transition-squash">
+            <div class="commit-node feature-track relative-node" id="target-commit" style="display:none;">
+                <div class="commit-dot wip-bg" id="target-dot"></div>
+                <div class="commit-msg">
                     <span class="wip-color">Test: add user auth</span>
                     <span class="commit-hash">c8d7e6f</span>
                 </div>
@@ -78,7 +81,7 @@ btnNext.addEventListener('click', () => {
         // Highlight source
         sourceDot.style.boxShadow = '0 0 25px #f59e0b';
         
-        // Animate dynamic arc
+        // Animate dynamic arc directly across panes using our generic calculation algorithm
         animateCherryPick(sourceDot, targetDot, targetNode).then(() => {
             sourceDot.style.boxShadow = '0 0 10px currentColor';
             
@@ -112,6 +115,10 @@ btnNext.addEventListener('click', () => {
 
 btnReset.addEventListener('click', () => {
     currentStep = 0;
+    
+    // Dim the test repo again
+    testRepo.classList.add('dimmed');
+    testRepo.classList.remove('active-repo');
     
     // Reset tags
     wipLabels.appendChild(wipTag);
