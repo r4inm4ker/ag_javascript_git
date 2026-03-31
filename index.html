@@ -36,7 +36,13 @@
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
                         <h3>Remote Repository</h3>
-                        <span class="badge">github.com/project</span>
+                        <div class="repo-meta">
+                            <span class="badge">github.com/project</span>
+                            <span class="badge branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                main
+                            </span>
+                        </div>
                     </div>
                     <div class="repo-body" id="remote-commits">
                         <!-- Commits will go here -->
@@ -70,7 +76,13 @@
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                         <h3>Local Repository</h3>
-                        <span class="badge">~/laptop/project</span>
+                        <div class="repo-meta">
+                            <span class="badge">~/laptop/project</span>
+                            <span class="badge branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                main
+                            </span>
+                        </div>
                     </div>
                     <div class="repo-body empty-state" id="local-commits">
                         <div class="empty-msg">Not yet cloned</div>
