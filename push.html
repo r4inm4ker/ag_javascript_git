@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Push Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code>git push</code></p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">The Local Feature</h2>
+                </div>
+                <p id="step-description">You have created a new branch called <strong>feature</strong> locally and made a new commit. The remote repository knows nothing about it yet.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary">git push origin feature</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+                <!-- Nav Links -->
+                <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                    <a href="branch.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Branching</a>
+                    <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage">
+                <!-- Background decorative elements -->
+                <div class="bg-glow remote-glow"></div>
+                <div class="bg-glow local-glow"></div>
+
+                <div class="repo-container remote-repo" id="remote-repo">
+                    <div class="repo-header">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
+                        <h3>Remote Repository</h3>
+                        <div class="repo-meta">
+                            <span class="badge">github.com/project</span>
+                            <span class="badge branch-badge transition-color" id="remote-branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>main</span><span class="hidden" id="remote-feature-text">,&nbsp;feature</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" id="remote-commits" style="padding-left: 10%">
+                        <!-- Standard setup before push -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Add user auth</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 2">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update styles</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                            <!-- Remote labels -->
+                            <div class="labels-container" id="remote-base-labels">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Empty target for new pushes -->
+                        <div id="remote-push-target" style="display: contents;"></div>
+                    </div>
+                </div>
+
+                <!-- The Clone/Push Animation Path -->
+                <div class="transfer-path" id="transfer-path">
+                    <div class="transfer-line"></div>
+                    <div class="transfer-particles" id="particles-container"></div>
+                </div>
+
+                <div class="repo-container local-repo active-repo" id="local-repo">
+                    <div class="repo-header">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Local Repository</h3>
+                        <div class="repo-meta">
+                            <span class="badge">~/laptop/project</span>
+                            <span class="badge branch-badge" style="color: #a855f7;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>feature</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" style="padding-left: 10%">
+                        <!-- Identical base commits -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Add user auth</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 2">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update styles</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                            <div class="labels-container">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
+                        </div>
+                        
+                        <!-- The Split and Feature Commit (Already Exists locally) -->
+                        <div class="branch-split"></div>
+                        <div class="commit-node feature-track relative-node">
+                            <div class="commit-dot feature-bg"></div>
+                            <div class="commit-msg">
+                                <span>Implement login...</span>
+                                <span class="commit-hash">x1y2z3w</span>
+                            </div>
+                            <div class="labels-container">
+                                <span class="branch-tag feature-tag">feature</span>
+                                <span class="head-tag">HEAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="push.js"></script>
+</body>
+</html>
