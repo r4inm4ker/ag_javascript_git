@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Rebase Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .wip-color {
+            color: #06b6d4;
+        }
+
+        .wip-bg {
+            background: #06b6d4;
+        }
+
+        .main-color {
+            color: #10b981;
+        }
+
+        .main-bg {
+            background: #10b981;
+        }
+
+        .wip-tag {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+            border: 1px solid #06b6d4;
+        }
+
+        .main-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .rebase-particle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #10b981;
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* Adjust split line colors */
+        #wip-repo .branch-split {
+            border-left-color: #06b6d4;
+            border-top-color: #06b6d4;
+        }
+
+        #main-repo .branch-split {
+            border-left-color: #10b981;
+            border-top-color: #10b981;
+        }
+
+        /* Transition for WIP commit repositioning */
+        #wip-wrapper {
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code>git rebase</code> (Rewriting History)</p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator" style="background: #06b6d4; box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">The Diverged State</h2>
+                </div>
+                <p id="step-description">You are working on the <code>wip</code> branch (left). Meanwhile, a new commit
+                    was merged into <code>main</code> (right). Standard history has diverged.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary" style="background: #06b6d4;">git rebase main</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+
+                <!-- Nav Links -->
+                <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                    <a href="cherry_pick.html"
+                        style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev:
+                        Cherry-Pick</a>
+                    <a href="index.html"
+                        style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage">
+                <!-- Background decorative elements -->
+                <div class="bg-glow local-glow" style="background: rgba(6, 182, 212, 0.05);"></div>
+                <div class="bg-glow remote-glow" style="background: rgba(16, 185, 129, 0.05);"></div>
+
+                <!-- LEFT: WIP Branch (Active Workspace) -->
+                <div class="repo-container active-repo" id="wip-repo"
+                    style="box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
+                    <div class="repo-header" style="border-bottom-color: rgba(6, 182, 212, 0.2);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="color: #06b6d4;">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                        </svg>
+                        <h3>Local Workstation</h3>
+                        <div class="repo-meta">
+                            <span class="badge">branch: wip</span>
+                            <span class="badge branch-badge transition-color" style="color: #06b6d4;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M6 3v12" />
+                                    <circle cx="18" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <path d="M18 9a9 9 0 0 1-9 9" />
+                                </svg>
+                                <span>wip</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Main Base) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Add core structure</span><span
+                                    class="commit-hash">j7k8l9m</span></div>
+                        </div>
+
+                        <!-- New Base Injection Area -->
+                        <div id="new-base-area" style="display: contents;"></div>
+
+                        <!-- WIP Branch Structure -->
+                        <div id="wip-wrapper">
+                            <!-- Original WIP Split -->
+                            <div class="branch-split" id="wip-split" style="opacity: 1;"></div>
+
+                            <!-- Commit 3 (WIP) -->
+                            <div class="commit-node feature-track relative-node" id="wip-source-commit">
+                                <div class="commit-dot wip-bg" id="wip-commit-dot"></div>
+                                <div class="commit-msg"><span class="wip-color">WIP: new feature</span><span
+                                        class="commit-hash" id="wip-hash">u8v7w6x</span></div>
+                                <div class="labels-container" id="wip-labels-base">
+                                    <span class="branch-tag branch-tag wip-tag" id="wip-tag">wip</span>
+                                    <span class="head-tag" id="head-tag">HEAD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center Transfer Path (optional styling) -->
+                <div class="transfer-path" id="transfer-path">
+                    <div class="transfer-line" style="border-top: 2px dashed rgba(16, 185, 129, 0.3);"></div>
+                </div>
+
+                <!-- RIGHT: Main Branch -->
+                <div class="repo-container active-repo" id="main-repo"
+                    style="box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);">
+                    <div class="repo-header" style="border-bottom-color: rgba(16, 185, 129, 0.2);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="color: #10b981;">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                        </svg>
+                        <h3>Local Workstation</h3>
+                        <div class="repo-meta">
+                            <span class="badge">branch: main</span>
+                            <span class="badge branch-badge transition-color" style="color: #10b981;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M6 3v12" />
+                                    <circle cx="18" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <path d="M18 9a9 9 0 0 1-9 9" />
+                                </svg>
+                                <span>main</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Main Base) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Add core structure</span><span
+                                    class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+
+                        <!-- Commit 3 (Main Latest) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg" id="main-target-dot"></div>
+                            <div class="commit-msg"><span class="main-color">Update dependencies</span><span
+                                    class="commit-hash">x5y6z7w</span></div>
+                            <div class="labels-container" id="main-labels">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="rebase.js"></script>
+</body>
+
+</html>
