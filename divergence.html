@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Diverged History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .local-color { color: #3b82f6; } /* Blue for local */
+        .local-bg { background: #3b82f6; }
+        .remote-color { color: #ec4899; } /* Pink for remote */
+        .remote-bg { background: #ec4899; }
+        .error-color { color: #ef4444; } /* Red for error */
+        .error-bg { background: #ef4444; }
+        
+        .local-tag { background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid #3b82f6; }
+        .remote-tag { background: rgba(236, 72, 153, 0.2); color: #ec4899; border: 1px solid #ec4899; }
+        .error-tag { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+        
+        .push-particle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #3b82f6;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #3b82f6;
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .shake-animation {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+            40%, 60% { transform: translate3d(8px, 0, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Problem Diagnostics</h1>
+            <p>Understanding <code>git push (rejected)</code> (Diverged History)</p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator" id="step-indicator-block" style="background: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);">
+                    <span id="step-number" style="color: white;">1</span>
+                    <h2 id="step-title">The Problem Scope</h2>
+                </div>
+                <p id="step-description">You have committed new work locally on <code>main</code> (left). However, someone else has pushed a different commit to the remote <code>main</code> (right). The histories have completely diverged.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary" style="background: #3b82f6;">git push</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+                
+                <!-- Nav Links -->
+                <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                    <a href="merge.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Merge</a>
+                    <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage">
+                <!-- Background decorative elements -->
+                <div class="bg-glow local-glow" id="glow-left" style="background: rgba(59, 130, 246, 0.05);"></div>
+                <div class="bg-glow remote-glow" id="glow-right" style="background: rgba(236, 72, 153, 0.05);"></div>
+
+                <!-- LEFT: Local Workstation -->
+                <div class="repo-container active-repo" id="local-repo" style="box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);">
+                    <div class="repo-header" style="border-bottom-color: rgba(59, 130, 246, 0.2);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #3b82f6;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Local Workstation</h3>
+                        <div class="repo-meta">
+                            <span class="badge">scope: local</span>
+                            <span class="badge branch-badge transition-color" style="color: #3b82f6;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>main</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Shared Base) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot" style="background: #9ca3af;"></div>
+                            <div class="commit-msg"><span style="color: #9ca3af;">Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
+                        </div>
+                        <div class="commit-line" style="background: #9ca3af;"></div>
+                        <div class="commit-node main-track relative-node" id="shared-base-commit">
+                            <div class="commit-dot" style="background: #9ca3af;"></div>
+                            <div class="commit-msg"><span style="color: #9ca3af;">Add core structure</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        
+                        <!-- Visual divergence link -->
+                        <div class="commit-line local-bg"></div>
+                        
+                        <!-- Commit 3 (Local Unique) -->
+                        <div class="commit-node main-track relative-node">
+                             <div class="commit-dot local-bg" id="local-source-dot"></div>
+                             <div class="commit-msg"><span class="local-color">Local UI tweaks</span><span class="commit-hash">p4q5r6s</span></div>
+                             <div class="labels-container" id="local-labels-base">
+                                 <span class="branch-tag branch-tag local-tag" id="local-tag">main</span>
+                                 <span class="head-tag" id="head-tag">HEAD</span>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Center Transfer Path -->
+                <div class="transfer-path" id="transfer-path">
+                    <div class="transfer-line" id="transfer-line-visual" style="border-top: 2px dashed rgba(239, 68, 68, 0.1);"></div>
+                </div>
+
+                <!-- RIGHT: Remote Repository -->
+                <div class="repo-container active-repo" id="remote-repo" style="box-shadow: 0 0 30px rgba(236, 72, 153, 0.15);">
+                    <div class="repo-header" id="remote-header-border" style="border-bottom-color: rgba(236, 72, 153, 0.2);">
+                        <svg class="icon" id="remote-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #ec4899;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                        <h3 id="remote-header-title">Remote Repository</h3>
+                        <div class="repo-meta">
+                            <span class="badge">scope: remote</span>
+                            <span class="badge branch-badge transition-color" style="color: #ec4899;" id="remote-branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>main</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 & 2 (Shared Base) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot" style="background: #9ca3af;"></div>
+                            <div class="commit-msg"><span style="color: #9ca3af;">Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
+                        </div>
+                        <div class="commit-line" style="background: #9ca3af;"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot" style="background: #9ca3af;"></div>
+                            <div class="commit-msg"><span style="color: #9ca3af;">Add core structure</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        
+                        <!-- Visual divergence link -->
+                        <div class="commit-line remote-bg"></div>
+                        
+                        <!-- Commit 3 (Remote Unique) -->
+                        <div class="commit-node main-track relative-node">
+                             <div class="commit-dot remote-bg" id="remote-target-dot"></div>
+                             <div class="commit-msg"><span class="remote-color">Hotfix from colleague</span><span class="commit-hash">t7u8v9w</span></div>
+                             <div class="labels-container" id="remote-labels">
+                                 <span class="branch-tag remote-tag">main</span>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="divergence.js"></script>
+</body>
+</html>
