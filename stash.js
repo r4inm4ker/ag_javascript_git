@@ -12,6 +12,9 @@ const stashContainer = document.getElementById('stash-container');
 const emptyStash = document.getElementById('empty-stash');
 const stashItem = document.getElementById('stash-item');
 
+const newCommit = document.getElementById('new-commit');
+const newCommitLine = document.getElementById('new-commit-line');
+
 const steps = [
     {
         num: 1,
@@ -31,13 +34,20 @@ const steps = [
         num: 3,
         title: "Safely Stashed",
         desc: "Running `git stash` isolates your uncommitted changes and stores them safely in an isolated stack. Your working directory is instantly completely clean again, ready to switch branches or fix bugs.",
+        actionBtn: "git merge main",
+        color: "#3b82f6" // Blue
+    },
+    {
+        num: 4,
+        title: "Merging the Bugfix",
+        desc: "With your working directory newly clean, you freely merged the hotfix from `main` into your local history without any conflicting unsaved files blocking you.",
         actionBtn: "git stash pop",
         color: "#10b981" // Green
     },
     {
-        num: 4,
+        num: 5,
         title: "Restoring Changes",
-        desc: "After fixing the bug, you run `git stash pop` to selectively pull the unfinished code out of the stash stack and resume exactly where you left off.",
+        desc: "After handling the hotfix merge, you run `git stash pop` to selectively pull your unfinished draft out of the stash stack and resume exactly where you left off, functionally directly on top of the newly integrated history!",
         actionBtn: "Restart Tutorial",
         color: "#a855f7" // Purple
     }
@@ -78,6 +88,20 @@ btnNext.addEventListener('click', () => {
         updateUI(currentStep);
         
     } else if (currentStep === 3) {
+        // git merge main
+        
+        // Show the new merge commit in the history stack
+        newCommit.style.display = 'flex';
+        newCommitLine.style.display = 'block';
+        
+        setTimeout(() => {
+            newCommit.style.opacity = '1';
+            newCommitLine.style.opacity = '1';
+        }, 50);
+        
+        updateUI(currentStep);
+        
+    } else if (currentStep === 4) {
         // git stash pop
         btnNext.classList.add('hidden');
         btnReset.classList.remove('hidden');
@@ -110,6 +134,13 @@ btnReset.addEventListener('click', () => {
     stashContainer.style.opacity = '0';
     emptyStash.style.display = 'flex';
     stashItem.classList.remove('visible');
+    
+    newCommit.style.opacity = '0';
+    newCommitLine.style.opacity = '0';
+    setTimeout(() => {
+        newCommit.style.display = 'none';
+        newCommitLine.style.display = 'none';
+    }, 500);
     
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
