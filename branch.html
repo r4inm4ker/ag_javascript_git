@@ -37,34 +37,24 @@
                 </div>
             </section>
 
-            <section class="visualization-stage single-stage">
-                <div class="bg-glow local-glow full-glow"></div>
+            <section class="visualization-stage">
+                <!-- Background decorative elements -->
+                <div class="bg-glow remote-glow"></div>
+                <div class="bg-glow local-glow"></div>
 
-                <div class="repo-container local-repo active-repo" id="local-repo"
-                    style="width: 100%; max-width: 900px; margin: 0 auto;">
+                <div class="repo-container local-repo active-repo" id="local-repo-main">
                     <div class="repo-header">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-                            <rect x="9" y="9" width="6" height="6" />
-                        </svg>
-                        <h3>Local Repository</h3>
-                        <div class="repo-meta" id="header-meta">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Local Repository (main)</h3>
+                        <div class="repo-meta">
                             <span class="badge">~/laptop/project</span>
-                            <span class="badge branch-badge transition-color" id="current-branch-badge">
-                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M6 3v12" />
-                                    <circle cx="18" cy="6" r="3" />
-                                    <circle cx="6" cy="18" r="3" />
-                                    <path d="M18 9a9 9 0 0 1-9 9" />
-                                </svg>
-                                <span id="header-branch-name">main</span>
+                            <span class="badge branch-badge transition-color" id="main-branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>main</span>
                             </span>
                         </div>
                     </div>
-
-                    <div class="repo-body tree-container">
-                        <!-- Commit 1 -->
+                    <div class="repo-body tree-container" id="main-commits" style="padding-left: 10%">
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
@@ -73,8 +63,6 @@
                             </div>
                         </div>
                         <div class="commit-line main-bg"></div>
-
-                        <!-- Commit 2 -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
@@ -83,27 +71,71 @@
                             </div>
                         </div>
                         <div class="commit-line main-bg"></div>
-
-                        <!-- Commit 3 -->
                         <div class="commit-node main-track relative-node" style="z-index: 2">
-                            <div class="commit-dot main-bg" id="base-commit-dot"></div>
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update styles</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                            <div class="labels-container" id="base-labels-main">
+                                <span class="branch-tag main-tag">main</span>
+                                <span class="head-tag" id="head-tag-main">HEAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Animation Path -->
+                <div class="transfer-path" id="transfer-path">
+                    <div class="transfer-line"></div>
+                </div>
+
+                <div class="repo-container local-repo" id="local-repo-feature" style="border-color: rgba(168, 85, 247, 0.3); opacity: 0; pointer-events: none; transform: scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease;">
+                    <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3 style="color: #a855f7;">Feature Branch Context</h3>
+                        <div class="repo-meta">
+                            <span class="badge">~/laptop/project</span>
+                            <span class="badge branch-badge transition-color" id="feature-branch-badge" style="color: #a855f7;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>feature</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" style="padding-left: 10%">
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg" style="background: rgba(16, 185, 129, 0.5); color: rgba(16, 185, 129, 0.5);"></div>
+                            <div class="commit-msg" style="opacity: 0.7;">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg" style="background: rgba(16, 185, 129, 0.2);"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg" style="background: rgba(16, 185, 129, 0.5); color: rgba(16, 185, 129, 0.5);"></div>
+                            <div class="commit-msg" style="opacity: 0.7;">
+                                <span>Add user auth</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg" style="background: rgba(16, 185, 129, 0.2);"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 2">
+                            <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
                                 <span>Update styles</span>
                                 <span class="commit-hash">j7k8l9m</span>
                             </div>
 
-                            <!-- Branch labels -->
-                            <div class="labels-container" id="base-labels">
-                                <span class="branch-tag main-tag">main</span>
+                            <div class="labels-container" id="base-labels-feature">
+                                <span class="branch-tag main-tag" style="opacity: 0.5;">main</span>
                                 <span class="branch-tag feature-tag hidden" id="feature-tag">feature</span>
-                                <span class="head-tag" id="head-tag">HEAD</span>
+                                <span class="head-tag hidden" id="head-tag-feature">HEAD</span>
                             </div>
                         </div>
 
-                        <!-- The split and new branch (hidden initially) -->
-                        <div class="branch-split hidden" id="branch-split"></div>
+                        <div class="commit-line main-bg hidden" id="feature-commit-line" style="background: #a855f7;"></div>
 
-                        <div class="commit-node feature-track hidden" id="new-commit">
+                        <div class="commit-node feature-track hidden" id="new-commit" style="margin-left: 0; animation: slideUp 0.5s ease forwards;">
                             <div class="commit-dot feature-bg"></div>
                             <div class="commit-msg">
                                 <span>Implement login...</span>

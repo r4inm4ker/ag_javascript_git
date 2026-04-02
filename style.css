@@ -38,8 +38,8 @@ body {
 }
 
 .app-container {
-    width: 90%;
-    max-width: 1200px;
+    width: 95%;
+    max-width: 1500px;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -190,7 +190,7 @@ main {
 }
 
 .repo-container {
-    width: 42%;
+    width: 46%;
     background: var(--bg-panel);
     border: 1px solid var(--border-color);
     border-radius: 16px;
@@ -314,8 +314,8 @@ main {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 42%;
-    right: 42%;
+    left: 46%;
+    right: 46%;
     display: flex;
     align-items: center;
     justify-content: center;
