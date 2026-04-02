@@ -40,7 +40,7 @@ const steps = [
     {
         num: 4,
         title: "Merging the Bugfix",
-        desc: "With your working directory newly clean, you freely merged the hotfix from `main` into your local history without any conflicting unsaved files blocking you.",
+        desc: "With your working directory newly clean, you freely merged the hotfix from `main` into your local `wip` branch history without any conflicting unsaved files blocking you.",
         actionBtn: "git stash pop",
         color: "#10b981" // Green
     },
