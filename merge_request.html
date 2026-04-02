@@ -32,33 +32,33 @@
                 </div>
             </section>
 
-            <section class="visualization-stage single-stage">
+            <section class="visualization-stage" style="justify-content: space-between;">
                 <div class="bg-glow remote-glow full-glow"></div>
 
-                <div class="repo-container remote-repo active-repo" style="width: 100%; max-width: 700px; margin: 0 auto; z-index: 5;">
+                <!-- Left: Target Branch (main) -->
+                <div class="repo-container remote-repo active-repo" id="target-container">
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
-                        <h3>Remote Repository</h3>
+                        <h3>Target Branch</h3>
                         <div class="repo-meta">
-                            <span class="badge">gitlab.com/project</span>
-                            <span class="badge branch-badge transition-color" style="color: #a855f7;">
+                            <span class="badge branch-badge transition-color" style="border-color: rgba(59, 130, 246, 0.3);">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>main, feature</span>
+                                <span>main</span>
                             </span>
                         </div>
                     </div>
                     
-                    <div class="repo-body tree-container" id="repo-commits">
-                        <!-- Commit 1 -->
+                    <div class="repo-body" id="target-commits" style="flex-direction: column;">
+                        <div id="merge-target" style="display: contents;"></div>
+                        <!-- Commit 3 -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
-                                <span>Initial commit</span>
-                                <span class="commit-hash">a1b2c3d</span>
+                                <span>Update styles</span>
+                                <span class="commit-hash">j7k8l9m</span>
                             </div>
                         </div>
                         <div class="commit-line main-bg"></div>
-                        
                         <!-- Commit 2 -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
@@ -68,44 +68,44 @@
                             </div>
                         </div>
                         <div class="commit-line main-bg"></div>
-                        
-                        <!-- Commit 3 -->
-                        <div class="commit-node main-track relative-node" style="z-index: 4">
+                        <!-- Commit 1 -->
+                        <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
-                                <span>Update styles</span>
-                                <span class="commit-hash">j7k8l9m</span>
-                            </div>
-                            <!-- Labels -->
-                            <div class="labels-container" id="base-labels">
-                                <span class="branch-tag main-tag" id="main-tag">main</span>
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
                             </div>
                         </div>
-                        
-                        <!-- Branch Split -->
-                        <div class="branch-split" style="opacity: 1;" id="branch-split"></div>
-                        
-                        <div class="commit-node feature-track relative-node" id="feature-commit" style="z-index: 3;">
-                            <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Source Branch (feature) -->
+                <div class="repo-container remote-repo active-repo" id="source-container" style="border-color: rgba(168, 85, 247, 0.3);">
+                    <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
+                        <h3 style="color: #a855f7;">Source Branch</h3>
+                        <div class="repo-meta">
+                            <span class="badge branch-badge transition-color" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3);">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>feature</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="repo-body" id="source-commits" style="flex-direction: column;">
+                        <div class="commit-node feature-track relative-node" id="feature-commit" style="background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.3);">
                             <div class="commit-dot feature-bg"></div>
                             <div class="commit-msg">
-                                <span>
+                                <span style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
                                     Implement login...
-                                    <span class="review-bubble" id="review-badge">
+                                    <span class="review-bubble" id="review-badge" style="margin-left: 0.5rem;">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                         LGTM
                                     </span>
                                 </span>
                                 <span class="commit-hash">x1y2z3w</span>
                             </div>
-                            
-                            <div class="labels-container" id="feature-labels">
-                                <span class="branch-tag feature-tag" id="feature-tag">feature</span>
-                            </div>
                         </div>
-                        
-                        <!-- Merge Target -->
-                        <div id="merge-target" style="display: contents;"></div>
                     </div>
                 </div>
             </section>

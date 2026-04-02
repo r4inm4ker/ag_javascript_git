@@ -5,7 +5,6 @@ const stepNumber = document.getElementById('step-number');
 const stepTitle = document.getElementById('step-title');
 const stepDescription = document.getElementById('step-description');
 
-const mainTag = document.getElementById('main-tag');
 const reviewBadge = document.getElementById('review-badge');
 const mergeTarget = document.getElementById('merge-target');
 
@@ -50,27 +49,16 @@ btnNext.addEventListener('click', () => {
         btnNext.classList.add('hidden');
         btnReset.classList.remove('hidden');
         
-        // Ensure gap continuity
-        const mergeSplitHTML = `<div class="merge-split" style="opacity:0; animation: drawPath 0.5s ease forwards; animation-delay: 0.1s;"></div>`;
         const newCommitHTML = `
-            <div class="commit-node main-track relative-node merge-commit" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 0.5s;">
+            <div class="commit-node main-track relative-node merge-commit" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.5); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.1s;">
                 <div class="commit-dot main-bg"></div>
                 <div class="commit-msg">
                     <span>Merge pull request #1</span>
                     <span class="commit-hash">m9n8p7q</span>
                 </div>
-                <div class="labels-container" id="new-main-labels">
-                    <!-- main tag moves here -->
-                </div>
             </div>`;
             
-        mergeTarget.insertAdjacentHTML('beforeend', mergeSplitHTML);
         mergeTarget.insertAdjacentHTML('beforeend', newCommitHTML);
-        
-        // Move the tag upward
-        setTimeout(() => {
-            document.getElementById('new-main-labels').appendChild(mainTag);
-        }, 600);
         
         updateUI(currentStep);
     }
@@ -81,9 +69,6 @@ btnReset.addEventListener('click', () => {
     
     // Reset Review
     reviewBadge.classList.remove('pop-in');
-    
-    // Reset main tag
-    document.getElementById('base-labels').appendChild(mainTag);
     
     // Clear merge
     mergeTarget.innerHTML = '';
