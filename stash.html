@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Stash Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        .code-editor {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .code-line {
+            display: flex;
+        }
+        
+        .line-number {
+            color: rgba(148, 163, 184, 0.5);
+            width: 30px;
+            text-align: right;
+            padding-right: 1rem;
+            user-select: none;
+        }
+        
+        .code-content {
+            white-space: pre;
+        }
+        
+        .keyword { color: #c678dd; } /* Purple */
+        .function { color: #61afef; } /* Blue */
+        .string { color: #98c379; } /* Green */
+        .comment { color: #5c6370; font-style: italic; }
+        
+        .diff-added {
+            background: rgba(16, 185, 129, 0.15); /* Green highlight */
+            border-left: 2px solid #10b981;
+            color: #10b981;
+            margin-left: -1rem;
+            padding-left: calc(1rem - 2px);
+            width: calc(100% + 2rem);
+        }
+        
+        .diff-added .line-number {
+            color: #10b981;
+        }
+        
+        .stash-item {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem;
+            color: #f59e0b;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        
+        .stash-item.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .stash-icon {
+            width: 24px;
+            height: 24px;
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code>git stash</code> and temporary workspaces</p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">Initial State</h2>
+                </div>
+                <p id="step-description">You have a clean working directory with a simple `auth.py` file.</p>
+                
+                <div class="controls">
+                    <button id="btn-next" class="btn primary">Start Writing Code</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <a href="index.html" style="color: var(--accent-transfer); text-decoration: none; font-weight: 600;">&larr; Back to Directory</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage" style="justify-content: flex-start; gap: 2rem;">
+                <!-- Left: Editor Context -->
+                <div class="repo-container local-repo active-repo" id="editor-container" style="border-color: rgba(16, 185, 129, 0.3); width: calc(100% - 320px - 2rem);">
+                    <div class="repo-header" style="background: rgba(16, 185, 129, 0.05);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        <h3 style="color: #10b981;">Working Directory</h3>
+                        <div class="repo-meta">
+                            <span class="badge">~/laptop/project</span>
+                            <span class="badge code-font">auth.py</span>
+                        </div>
+                    </div>
+
+                    <div class="code-editor code-font">
+                        <div class="code-line"><span class="line-number">1</span><span class="code-content"><span class="keyword">def</span> <span class="function">login</span>(user):</span></div>
+                        <div class="code-line"><span class="line-number">2</span><span class="code-content">    <span class="keyword">if</span> user.is_valid():</span></div>
+                        
+                        <!-- Dirty changes -->
+                        <div id="uncommitted-code" style="display: none; transition: opacity 0.5s ease; opacity: 0;">
+                            <div class="code-line diff-added"><span class="line-number">3</span><span class="code-content">        <span class="comment"># TODO: Generate API Token securely</span></span></div>
+                            <div class="code-line diff-added"><span class="line-number">4</span><span class="code-content">        token = generate_token(user.id)</span></div>
+                        </div>
+
+                        <div class="code-line"><span class="line-number" id="line-num-last">3</span><span class="code-content">        <span class="keyword">return</span> <span class="string">"Login Successful"</span></span></div>
+                    </div>
+                </div>
+
+                <!-- Right: Stash Stack -->
+                <div class="repo-container" id="stash-container" style="border-color: rgba(245, 158, 11, 0.3); width: 320px; min-width: 300px; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;">
+                    <div class="repo-header" style="background: rgba(245, 158, 11, 0.05);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h3 style="color: #f59e0b;">Git Stash Content</h3>
+                        <div class="repo-meta">
+                            <span class="badge">Safe Storage Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="repo-body" style="padding: 0; display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div class="stash-item" id="stash-item">
+                            <svg class="stash-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <div>
+                                <strong>stash@{0}</strong><br>
+                                <span style="font-size: 0.8rem; color: rgba(245, 158, 11, 0.9);">WIP on main: adding token logic</span>
+                            </div>
+                        </div>
+                        
+                        <div class="empty-state" id="empty-stash" style="margin-top: 5rem;">
+                            No stashed changes
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="stash.js"></script>
+</body>
+</html>
