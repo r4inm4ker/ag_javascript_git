@@ -369,16 +369,39 @@ btnNext.addEventListener('click', async () => {
         await addTerm(`<span class="t-info"> 1 file changed, 2 insertions(+), 8 deletions(-)</span>`, 1000);
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">_</span>`, 1200);
 
-        // Append merge commit to local branch
+        // Append remote commit + merge commit to local branch
         setTimeout(() => {
-            const line = document.createElement('div');
-            line.className = 'commit-line';
-            line.style.cssText = 'background:#10b981; height:6px; margin-left:1rem; opacity:0; animation: popIn 0.4s ease forwards;';
+            // Remove old HEAD tag first
+            const oldHead = localCommits.querySelector('.ours-tag');
+            if (oldHead) oldHead.remove();
 
-            const node = document.createElement('div');
-            node.className = 'commit-node main-track relative-node';
-            node.style.cssText = 'padding:0.35rem 0.6rem; background:rgba(16,185,129,0.12); border-color:rgba(16,185,129,0.4); opacity:0; animation: popIn 0.5s ease 0.2s forwards;';
-            node.innerHTML = `
+            // ── Remote commit (b9c8d7e) now in local history ──
+            const line1 = document.createElement('div');
+            line1.className = 'commit-line';
+            line1.style.cssText = 'background:#4b5563; height:6px; margin-left:1rem; opacity:0; animation: popIn 0.4s ease 0.0s forwards;';
+
+            const remoteNode = document.createElement('div');
+            remoteNode.className = 'commit-node main-track relative-node';
+            remoteNode.style.cssText = 'padding:0.35rem 0.6rem; background:rgba(236,72,153,0.08); border-color:rgba(236,72,153,0.3); opacity:0; animation: popIn 0.5s ease 0.1s forwards;';
+            remoteNode.innerHTML = `
+                <div class="commit-dot" style="width:10px;height:10px;background:#ec4899;box-shadow:0 0 6px #ec4899;"></div>
+                <div class="commit-msg" style="font-size:0.78rem;">
+                    <span class="theirs-color">Refactor token validation</span>
+                    <span class="commit-hash">b9c8d7e</span>
+                </div>
+                <div class="labels-container">
+                    <span class="branch-tag theirs-tag" style="font-size:0.65rem;">from origin/main</span>
+                </div>`;
+
+            // ── Merge commit (c4d5e6f) ──
+            const line2 = document.createElement('div');
+            line2.className = 'commit-line';
+            line2.style.cssText = 'background:#10b981; height:6px; margin-left:1rem; opacity:0; animation: popIn 0.4s ease 0.3s forwards;';
+
+            const mergeNode = document.createElement('div');
+            mergeNode.className = 'commit-node main-track relative-node';
+            mergeNode.style.cssText = 'padding:0.35rem 0.6rem; background:rgba(16,185,129,0.12); border-color:rgba(16,185,129,0.4); opacity:0; animation: popIn 0.5s ease 0.4s forwards;';
+            mergeNode.innerHTML = `
                 <div class="commit-dot" style="width:10px;height:10px;background:#10b981;box-shadow:0 0 8px #10b981;"></div>
                 <div class="commit-msg" style="font-size:0.78rem;">
                     <span class="resolved-color">Merge 'main' — resolve conflict</span>
@@ -388,12 +411,10 @@ btnNext.addEventListener('click', async () => {
                     <span class="branch-tag resolved-tag" style="font-size:0.65rem;">HEAD</span>
                 </div>`;
 
-            // Remove old HEAD tag
-            const oldHead = localCommits.querySelector('.ours-tag');
-            if (oldHead) oldHead.remove();
-
-            localCommits.appendChild(line);
-            localCommits.appendChild(node);
+            localCommits.appendChild(line1);
+            localCommits.appendChild(remoteNode);
+            localCommits.appendChild(line2);
+            localCommits.appendChild(mergeNode);
 
             arrowLeft.classList.remove('active');
             arrowRight.classList.remove('active');
@@ -401,6 +422,7 @@ btnNext.addEventListener('click', async () => {
             btnNext.classList.add('hidden');
             btnReset.classList.remove('hidden');
         }, 1300);
+
 
         return;
     }
