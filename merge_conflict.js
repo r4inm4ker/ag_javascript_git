@@ -1,26 +1,26 @@
 // ─── Element refs ─────────────────────────────────────────────────────────────
-const btnNext       = document.getElementById('btn-next');
-const btnReset      = document.getElementById('btn-reset');
-const stepNumber    = document.getElementById('step-number');
-const stepTitle     = document.getElementById('step-title');
-const stepDesc      = document.getElementById('step-description');
-const stepBlock     = document.getElementById('step-indicator-block');
+const btnNext = document.getElementById('btn-next');
+const btnReset = document.getElementById('btn-reset');
+const stepNumber = document.getElementById('step-number');
+const stepTitle = document.getElementById('step-title');
+const stepDesc = document.getElementById('step-description');
+const stepBlock = document.getElementById('step-indicator-block');
 
-const localPanel    = document.getElementById('local-panel');
-const remotePanel   = document.getElementById('remote-panel');
-const localCode     = document.getElementById('local-code');
-const remoteCode    = document.getElementById('remote-code');
-const localBadge    = document.getElementById('local-conflict-badge');
-const remoteBadge   = document.getElementById('remote-conflict-badge');
-const localCommits  = document.getElementById('local-commits');
+const localPanel = document.getElementById('local-panel');
+const remotePanel = document.getElementById('remote-panel');
+const localCode = document.getElementById('local-code');
+const remoteCode = document.getElementById('remote-code');
+const localBadge = document.getElementById('local-conflict-badge');
+const remoteBadge = document.getElementById('remote-conflict-badge');
+const localCommits = document.getElementById('local-commits');
 
-const conflictViewer= document.getElementById('conflict-viewer');
-const viewerBody    = document.getElementById('viewer-body');
-const codeStatus    = document.getElementById('code-status');
+const conflictViewer = document.getElementById('conflict-viewer');
+const viewerBody = document.getElementById('viewer-body');
+const codeStatus = document.getElementById('code-status');
 
-const termBody      = document.getElementById('terminal-body');
-const arrowLeft     = document.getElementById('arrow-left');
-const arrowRight    = document.getElementById('arrow-right');
+const termBody = document.getElementById('terminal-body');
+const arrowLeft = document.getElementById('arrow-left');
+const arrowRight = document.getElementById('arrow-right');
 
 let currentStep = 0;
 
@@ -31,7 +31,7 @@ const steps = [
         title: 'The Setup',
         btnLabel: 'git pull origin main', btnMono: true,
         desc: `You and a teammate both edited <code>auth.py</code> on different branches.
-               The <strong style="color:#3b82f6;">local</strong> branch (feature/login) set
+               The <strong style="color:#3b82f6;">local</strong> branch (main) set
                <code>TOKEN_EXPIRY = 3600</code>; the
                <strong style="color:#ec4899;">remote</strong> (origin/main) set
                <code>TOKEN_EXPIRY = 86400</code>. Both touch the same lines — Git cannot
@@ -81,117 +81,117 @@ const steps = [
 
 // YOUR version (local feature/login)
 const localLines = [
-    { cls:'ln-normal', tc:'cm',        code:'# auth/auth.py — LOCAL (feature/login)' },
-    { cls:'ln-normal', tc:'neutral',   code:'' },
-    { cls:'ln-normal', tc:'neutral',   code:'import hashlib' },
-    { cls:'ln-normal', tc:'neutral',   code:'import hmac' },
-    { cls:'ln-normal', tc:'neutral',   code:'' },
-    { cls:'hi-ours',   tc:'ours-text', code:'TOKEN_EXPIRY = 3600  # 1 hour ← YOUR change' },
-    { cls:'ln-normal', tc:'neutral',   code:'' },
-    { cls:'ln-normal', tc:'fn',        code:'def validate_token(token: str) -> bool:' },
-    { cls:'ln-normal', tc:'cm',        code:'    """Validate a bearer token."""' },
-    { cls:'hi-ours',   tc:'ours-text', code:'    if not token:' },
-    { cls:'hi-ours',   tc:'ours-text', code:'        raise ValueError("Token must not be empty")' },
-    { cls:'ln-normal', tc:'neutral',   code:'    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py — LOCAL (feature/login)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'hi-ours', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # 1 hour ← YOUR change' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
+    { cls: 'hi-ours', tc: 'ours-text', code: '    if not token:' },
+    { cls: 'hi-ours', tc: 'ours-text', code: '        raise ValueError("Token must not be empty")' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
 ];
 
 // THEIR version (remote origin/main)
 const remoteLines = [
-    { cls:'ln-normal',      tc:'cm',         code:'# auth/auth.py — REMOTE (origin/main)' },
-    { cls:'ln-normal',      tc:'neutral',    code:'' },
-    { cls:'ln-normal',      tc:'neutral',    code:'import hashlib' },
-    { cls:'ln-normal',      tc:'neutral',    code:'import hmac' },
-    { cls:'hi-theirs-label',tc:'neutral',    code:'import warnings  # ← THEIR addition' },
-    { cls:'hi-theirs',      tc:'theirs-text',code:'TOKEN_EXPIRY = 86400  # 24 hours ← THEIR change' },
-    { cls:'ln-normal',      tc:'neutral',    code:'' },
-    { cls:'ln-normal',      tc:'fn',         code:'def validate_token(token: str) -> bool:' },
-    { cls:'ln-normal',      tc:'cm',         code:'    """Validate a bearer token."""' },
-    { cls:'hi-theirs',      tc:'theirs-text',code:'    if not token:' },
-    { cls:'hi-theirs',      tc:'theirs-text',code:'        warnings.warn("Empty token", stacklevel=2)' },
-    { cls:'ln-normal',      tc:'neutral',    code:'    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py — REMOTE (origin/main)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'hi-theirs-label', tc: 'neutral', code: 'import warnings  # ← THEIR addition' },
+    { cls: 'hi-theirs', tc: 'theirs-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours ← THEIR change' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
+    { cls: 'hi-theirs', tc: 'theirs-text', code: '    if not token:' },
+    { cls: 'hi-theirs', tc: 'theirs-text', code: '        warnings.warn("Empty token", stacklevel=2)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
 ];
 
 // WORKING COPY — initial clean state (local version, no markers)
 const workingCleanLines = [
-    { cls:'ln-normal', tc:'cm',      code:'# auth/auth.py' },
-    { cls:'ln-normal', tc:'neutral', code:'' },
-    { cls:'ln-normal', tc:'neutral', code:'import hashlib' },
-    { cls:'ln-normal', tc:'neutral', code:'import hmac' },
-    { cls:'ln-normal', tc:'neutral', code:'' },
-    { cls:'hi-label',  tc:'ours-text',code:'TOKEN_EXPIRY = 3600  # your local value' },
-    { cls:'ln-normal', tc:'neutral', code:'' },
-    { cls:'ln-normal', tc:'fn',      code:'def validate_token(token: str) -> bool:' },
-    { cls:'ln-normal', tc:'cm',      code:'    """Validate a bearer token."""' },
-    { cls:'ln-normal', tc:'neutral', code:'    if not token:' },
-    { cls:'ln-normal', tc:'neutral', code:'        raise ValueError("Token must not be empty")' },
-    { cls:'ln-normal', tc:'neutral', code:'    return hmac.compare_digest(token, _get_secret())' },
-    { cls:'ln-normal', tc:'neutral', code:'' },
-    { cls:'ln-normal', tc:'fn',      code:'def _get_secret() -> str:' },
-    { cls:'ln-normal', tc:'neutral', code:'    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'hi-label', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # your local value' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    if not token:' },
+    { cls: 'ln-normal', tc: 'neutral', code: '        raise ValueError("Token must not be empty")' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
 ];
 
 // WORKING COPY — after git pull: conflict markers injected
 const conflictLines = [
-    { cls:'ln-normal', tc:'cm',          code:'# auth/auth.py' },
-    { cls:'ln-normal', tc:'neutral',     code:'' },
-    { cls:'ln-normal', tc:'neutral',     code:'import hashlib' },
-    { cls:'ln-normal', tc:'neutral',     code:'import hmac' },
-    { cls:'ln-normal', tc:'neutral',     code:'' },
-    { cls:'ln-marker', tc:'marker-text', code:'<<<<<<< HEAD' },
-    { cls:'ln-ours',   tc:'ours-text',   code:'TOKEN_EXPIRY = 3600  # 1 hour (YOUR change)' },
-    { cls:'ln-marker', tc:'marker-text', code:'=======' },
-    { cls:'ln-theirs', tc:'neutral',     code:'import warnings' },
-    { cls:'ln-theirs', tc:'theirs-text', code:'TOKEN_EXPIRY = 86400  # 24 hours (THEIR change)' },
-    { cls:'ln-marker', tc:'marker-text', code:'>>>>>>> b9c8d7e (Refactor token validation)' },
-    { cls:'ln-normal', tc:'neutral',     code:'' },
-    { cls:'ln-normal', tc:'fn',          code:'def validate_token(token: str) -> bool:' },
-    { cls:'ln-normal', tc:'cm',          code:'    """Validate a bearer token."""' },
-    { cls:'ln-marker', tc:'marker-text', code:'<<<<<<< HEAD' },
-    { cls:'ln-ours',   tc:'ours-text',   code:'    if not token:' },
-    { cls:'ln-ours',   tc:'ours-text',   code:'        raise ValueError("Token must not be empty")' },
-    { cls:'ln-marker', tc:'marker-text', code:'=======' },
-    { cls:'ln-theirs', tc:'theirs-text', code:'    if not token:' },
-    { cls:'ln-theirs', tc:'theirs-text', code:'        warnings.warn("Empty token", stacklevel=2)' },
-    { cls:'ln-marker', tc:'marker-text', code:'>>>>>>> b9c8d7e (Refactor token validation)' },
-    { cls:'ln-normal', tc:'neutral',     code:'    return hmac.compare_digest(token, _get_secret())' },
-    { cls:'ln-normal', tc:'neutral',     code:'' },
-    { cls:'ln-normal', tc:'fn',          code:'def _get_secret() -> str:' },
-    { cls:'ln-normal', tc:'neutral',     code:'    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '<<<<<<< HEAD' },
+    { cls: 'ln-ours', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # 1 hour (YOUR change)' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '=======' },
+    { cls: 'ln-theirs', tc: 'neutral', code: 'import warnings' },
+    { cls: 'ln-theirs', tc: 'theirs-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours (THEIR change)' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Refactor token validation)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '<<<<<<< HEAD' },
+    { cls: 'ln-ours', tc: 'ours-text', code: '    if not token:' },
+    { cls: 'ln-ours', tc: 'ours-text', code: '        raise ValueError("Token must not be empty")' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '=======' },
+    { cls: 'ln-theirs', tc: 'theirs-text', code: '    if not token:' },
+    { cls: 'ln-theirs', tc: 'theirs-text', code: '        warnings.warn("Empty token", stacklevel=2)' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Refactor token validation)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
 ];
 
 // WORKING COPY — after resolution
 const resolvedLines = [
-    { cls:'ln-normal',  tc:'cm',           code:'# auth/auth.py' },
-    { cls:'ln-normal',  tc:'neutral',      code:'' },
-    { cls:'ln-normal',  tc:'neutral',      code:'import hashlib' },
-    { cls:'ln-normal',  tc:'neutral',      code:'import hmac' },
-    { cls:'ln-normal',  tc:'neutral',      code:'' },
-    { cls:'ln-resolved',tc:'resolved-text',code:'# Resolved: 24 h expiry + strict ValueError' },
-    { cls:'ln-resolved',tc:'resolved-text',code:'TOKEN_EXPIRY = 86400  # 24 hours' },
-    { cls:'ln-normal',  tc:'neutral',      code:'' },
-    { cls:'ln-normal',  tc:'fn',           code:'def validate_token(token: str) -> bool:' },
-    { cls:'ln-normal',  tc:'cm',           code:'    """Validate a bearer token."""' },
-    { cls:'ln-resolved',tc:'resolved-text',code:'    if not token:' },
-    { cls:'ln-resolved',tc:'resolved-text',code:'        raise ValueError("Token must not be empty")' },
-    { cls:'ln-normal',  tc:'neutral',      code:'    return hmac.compare_digest(token, _get_secret())' },
-    { cls:'ln-normal',  tc:'neutral',      code:'' },
-    { cls:'ln-normal',  tc:'fn',           code:'def _get_secret() -> str:' },
-    { cls:'ln-normal',  tc:'neutral',      code:'    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '# Resolved: 24 h expiry + strict ValueError' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '    if not token:' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '        raise ValueError("Token must not be empty")' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
 ];
 
 // ─── Render helpers ───────────────────────────────────────────────────────────
 function esc(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 const tcMap = {
-    'cm':           s => `<span class="cm">${esc(s)}</span>`,
-    'neutral':      s => `<span class="neutral-text">${esc(s)}</span>`,
-    'ours-text':    s => `<span class="ours-text">${esc(s)}</span>`,
-    'theirs-text':  s => `<span class="theirs-text">${esc(s)}</span>`,
-    'resolved-text':s => `<span class="resolved-text">${esc(s)}</span>`,
-    'marker-text':  s => `<span class="marker-text">${esc(s)}</span>`,
-    'fn':           s => `<span class="fn">${esc(s)}</span>`,
+    'cm': s => `<span class="cm">${esc(s)}</span>`,
+    'neutral': s => `<span class="neutral-text">${esc(s)}</span>`,
+    'ours-text': s => `<span class="ours-text">${esc(s)}</span>`,
+    'theirs-text': s => `<span class="theirs-text">${esc(s)}</span>`,
+    'resolved-text': s => `<span class="resolved-text">${esc(s)}</span>`,
+    'marker-text': s => `<span class="marker-text">${esc(s)}</span>`,
+    'fn': s => `<span class="fn">${esc(s)}</span>`,
 };
 
 function buildLine(data, num) {
@@ -236,36 +236,36 @@ function addTerm(html, delay = 0) {
 
 // ─── Status helpers ───────────────────────────────────────────────────────────
 function setStatus(text, bg, color, border) {
-    codeStatus.textContent     = text;
-    codeStatus.style.background  = bg;
-    codeStatus.style.color       = color;
+    codeStatus.textContent = text;
+    codeStatus.style.background = bg;
+    codeStatus.style.color = color;
     codeStatus.style.borderColor = border;
 }
 function setViewerBorder(color, shadow) {
     conflictViewer.style.borderColor = color;
-    conflictViewer.style.boxShadow   = shadow;
+    conflictViewer.style.boxShadow = shadow;
 }
 
 // ─── Step UI ──────────────────────────────────────────────────────────────────
 function applyStep(s) {
-    stepNumber.textContent    = s.num;
-    stepTitle.textContent     = s.title;
-    stepDesc.innerHTML        = s.desc;
+    stepNumber.textContent = s.num;
+    stepTitle.textContent = s.title;
+    stepDesc.innerHTML = s.desc;
     stepBlock.style.background = s.color;
-    stepBlock.style.boxShadow  = `0 0 20px ${s.glow}`;
-    btnNext.style.background   = s.color;
+    stepBlock.style.boxShadow = `0 0 20px ${s.glow}`;
+    btnNext.style.background = s.color;
     if (s.btnMono) {
         btnNext.style.fontFamily = "'JetBrains Mono', monospace";
-        btnNext.style.fontSize   = '0.88rem';
+        btnNext.style.fontSize = '0.88rem';
     } else {
         btnNext.style.fontFamily = '';
-        btnNext.style.fontSize   = '';
+        btnNext.style.fontSize = '';
     }
     btnNext.textContent = s.btnLabel;
 }
 
 // ─── Initial render ───────────────────────────────────────────────────────────
-renderInto(localCode,  localLines);
+renderInto(localCode, localLines);
 renderInto(remoteCode, remoteLines);
 renderInto(viewerBody, workingCleanLines);
 applyStep(steps[0]);
@@ -312,14 +312,14 @@ btnNext.addEventListener('click', async () => {
             arrowRight.classList.add('active');
 
             localPanel.style.borderColor = 'rgba(239,68,68,0.45)';
-            localPanel.style.boxShadow   = '0 0 20px rgba(239,68,68,0.15)';
-            remotePanel.style.borderColor= 'rgba(239,68,68,0.45)';
-            remotePanel.style.boxShadow  = '0 0 20px rgba(239,68,68,0.15)';
+            localPanel.style.boxShadow = '0 0 20px rgba(239,68,68,0.15)';
+            remotePanel.style.borderColor = 'rgba(239,68,68,0.45)';
+            remotePanel.style.boxShadow = '0 0 20px rgba(239,68,68,0.15)';
 
             btnNext.disabled = false;
         }, 1600);
 
-    // ── Step 2: Inspect markers ───────────────────────────────────────────────
+        // ── Step 2: Inspect markers ───────────────────────────────────────────────
     } else if (currentStep === 2) {
         applyStep(steps[2]);
 
@@ -336,7 +336,7 @@ btnNext.addEventListener('click', async () => {
             m.style.background = 'rgba(239,68,68,0.28)';
         });
 
-    // ── Step 3: Resolve ───────────────────────────────────────────────────────
+        // ── Step 3: Resolve ───────────────────────────────────────────────────────
     } else if (currentStep === 3) {
         applyStep(steps[3]);
 
@@ -349,16 +349,16 @@ btnNext.addEventListener('click', async () => {
             setStatus('Resolved ✓', 'rgba(16,185,129,0.20)', '#10b981', '#10b981');
             setViewerBorder('rgba(16,185,129,0.5)', '0 0 28px rgba(16,185,129,0.2)');
 
-            localPanel.style.borderColor  = 'rgba(16,185,129,0.35)';
-            localPanel.style.boxShadow    = '0 0 20px rgba(16,185,129,0.12)';
+            localPanel.style.borderColor = 'rgba(16,185,129,0.35)';
+            localPanel.style.boxShadow = '0 0 20px rgba(16,185,129,0.12)';
             remotePanel.style.borderColor = 'rgba(16,185,129,0.35)';
-            remotePanel.style.boxShadow   = '0 0 20px rgba(16,185,129,0.12)';
+            remotePanel.style.boxShadow = '0 0 20px rgba(16,185,129,0.12)';
 
             localBadge.classList.remove('show');
             remoteBadge.classList.remove('show');
         }, 600);
 
-    // ── Step 4: Commit ────────────────────────────────────────────────────────
+        // ── Step 4: Commit ────────────────────────────────────────────────────────
     } else if (currentStep === 4) {
         applyStep(steps[4]);
 
@@ -411,10 +411,10 @@ btnReset.addEventListener('click', () => {
     currentStep = 0;
 
     // Restore branch panels
-    localPanel.style.borderColor  = 'rgba(59,130,246,0.35)';
-    localPanel.style.boxShadow    = '0 0 24px rgba(59,130,246,0.1)';
+    localPanel.style.borderColor = 'rgba(59,130,246,0.35)';
+    localPanel.style.boxShadow = '0 0 24px rgba(59,130,246,0.1)';
     remotePanel.style.borderColor = 'rgba(236,72,153,0.35)';
-    remotePanel.style.boxShadow   = '0 0 24px rgba(236,72,153,0.1)';
+    remotePanel.style.boxShadow = '0 0 24px rgba(236,72,153,0.1)';
 
     // Remove appended merge commit (keep 3 original children)
     while (localCommits.children.length > 3) {
