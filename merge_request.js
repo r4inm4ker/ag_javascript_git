@@ -57,24 +57,24 @@ btnNext.addEventListener('click', () => {
         mrStatusBadge.style.background = 'rgba(59,130,246,0.15)';
         mrStatusBadge.style.color = '#3b82f6';
 
-        // Insert feature commit first, then the merge commit on top
+        // Insert merge commit on top (newest), then the feature commit below it
         const newCommitsHTML = `
-            <div class="commit-line main-bg" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 0.05s;"></div>
-            <div class="commit-node main-track relative-node" style="background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.1s;">
+            <div class="commit-node main-track relative-node merge-commit" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.5); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.1s;">
+                <div class="commit-dot main-bg"></div>
+                <div class="commit-msg">
+                    <span>Merge pull request #1</span>
+                    <span class="commit-hash">m9n8p7q</span>
+                </div>
+            </div>
+            <div class="commit-line main-bg" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 0.5s;"></div>
+            <div class="commit-node main-track relative-node" style="background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.6s;">
                 <div class="commit-dot feature-bg"></div>
                 <div class="commit-msg">
                     <span>Implement login logic</span>
                     <span class="commit-hash">x1y2z3w</span>
                 </div>
             </div>
-            <div class="commit-line main-bg" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 0.5s;"></div>
-            <div class="commit-node main-track relative-node merge-commit" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.5); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.6s;">
-                <div class="commit-dot main-bg"></div>
-                <div class="commit-msg">
-                    <span>Merge pull request #1</span>
-                    <span class="commit-hash">m9n8p7q</span>
-                </div>
-            </div>`;
+            <div class="commit-line main-bg" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 1.0s;"></div>`;
 
         mergeTarget.insertAdjacentHTML('beforeend', newCommitsHTML);
         addActivity('&#x1F7E3; Merged into main');
