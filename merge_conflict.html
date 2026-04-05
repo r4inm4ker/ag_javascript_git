@@ -294,6 +294,13 @@
             transition: opacity 0.3s, transform 0.3s;
         }
         .conflict-badge.show { opacity: 1; transform: translateY(0); }
+
+        /* Override: style.css sets #local-commits .commit-node to opacity:0 for
+           the clone-animation page. Restore full visibility here. */
+        #local-commits .commit-node {
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
     </style>
 </head>
 
