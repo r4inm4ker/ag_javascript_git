@@ -1,0 +1,37 @@
+
+at weta, to have your code "active" in an environment, there are generally 3 steps involved:
+
+1. getting your code changes pushed/merged into a project in gitlab.
+2. releasing a pak version from that project code base, usually with "main" branch using  waf/wak.
+3. put the released version into specific environment using oz.
+
+
+so:
+git :  code management system (gitlab/cresim)
+waf/wak : pak build and release system  ( cresim-3.1.2)
+oz : environment management system ( wf cre_vp19 , oz --using , etc)
+
+In this tutorial we will be focusing on the (1) : git, and how to get your code pushed/merged properly into main branch.
+
+
+Git is a distributed version control system designed to track changes in source code during software development, acting like a "time machine" for a project's history. Unlike older systems, it is distributed, meaning every developer has a full copy of the entire project history on their local machine, allowing them to work offline and merge changes later. It organises data into snapshots called "commits" rather than just tracking differences between files, ensuring data integrity through unique SHA-1 hashes for every saved state. Key features like branching allow developers to create independent lines of development to test new ideas without affecting the stable "main" code, making it an essential tool for both solo and collaborative projects. 
+
+
+distributed -- everyone has a copy of complete codebase. technically i can pass my updates to you directly without involving any central server, and you can also release something directly without going through server(although we have guard rail against that for releasing a pak version).
+
+git commit is a snapshot of a particular change.
+
+
+
+git operates on files and lines. 
+it is language agnostic
+you can git commit a:
+plain text file
+python file
+mel file
+.md file
+documentation file
+binary file
+
+at weta, we don't use git itself to create tags or versions. These are done with separate mechanism called waf and wak.
+So  for this course, we don't worry about releasing our changes, we just concentrate on getting our code merged into "main branch" that anybody can release later.
