@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Blame Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles specifically for the Blame page to handle code lines */
+        .blame-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        .blame-line {
+            display: flex;
+            gap: 1rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .blame-line:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-color);
+        }
+        .blame-line.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent-primary);
+        }
+
+        .blame-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+        .blame-row {
+            display: flex;
+            gap: 0;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+        .blame-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .blame-row.active {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-primary);
+        }
+        .blame-row .author-col {
+            width: 120px;
+            padding: 0.2rem 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-align: right;
+            border-right: 1px solid var(--border-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .blame-row .code-col {
+            padding: 0.2rem 0.5rem;
+            flex-grow: 1;
+            white-space: pre-wrap;
+            color: var(--text-main);
+        }
+        .line-number {
+            color: var(--text-muted);
+            width: 20px;
+            text-align: right;
+            user-select: none;
+        }
+        .line-content {
+            flex-grow: 1;
+            white-space: pre-wrap;
+        }
+        .blame-info-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            gap: 1.5rem;
+        }
+        .commit-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .commit-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .commit-card h4 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        .commit-card .meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .commit-card .author {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code style="color: var(--accent-secondary);">git blame</code></p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">What is Git Blame?</h2>
+                </div>
+                <p id="step-description"><code>git blame</code> allows you to examine a file line-by-line to see exactly who last modified each line and in which commit.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary">Run git blame</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+                <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                    <a href="push.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Push</a>
+                    <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage">
+                <div class="repo-container" id="file-repo">
+                    <div class="repo-header">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                        <h3>Source Code</h3>
+                        <div class="repo-meta">
+                        <span class="badge">src/main.py</span>
+                        </div>
+                    </div>
+                    <div class="repo-body" id="file-content">
+                        <div class="blame-container" id="code-lines">
+                            <!-- Lines will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="repo-container" id="blame-repo">
+                    <div class="repo-header">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <h3>Blame Analysis</h3>
+                        <div class="repo-meta">
+                            <span class="badge">Line Details</span>
+                        </div>
+                    </div>
+                    <div class="repo-body blame-info-panel" id="blame-details">
+                        <p class="empty-state">Select a line to see who changed it</p>
+                        <div id="commit-card" class="commit-card">
+                            <h4>Commit Info</h4>
+                            <div class="meta" id="blame-hash">hash: a1b2c3d</div>
+                            <div class="author" id="blame-author">Author Name</div>
+                            <div class="meta" id="blame-date" style="margin-top: 0.5rem;">2023-10-01</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="blame.js"></script>
+</body>
+</html>

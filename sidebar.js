@@ -14,6 +14,7 @@
         { num: 10, file: 'merge.html',          label: 'Git Merge',              color: '#8b5cf6' },
         { num: 11, file: 'rebase.html',         label: 'Git Rebase',             color: '#ec4899' },
         { num: 12, file: 'stash.html',          label: 'Git Stash',              color: '#f59e0b' },
+        { num: 13, file: 'blame.html',          label: 'Git Blame',              color: '#6366f1' },
     ];
 
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
