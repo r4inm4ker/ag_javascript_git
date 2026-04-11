@@ -13,9 +13,7 @@ const blameDate = document.getElementById('blame-date');
 const mockCode = [
     { line: 1, text: 'def calculate_sum(a, b):', hash: 'a1b2c3d', author: 'Alice Smith', date: '2023-10-01' },
     { line: 2, text: '    return a + b', hash: 'b2c3d4e', author: 'Bob Jones', date: '2023-10-05' },
-    { line: 3, text: '', hash: 'c3d4e5f', author: 'Charlie Brown', date: '2023-10-10' },
-    { line: 4, text: 'result = calculate_sum(5, 10)', hash: 'd4e5f6g', author: 'Alice Smith', date: '2023-10-12' },
-    { line: 5, text: 'print(f"The result is: {result}")', hash: 'e5f6g7h', author: 'Diana Prince', date: '2023-10-15' },
+    { line: 3, text: 'print(calculate_sum(5, 10))', hash: 'c3d4e5f', author: 'Alice Smith', date: '2023-10-10' },
 ];
 
 const steps = [
