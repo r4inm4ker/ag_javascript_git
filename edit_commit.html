@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Add & Commit Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .edit-layout { display: flex; gap: 2rem; height: 75vh; min-height: 600px; }
+        .edit-visual { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+        .two-col { display: flex; gap: 1.5rem; flex: 1; min-height: 0; }
+        .editor-panel, .repo-panel {
+            flex: 1;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .repo-panel {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 24px rgba(16, 185, 129, 0.1);
+        }
+        .panel-header {
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .code-area {
+            flex: 1;
+            padding: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-y: auto;
+            color: #e2e8f0;
+        }
+        .code-line { display: flex; line-height: 1.6; padding-right: 1rem;}
+        .line-num { color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
+        .line-add { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
+        .code-content { white-space: pre; }
+        
+        .terminal-panel { height: 180px; background: rgba(8, 12, 22, 0.95); border: 1px solid rgba(148, 163, 184, 0.12); border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .terminal-header { padding: 0.5rem 0.9rem; background: rgba(0, 0, 0, 0.35); border-bottom: 1px solid rgba(148, 163, 184, 0.1); font-family: 'Fira Code', monospace; font-size: 0.72rem; color: #94a3b8; display: flex; gap:0.5rem; align-items:center; }
+        .terminal-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; }
+        .terminal-body { padding: 0.7rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; line-height: 1.6; flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.1) transparent; }
+        .t-prompt { color: #10b981; }
+        .t-cmd { color: #f8fafc; }
+        .t-info { color: #94a3b8; }
+        .t-add { color: #10b981; }
+        
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .t-cursor { animation: blink 1s step-end infinite; }
+        
+        .tree-container { padding: 1rem 1rem 1rem 15%; display: flex; flex-direction: column-reverse; justify-content: flex-start; gap: 0.3rem; flex: 1; overflow-y: auto;}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code>git add</code> and <code>git commit</code></p>
+        </header>
+
+        <main>
+            <div class="edit-layout">
+                <section class="explanation-panel">
+                    <div class="step-indicator">
+                        <span id="step-number" style="background: var(--accent-primary); box-shadow: 0 0 20px var(--accent-primary-glow);">1</span>
+                        <h2 id="step-title">Editing the File</h2>
+                    </div>
+                    <p id="step-description">You have opened <code>auth.py</code> in your editor. Let's write some new code to introduce user authentication.</p>
+                    <div class="controls">
+                        <button id="btn-next" class="btn primary">Write Code</button>
+                        <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                    </div>
+                    <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                        <a href="clone.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Clone</a>
+                        <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                    </div>
+                </section>
+
+                <div class="edit-visual">
+                    <div class="two-col">
+                        <!-- Code Editor -->
+                        <div class="editor-panel">
+                            <div class="panel-header">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex-grow:1;">auth.py</span>
+                                <span id="file-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.1); border-radius:12px; color:#94a3b8">Unmodified</span>
+                            </div>
+                            <div class="code-area" id="code-content">
+                                <!-- Base code injected via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Local Repository -->
+                        <div class="repo-panel local-repo">
+                            <div class="panel-header" style="background: rgba(16, 185, 129, 0.05); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                                <span style="font-weight: 600; color: #10b981; font-size: 0.9rem;">Local Repository</span>
+                                <span class="badge branch-badge transition-color" style="margin-left: auto;">
+                                    <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                    main
+                                </span>
+                            </div>
+                            <div class="tree-container" id="repo-commits">
+                                <!-- Base commit injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terminal -->
+                    <div class="terminal-panel">
+                        <div class="terminal-header">
+                            <div class="terminal-dot"></div>
+                            bash — ~/project
+                        </div>
+                        <div class="terminal-body" id="terminal-body">
+                            <div id="term-content">
+                                <!-- Terminal history injected via JS -->
+                            </div>
+                            <div style="margin-top:0.4rem; display: flex;"><span class="t-prompt" style="margin-right: 0.5rem;">$</span> <span class="t-cursor">_</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="edit_commit.js"></script>
+</body>
+</html>
