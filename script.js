@@ -9,6 +9,7 @@ const remoteRepo = document.getElementById('remote-repo');
 const localRepo = document.getElementById('local-repo');
 const localCommits = document.getElementById('local-commits');
 const particlesContainer = document.getElementById('particles-container');
+const localFilesContainer = document.getElementById('local-files-container');
 
 // Text content states
 const steps = [
@@ -99,6 +100,10 @@ btnReset.addEventListener('click', () => {
     localCommits.innerHTML = '<div class="empty-msg">Not yet cloned</div>';
     localCommits.classList.add('empty-state');
     
+    if(localFilesContainer) {
+        localFilesContainer.style.opacity = '0';
+    }
+    
     // Reset buttons
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
@@ -177,6 +182,9 @@ function startCloneAnimation() {
                     itemsFinished++;
                     if (itemsFinished === totalItems) {
                         setTimeout(() => {
+                            if(localFilesContainer) {
+                                localFilesContainer.style.opacity = '1';
+                            }
                             isAnimating = false;
                             resolve();
                         }, 500); // Wait a final few ms
