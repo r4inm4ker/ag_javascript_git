@@ -356,8 +356,8 @@ btnNext.addEventListener('click', async () => {
             remoteNode.innerHTML = `
                 <div class="commit-dot" style="width:10px;height:10px;background:#ec4899;box-shadow:0 0 6px #ec4899;"></div>
                 <div class="commit-msg" style="font-size:0.78rem;">
-                    <span class="theirs-color">Add rotation</span>
-                    <span class="commit-hash">b9c8d7e</span>
+                    <span class="theirs-color">Translate cube up</span>
+                    <span class="commit-hash">p4q5r6s</span>
                 </div>
                 <div class="labels-container">
                     <span class="branch-tag theirs-tag" style="font-size:0.65rem;">from origin/main</span>
