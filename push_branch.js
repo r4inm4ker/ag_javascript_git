@@ -111,13 +111,13 @@ function startPushAnimation() {
         isAnimating = true;
         
         // Single commit to push
-        const branchSplitHTML = `<div class="branch-split" style="opacity:0; animation: drawPath 0.5s ease forwards;"></div>`;
+        const branchSplitHTML = `<div class="commit-line main-bg" style="opacity:0; animation: drawPath 0.5s ease forwards; background: #a855f7;"></div>`;
         const newCommitHTML = `
-            <div class="commit-node feature-track relative-node" style="opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
+            <div class="commit-node feature-track relative-node" style="margin-left: 0; opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
                 <div class="commit-dot feature-bg"></div>
                 <div class="commit-msg">
-                    <span>Implement Maya cmds...</span>
-                    <span class="commit-hash">x1y2z3w</span>
+                    <span>Translate cube up</span>
+                    <span class="commit-hash">p4q5r6s</span>
                 </div>
                 <div class="labels-container">
                     <span class="branch-tag feature-tag">feature</span>
