@@ -30,7 +30,7 @@ const steps = [
     {
         num: 3,
         title: "Integrated",
-        desc: "Merge complete! The 'Update dependencies' commit is successfully stacked on top of your branch timeline, capped with a merge confirmation.",
+        desc: "Merge complete! The 'Import rig modules' commit is successfully stacked on top of your branch timeline, capped with a merge confirmation.",
         actionBtn: "Restart Tutorial",
         color: "#10b981" // Green
     }
@@ -61,7 +61,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node feature-track relative-node" id="target-main-commit" style="display:none;">
                 <div class="commit-dot main-bg" id="target-main-dot"></div>
                 <div class="commit-msg">
-                    <span class="main-color">Update dependencies</span>
+                    <span class="main-color">Import rig modules</span>
                     <span class="commit-hash">x5y6z7w</span>
                 </div>
             </div>

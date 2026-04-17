@@ -30,11 +30,11 @@ const steps = [
         num: 1, color: '#ef4444', glow: 'rgba(239,68,68,0.4)',
         title: 'The Setup',
         btnLabel: 'git pull origin main', btnMono: true,
-        desc: `You and a teammate both edited <code>auth.py</code> on different branches.
+        desc: `You and a teammate both edited <code>create_geo.py</code> on different branches.
                The <strong style="color:#3b82f6;">local</strong> branch (main) set
-               <code>TOKEN_EXPIRY = 3600</code>; the
+               <code>cmds.move()</code>; the
                <strong style="color:#ec4899;">remote</strong> (origin/main) set
-               <code>TOKEN_EXPIRY = 86400</code>. Both touch the same lines — Git cannot
+               <code>cmds.rotate()</code>. Both touch the same lines — Git cannot
                auto-merge.`,
     },
     {
@@ -43,7 +43,7 @@ const steps = [
         btnLabel: 'Inspect Conflict Markers',
         desc: `<code>git pull</code> <strong style="color:#ef4444;">failed</strong>.
                Git has written <strong>conflict markers</strong> into
-               <code>auth.py</code> in the working copy (centre). Your code
+               <code>create_geo.py</code> in the working copy (centre). Your code
                (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>) and their code
                (<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) sit side-by-side, separated
                by <code>=======</code>.`,
@@ -52,19 +52,18 @@ const steps = [
         num: 3, color: '#f59e0b', glow: 'rgba(245,158,11,0.4)',
         title: 'Understand the Conflict',
         btnLabel: 'Resolve the Conflict',
-        desc: `<strong style="color:#3b82f6;">Your code</strong>: <code>TOKEN_EXPIRY = 3600</code>
-               (1 h) with a strict <code>raise ValueError</code>.<br><br>
-               <strong style="color:#ec4899;">Their code</strong>: <code>TOKEN_EXPIRY = 86400</code>
-               (24 h) with a softer <code>warnings.warn()</code>.<br><br>
+        desc: `<strong style="color:#3b82f6;">Your code</strong>: <code>cmds.move(0, 5, 0)</code>
+               (translate up).<br><br>
+               <strong style="color:#ec4899;">Their code</strong>: <code>cmds.rotate(0, 45, 0)</code>
+               (rotate 45 deg).<br><br>
                You must pick a winner — or combine both — and remove all markers manually.`,
     },
     {
         num: 4, color: '#10b981', glow: 'rgba(16,185,129,0.4)',
         title: 'Conflict Resolved',
-        btnLabel: 'git add auth.py && git commit',
-        desc: `You kept the <strong style="color:#ec4899;">24-hour expiry</strong>
-               from remote but retained your
-               <strong style="color:#3b82f6;">strict ValueError</strong>.
+        btnLabel: 'git add create_geo.py && git commit',
+        desc: `You kept <strong style="color:#ec4899;">both transformations</strong>
+               so the cube translates and rotates.
                All conflict markers removed — the working copy is clean again.`,
     },
     {
@@ -79,104 +78,75 @@ const steps = [
 
 // ─── Python snippets ──────────────────────────────────────────────────────────
 
-// YOUR version (local feature/login)
+// YOUR version (local feature/maya-tool)
 const localLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py — LOCAL (feature/login)' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py — LOCAL (feature/maya-tool)' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'hi-ours', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # 1 hour ← YOUR change' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
-    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
-    { cls: 'hi-ours', tc: 'ours-text', code: '    if not token:' },
-    { cls: 'hi-ours', tc: 'ours-text', code: '        raise ValueError("Token must not be empty")' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
+    { cls: 'hi-ours', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # ← YOUR change' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
 // THEIR version (remote origin/main)
 const remoteLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py — REMOTE (origin/main)' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py — REMOTE (origin/main)' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
-    { cls: 'hi-theirs-label', tc: 'neutral', code: 'import warnings  # ← THEIR addition' },
-    { cls: 'hi-theirs', tc: 'theirs-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours ← THEIR change' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
-    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
-    { cls: 'hi-theirs', tc: 'theirs-text', code: '    if not token:' },
-    { cls: 'hi-theirs', tc: 'theirs-text', code: '        warnings.warn("Empty token", stacklevel=2)' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
+    { cls: 'hi-theirs', tc: 'theirs-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # ← THEIR change' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
 // WORKING COPY — initial clean state (local version, no markers)
 const workingCleanLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'hi-label', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # your local value' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
-    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    if not token:' },
-    { cls: 'ln-normal', tc: 'neutral', code: '        raise ValueError("Token must not be empty")' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
+    { cls: 'hi-label', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # your local value' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
 // WORKING COPY — after git pull: conflict markers injected
 const conflictLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
     { cls: 'ln-marker', tc: 'marker-text', code: '<<<<<<< HEAD' },
-    { cls: 'ln-ours', tc: 'ours-text', code: 'TOKEN_EXPIRY = 3600  # 1 hour (YOUR change)' },
+    { cls: 'ln-ours', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # (YOUR change)' },
     { cls: 'ln-marker', tc: 'marker-text', code: '=======' },
-    { cls: 'ln-theirs', tc: 'neutral', code: 'import warnings' },
-    { cls: 'ln-theirs', tc: 'theirs-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours (THEIR change)' },
-    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Refactor token validation)' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
-    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
-    { cls: 'ln-marker', tc: 'marker-text', code: '<<<<<<< HEAD' },
-    { cls: 'ln-ours', tc: 'ours-text', code: '    if not token:' },
-    { cls: 'ln-ours', tc: 'ours-text', code: '        raise ValueError("Token must not be empty")' },
-    { cls: 'ln-marker', tc: 'marker-text', code: '=======' },
-    { cls: 'ln-theirs', tc: 'theirs-text', code: '    if not token:' },
-    { cls: 'ln-theirs', tc: 'theirs-text', code: '        warnings.warn("Empty token", stacklevel=2)' },
-    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Refactor token validation)' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-theirs', tc: 'theirs-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # (THEIR change)' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Add rotation)' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
 // WORKING COPY — after resolution
 const resolvedLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# auth/auth.py' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hashlib' },
-    { cls: 'ln-normal', tc: 'neutral', code: 'import hmac' },
+    { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-resolved', tc: 'resolved-text', code: '# Resolved: 24 h expiry + strict ValueError' },
-    { cls: 'ln-resolved', tc: 'resolved-text', code: 'TOKEN_EXPIRY = 86400  # 24 hours' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def validate_token(token: str) -> bool:' },
-    { cls: 'ln-normal', tc: 'cm', code: '    """Validate a bearer token."""' },
-    { cls: 'ln-resolved', tc: 'resolved-text', code: '    if not token:' },
-    { cls: 'ln-resolved', tc: 'resolved-text', code: '        raise ValueError("Token must not be empty")' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hmac.compare_digest(token, _get_secret())' },
-    { cls: 'ln-normal', tc: 'neutral', code: '' },
-    { cls: 'ln-normal', tc: 'fn', code: 'def _get_secret() -> str:' },
-    { cls: 'ln-normal', tc: 'neutral', code: '    return hashlib.sha256(b"secret").hexdigest()' },
+    { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
+    { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '# Resolved: Kept both transformations' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '    cmds.move(0, 5, 0, cube[0])' },
+    { cls: 'ln-resolved', tc: 'resolved-text', code: '    cmds.rotate(0, 45, 0, cube[0])' },
+    { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
 // ─── Render helpers ───────────────────────────────────────────────────────────
@@ -284,8 +254,8 @@ btnNext.addEventListener('click', async () => {
         await addTerm(`<span class="t-info">remote: Enumerating objects: 5, done.</span>`, 280);
         await addTerm(`<span class="t-info">remote: Counting objects: 100% (5/5), done.</span>`, 480);
         await addTerm(`<span class="t-info">Unpacking objects: 100% (3/3), done.</span>`, 680);
-        await addTerm(`<span class="t-warn">Auto-merging auth/auth.py</span>`, 900);
-        await addTerm(`<span class="t-err">CONFLICT (content): Merge conflict in auth/auth.py</span>`, 1100);
+        await addTerm(`<span class="t-warn">Auto-merging geo/create_geo.py</span>`, 900);
+        await addTerm(`<span class="t-err">CONFLICT (content): Merge conflict in geo/create_geo.py</span>`, 1100);
         await addTerm(`<span class="t-err">Automatic merge failed; fix conflicts and then commit the result.</span>`, 1300);
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">_</span>`, 1500);
 
@@ -325,11 +295,11 @@ btnNext.addEventListener('click', async () => {
 
         clearTerm();
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git status</span>`, 0);
-        await addTerm(`<span class="t-info">On branch feature/login</span>`, 220);
+        await addTerm(`<span class="t-info">On branch feature/maya-tool</span>`, 220);
         await addTerm(`<span class="t-info">You have unmerged paths.</span>`, 380);
         await addTerm(`<span class="t-err">  (fix conflicts and run "git commit")</span>`, 530);
         await addTerm(`<span class="t-info">Unmerged paths:</span>`, 700);
-        await addTerm(`<span class="t-err">	both modified:   auth/auth.py</span>`, 860);
+        await addTerm(`<span class="t-err">	both modified:   geo/create_geo.py</span>`, 860);
 
         // Pulse the conflict markers
         viewerBody.querySelectorAll('.ln-marker').forEach(m => {
@@ -341,7 +311,7 @@ btnNext.addEventListener('click', async () => {
         applyStep(steps[3]);
 
         clearTerm();
-        await addTerm(`<span class="t-info"># Opening auth.py in editor...</span>`, 0);
+        await addTerm(`<span class="t-info"># Opening create_geo.py in editor...</span>`, 0);
         await addTerm(`<span class="t-info"># Removing conflict markers, picking final code...</span>`, 300);
 
         setTimeout(() => {
@@ -363,9 +333,9 @@ btnNext.addEventListener('click', async () => {
         applyStep(steps[4]);
 
         clearTerm();
-        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git add auth/auth.py</span>`, 0);
-        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Merge 'main' into feature/login — resolve TOKEN_EXPIRY conflict"</span>`, 340);
-        await addTerm(`<span class="t-ok">[feature/login c4d5e6f] Merge 'main' into feature/login</span>`, 800);
+        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git add geo/create_geo.py</span>`, 0);
+        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Merge 'main' into feature/maya-tool — resolve transform conflict"</span>`, 340);
+        await addTerm(`<span class="t-ok">[feature/maya-tool c4d5e6f] Merge 'main' into feature/maya-tool</span>`, 800);
         await addTerm(`<span class="t-info"> 1 file changed, 2 insertions(+), 8 deletions(-)</span>`, 1000);
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">_</span>`, 1200);
 
@@ -386,7 +356,7 @@ btnNext.addEventListener('click', async () => {
             remoteNode.innerHTML = `
                 <div class="commit-dot" style="width:10px;height:10px;background:#ec4899;box-shadow:0 0 6px #ec4899;"></div>
                 <div class="commit-msg" style="font-size:0.78rem;">
-                    <span class="theirs-color">Refactor token validation</span>
+                    <span class="theirs-color">Add rotation</span>
                     <span class="commit-hash">b9c8d7e</span>
                 </div>
                 <div class="labels-container">

@@ -22,7 +22,7 @@ const steps = [
         num: 1,
         title: "The Local Repository",
         desc: "You are currently on the 'main' branch locally. The remote repository is fully synced with your previous work.",
-        actionBtn: "git commit -m \"Fix login bug\"",
+        actionBtn: "git commit -m \"Translate cube up\"",
         color: "#10b981" // Green
     },
     {
@@ -70,7 +70,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node main-track relative-node" style="opacity:0; animation: slideUp 0.5s ease forwards; animation-delay: 0.2s; z-index: 3;">
                 <div class="commit-dot main-bg"></div>
                 <div class="commit-msg">
-                    <span>Fix login bug</span>
+                    <span>Translate cube up</span>
                     <span class="commit-hash">p4q5r6s</span>
                 </div>
                 <div class="labels-container" id="local-new-labels">
@@ -174,7 +174,7 @@ function startPushAnimation() {
                 <div class="commit-node main-track relative-node" style="opacity:0; animation: slideUp 0.5s ease forwards; animation-delay: 0.2s; z-index: 3;">
                     <div class="commit-dot main-bg"></div>
                     <div class="commit-msg">
-                        <span>Fix login bug</span>
+                        <span>Translate cube up</span>
                         <span class="commit-hash">p4q5r6s</span>
                     </div>
                     <div class="labels-container" id="remote-new-labels">

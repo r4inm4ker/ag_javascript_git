@@ -17,7 +17,7 @@ const steps = [
     {
         num: 1,
         title: "The Target Commit",
-        desc: "You are checked out on 'wip' (left). Your colleague added a useful user auth test on 'test' (right). You want that specific code without merging their whole branch.",
+        desc: "You are checked out on 'wip' (left). Your colleague added a useful coordinate transform code on 'test' (right). You want that specific code without merging their whole branch.",
         actionBtn: "git cherry-pick z9y8x7w",
         color: "#06b6d4" // Cyan
     },
@@ -64,7 +64,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node feature-track relative-node" id="target-commit" style="display:none;">
                 <div class="commit-dot wip-bg" id="target-dot"></div>
                 <div class="commit-msg">
-                    <span class="wip-color">Test: add user auth</span>
+                    <span class="wip-color">Translate cube up</span>
                     <span class="commit-hash">c8d7e6f</span>
                 </div>
                 <div class="labels-container" id="new-wip-labels"></div>

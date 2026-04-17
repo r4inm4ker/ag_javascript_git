@@ -140,13 +140,13 @@ function startCloneAnimation() {
             `<div class="commit-line" style="opacity:0; animation: popIn 0.3s forwards"></div>`,
             `<div class="commit-node" data-id="c2">
                 <div class="commit-dot"></div>
-                <div class="commit-msg">Add user auth</div>
+                <div class="commit-msg">Add Maya cube tool</div>
                 <div class="commit-hash">e4f5g6h</div>
             </div>`,
             `<div class="commit-line" style="opacity:0; animation: popIn 0.3s forwards"></div>`,
             `<div class="commit-node" data-id="c3">
                 <div class="commit-dot"></div>
-                <div class="commit-msg">Update styles</div>
+                <div class="commit-msg">Update shaders</div>
                 <div class="commit-hash">j7k8l9m</div>
             </div>`
         ];

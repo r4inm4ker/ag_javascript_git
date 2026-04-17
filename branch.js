@@ -28,7 +28,7 @@ const steps = [
         num: 2,
         title: "Creating a Branch",
         desc: "Running 'git checkout -b feature' creates a new branch named 'feature'. We visualize this as a separate Local context on the right to show how branching creates an independent parallel workflow.",
-        actionBtn: "git commit -m 'Implement login...'",
+        actionBtn: "git commit -m 'Implement Maya cmds...'",
         color: "#a855f7" // Purple
     },
     {

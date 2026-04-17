@@ -65,7 +65,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node main-track relative-node" id="target-commit" style="display:none;">
                 <div class="commit-dot main-bg" id="target-dot"></div>
                 <div class="commit-msg">
-                    <span class="main-color">Update dependencies</span>
+                    <span class="main-color">Import rig modules</span>
                     <span class="commit-hash">x5y6z7w</span>
                 </div>
             </div>`;

@@ -112,7 +112,7 @@ function startPullAnimation() {
             <div class="commit-node feature-track relative-node" style="z-index:3; opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
                 <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
                 <div class="commit-dot feature-bg"></div>
-                <div class="commit-msg"><span>Implement login...</span><span class="commit-hash">x1y2z3w</span></div>
+                <div class="commit-msg"><span>Implement Maya cmds...</span><span class="commit-hash">x1y2z3w</span></div>
             </div>`;
         const mergeSplitHTML = `<div class="merge-split" style="opacity:0; animation: drawPath 0.5s ease forwards; animation-delay: 0.4s;"></div>`;
         const mergeCommitHTML = `

@@ -104,7 +104,7 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">Initial State</h2>
                 </div>
-                <p id="step-description">You have a clean working directory with a simple `auth.py` file.</p>
+                <p id="step-description">You have a clean working directory with a simple `create_geo.py` file.</p>
                 
                 <div class="controls">
                     <button id="btn-next" class="btn primary">Start Writing Code</button>
@@ -128,21 +128,22 @@
                         <h3 style="color: #10b981;">Working Directory</h3>
                         <div class="repo-meta">
                             <span class="badge">~/laptop/project</span>
-                            <span class="badge code-font">auth.py</span>
+                            <span class="badge code-font">create_geo.py</span>
                         </div>
                     </div>
 
                     <div class="code-editor code-font">
-                        <div class="code-line"><span class="line-number">1</span><span class="code-content"><span class="keyword">def</span> <span class="function">login</span>(user):</span></div>
-                        <div class="code-line"><span class="line-number">2</span><span class="code-content">    <span class="keyword">if</span> user.is_valid():</span></div>
+                        <div class="code-line"><span class="line-number">1</span><span class="code-content">import maya.cmds as cmds
+<span class="keyword">def</span> <span class="function">create_cube</span>(name):</span></div>
+                        <div class="code-line"><span class="line-number">2</span><span class="code-content">    cube = cmds.polyCube(w=2, h=2, d=2)</span></div>
                         
                         <!-- Dirty changes -->
                         <div id="uncommitted-code" style="display: none; transition: opacity 0.5s ease; opacity: 0;">
-                            <div class="code-line diff-added"><span class="line-number">3</span><span class="code-content">        <span class="comment"># TODO: Generate API Token securely</span></span></div>
-                            <div class="code-line diff-added"><span class="line-number">4</span><span class="code-content">        token = generate_token(user.id)</span></div>
+                            <div class="code-line diff-added"><span class="line-number">3</span><span class="code-content">        <span class="comment"># Move cube up</span></span></div>
+                            <div class="code-line diff-added"><span class="line-number">4</span><span class="code-content">        cmds.move(0, 5, 0, cube[0])</span></div>
                         </div>
 
-                        <div class="code-line"><span class="line-number" id="line-num-last">3</span><span class="code-content">        <span class="keyword">return</span> <span class="string">"Login Successful"</span></span></div>
+                        <div class="code-line"><span class="line-number" id="line-num-last">3</span><span class="code-content">        <span class="keyword">return</span> cube</span></div>
                     </div>
                 </div>
 
@@ -169,7 +170,7 @@
                             </svg>
                             <div>
                                 <strong>stash@{0}</strong><br>
-                                <span style="font-size: 0.8rem; color: rgba(245, 158, 11, 0.9);">WIP on main: adding token logic</span>
+                                <span style="font-size: 0.8rem; color: rgba(245, 158, 11, 0.9);">WIP on main: adding move logic</span>
                             </div>
                         </div>
                         
@@ -209,7 +210,7 @@
                         <div class="commit-node">
                             <div class="commit-dot"></div>
                             <div class="commit-msg">
-                                <span>add user validation</span>
+                                <span>add polyCube command</span>
                                 <span class="commit-hash">8b3d2e</span>
                             </div>
                         </div>
@@ -219,7 +220,7 @@
                         <div class="commit-node">
                             <div class="commit-dot"></div>
                             <div class="commit-msg">
-                                <span>init auth.py</span>
+                                <span>init create_geo.py</span>
                                 <span class="commit-hash">f1a9c8</span>
                             </div>
                         </div>

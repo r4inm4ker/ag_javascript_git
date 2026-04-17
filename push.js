@@ -116,7 +116,7 @@ function startPushAnimation() {
             <div class="commit-node feature-track relative-node" style="opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
                 <div class="commit-dot feature-bg"></div>
                 <div class="commit-msg">
-                    <span>Implement login...</span>
+                    <span>Implement Maya cmds...</span>
                     <span class="commit-hash">x1y2z3w</span>
                 </div>
                 <div class="labels-container">

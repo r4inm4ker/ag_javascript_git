@@ -19,14 +19,14 @@ const steps = [
     {
         num: 1,
         title: "Clean Working Directory",
-        desc: "You have a clean working directory with a simple `auth.py` file.",
+        desc: "You have a clean working directory with a simple `create_geo.py` file.",
         actionBtn: "Start Writing Code",
         color: "#10b981" // Green
     },
     {
         num: 2,
         title: "Uncommitted Changes",
-        desc: "You started experimentally drafting token generation logic, but suddenly you need to switch branches to fix an urgent bug! You aren't ready to commit this incomplete code.",
+        desc: "You started experimentally drafting Maya cmds logic, but suddenly you need to switch branches to fix an urgent bug! You aren't ready to commit this incomplete code.",
         actionBtn: "git stash",
         color: "#f59e0b" // Orange
     },

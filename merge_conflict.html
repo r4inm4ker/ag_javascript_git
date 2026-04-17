@@ -550,10 +550,10 @@
                         <h2 id="step-title">The Setup</h2>
                     </div>
                     <p id="step-description">You and a teammate both edited
-                        <code>auth.py</code> on different branches. The <strong style="color:#3b82f6;">local</strong>
+                        <code>create_geo.py</code> on different branches. The <strong style="color:#3b82f6;">local</strong>
                         branch changed
-                        <code>TOKEN_EXPIRY</code> to 3600 s; the <strong style="color:#ec4899;">remote</strong> changed
-                        it to 86400 s.
+                        <code>cmds.move()</code>; the <strong style="color:#ec4899;">remote</strong> changed
+                        it to <code>cmds.rotate()</code>.
                         Click <strong>git pull</strong> to see what happens.
                     </p>
 
@@ -620,7 +620,7 @@
                                     id="local-latest-commit">
                                     <div class="commit-dot ours-bg" style="width:10px; height:10px;"></div>
                                     <div class="commit-msg" style="font-size:0.78rem;">
-                                        <span class="ours-color">Add JWT token expiry</span>
+                                        <span class="ours-color">Translate cube up</span>
                                         <span class="commit-hash">f3e2d1c</span>
                                     </div>
                                     <div class="labels-container">
@@ -649,7 +649,7 @@
                                     <span class="dot-y"></span>
                                     <span class="dot-g"></span>
                                 </div>
-                                <div class="viewer-filename">auth/<strong>auth.py</strong></div>
+                                <div class="viewer-filename">geo/<strong>create_geo.py</strong></div>
                                 <span class="code-status-pill" id="code-status"
                                     style="background:rgba(255,255,255,0.07);color:#64748b;border-color:rgba(255,255,255,0.1);">
                                     Working copy
@@ -708,7 +708,7 @@
                                 <div class="commit-node main-track relative-node" style="padding:0.35rem 0.6rem;">
                                     <div class="commit-dot theirs-bg" style="width:10px; height:10px;"></div>
                                     <div class="commit-msg" style="font-size:0.78rem;">
-                                        <span class="theirs-color">Refactor token validation</span>
+                                        <span class="theirs-color">Add rotation</span>
                                         <span class="commit-hash">b9c8d7e</span>
                                     </div>
                                     <div class="labels-container">
@@ -728,7 +728,7 @@
                     <div class="terminal-panel" id="terminal-panel">
                         <div class="terminal-header">
                             <div class="terminal-dot"></div>
-                            bash — feature/login
+                            bash — feature/maya-tool
                         </div>
                         <div class="terminal-body" id="terminal-body">
                             <span class="t-line visible"><span class="t-prompt">$</span> <span

@@ -35,7 +35,7 @@ const steps = [
     {
         num: 3,
         title: "Squash Complete",
-        desc: "The commits are now perfectly merged into one unified 'Feature: complete login' commit with a brand new hash. Your branch is pristine!",
+        desc: "The commits are now perfectly merged into one unified 'Feature: complete polyCube tool' commit with a brand new hash. Your branch is pristine!",
         actionBtn: "Restart Tutorial",
         color: "#10b981" // Green
     }
@@ -47,7 +47,7 @@ let isAnimating = false;
 updateUI(0);
 
 // For resetting purposes, store original values
-const origText = "WIP: start login logic";
+const origText = "WIP: start polyCube script";
 const origHash = "k8l9m0n";
 
 btnNext.addEventListener('click', () => {
@@ -81,7 +81,7 @@ btnNext.addEventListener('click', () => {
                 topCommit.style.display = 'none';
                 
                 // Change text of bottom commit to unified text
-                bottomText.textContent = "Feature: complete login";
+                bottomText.textContent = "Feature: complete polyCube tool";
                 bottomText.style.fontWeight = "600";
                 bottomHash.textContent = "s2q3u4a";
                 

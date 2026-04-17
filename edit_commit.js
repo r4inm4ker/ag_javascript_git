@@ -15,7 +15,7 @@ const steps = [
     {
         num: 1,
         title: "Editing the File",
-        desc: "You have opened 'auth.py' in your editor. Let's write some new code to introduce user authentication.",
+        desc: "You have opened 'create_geo.py' in your editor. Let's write some new code to generate primitive geometry.",
         actionBtn: "Write Code",
         color: "#3b82f6" // Blue
     },
@@ -23,14 +23,14 @@ const steps = [
         num: 2,
         title: "Staging the Changes",
         desc: "You've securely saved changes, and Git sees the file as 'modified'. To include these in your next commit, you must stage them to the index using 'git add'.",
-        actionBtn: "git add auth.py",
+        actionBtn: "git add create_geo.py",
         color: "#f59e0b" // Orange
     },
     {
         num: 3,
         title: "Committing",
         desc: "The file is now staged. Running 'git commit' wraps these tracked changes into a permanent snapshot in your local history.",
-        actionBtn: "git commit -m \"Add user auth\"",
+        actionBtn: "git commit -m \"Add Maya cube tool\"",
         color: "#10b981" // Green
     },
     {
@@ -47,17 +47,17 @@ let isAnimating = false;
 
 // Base code HTML
 const baseCode = `
-<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">login</span>(username):</span></div>
-<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">2</span><span class="code-content">    print(<span style="color:#86efac">"Logging in "</span> + username)</span></div>
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds<br></span></div>
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
 `;
 
 // Added code HTML
 const addedCode = `
 <div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">3</span><span class="code-content"></span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">4</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">authenticate</span>(token):</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.2s;"><span class="line-num">5</span><span class="code-content">    <span style="color:#c084fc">if</span> token == <span style="color:#86efac">"secret"</span>:</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.3s;"><span class="line-num">6</span><span class="code-content">        <span style="color:#c084fc">return</span> True</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.4s;"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> False</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">4</span><span class="code-content">cube = cmds.polyCube(n=name)</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.2s;"><span class="line-num">5</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.3s;"><span class="line-num">6</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.4s;"><span class="line-num">7</span><span class="code-content"></span></div>
 `;
 
 const baseCommit = `
@@ -115,7 +115,7 @@ btnNext.addEventListener('click', () => {
         
         termContent.innerHTML += `
         <div style="margin-top:0.8rem;"><span class="t-prompt">$</span> <span class="t-cmd">git status</span></div>
-        <div class="t-info">Changes not staged for commit:<br>&nbsp;&nbsp;<span style="color:#ef4444">modified:   auth.py</span></div>
+        <div class="t-info">Changes not staged for commit:<br>&nbsp;&nbsp;<span style="color:#ef4444">modified:   create_geo.py</span></div>
         `;
         tb.scrollTop = tb.scrollHeight;
         
@@ -130,9 +130,9 @@ btnNext.addEventListener('click', () => {
         setTimeout(() => fileStatus.style.animation = 'popIn 0.3s forwards', 10);
         
         termContent.innerHTML += `
-        <div style="margin-top:0.8rem;"><span class="t-prompt">$</span> <span class="t-cmd">git add auth.py</span></div>
+        <div style="margin-top:0.8rem;"><span class="t-prompt">$</span> <span class="t-cmd">git add create_geo.py</span></div>
         <div style="margin-top:0.4rem;"><span class="t-prompt">$</span> <span class="t-cmd">git status</span></div>
-        <div class="t-info">Changes to be committed:<br>&nbsp;&nbsp;<span style="color:#10b981">modified:   auth.py</span></div>
+        <div class="t-info">Changes to be committed:<br>&nbsp;&nbsp;<span style="color:#10b981">modified:   create_geo.py</span></div>
         `;
         tb.scrollTop = tb.scrollHeight;
         
@@ -150,8 +150,8 @@ btnNext.addEventListener('click', () => {
         setTimeout(() => fileStatus.style.animation = 'popIn 0.3s forwards', 10);
         
         termContent.innerHTML += `
-        <div style="margin-top:0.8rem;"><span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Add user auth"</span></div>
-        <div class="t-info">[main e4f5g6h] Add user auth<br> 1 file changed, 5 insertions(+)</div>
+        <div style="margin-top:0.8rem;"><span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Add Maya cube tool"</span></div>
+        <div class="t-info">[main e4f5g6h] Add Maya cube tool<br> 1 file changed, 5 insertions(+)</div>
         `;
         tb.scrollTop = tb.scrollHeight;
         
@@ -166,7 +166,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node main-track relative-node" style="opacity:0; animation: slideUp 0.5s ease forwards 0.2s;">
                 <div class="commit-dot main-bg"></div>
                 <div class="commit-msg" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span>Add user auth</span>
+                    <span>Add Maya cube tool</span>
                     <span class="commit-hash" style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted); margin-left: auto;">e4f5g6h</span>
                 </div>
                 <div class="labels-container" id="new-base-labels" style="padding-left: 0.5rem;">
