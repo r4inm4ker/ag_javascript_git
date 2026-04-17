@@ -32,9 +32,9 @@ const steps = [
         btnLabel: 'git pull origin main', btnMono: true,
         desc: `You and a teammate both edited <code>create_geo.py</code> on different branches.
                The <strong style="color:#3b82f6;">local</strong> branch (main) set
-               <code>cmds.move()</code>; the
+               <code>cmds.rotate()</code>; the
                <strong style="color:#ec4899;">remote</strong> (origin/main) set
-               <code>cmds.rotate()</code>. Both touch the same lines — Git cannot
+               <code>cmds.move()</code>. Both touch the same lines — Git cannot
                auto-merge.`,
     },
     {
@@ -52,10 +52,10 @@ const steps = [
         num: 3, color: '#f59e0b', glow: 'rgba(245,158,11,0.4)',
         title: 'Understand the Conflict',
         btnLabel: 'Resolve the Conflict',
-        desc: `<strong style="color:#3b82f6;">Your code</strong>: <code>cmds.move(0, 5, 0)</code>
-               (translate up).<br><br>
-               <strong style="color:#ec4899;">Their code</strong>: <code>cmds.rotate(0, 45, 0)</code>
+        desc: `<strong style="color:#3b82f6;">Your code</strong>: <code>cmds.rotate(0, 45, 0)</code>
                (rotate 45 deg).<br><br>
+               <strong style="color:#ec4899;">Their code</strong>: <code>cmds.move(0, 5, 0)</code>
+               (translate up).<br><br>
                You must pick a winner — or combine both — and remove all markers manually.`,
     },
     {
@@ -78,20 +78,20 @@ const steps = [
 
 // ─── Python snippets ──────────────────────────────────────────────────────────
 
-// YOUR version (local feature/maya-tool)
+// YOUR version (local — Add rotation commit)
 const localLines = [
-    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py — LOCAL (feature/maya-tool)' },
+    { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py — LOCAL (main)' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
     { cls: 'ln-normal', tc: 'neutral', code: 'import maya.cmds as cmds' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
     { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
     { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
     { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
-    { cls: 'hi-ours', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # ← YOUR change' },
+    { cls: 'hi-ours', tc: 'ours-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # ← YOUR change' },
     { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
-// THEIR version (remote origin/main)
+// THEIR version (remote origin/main — Translate cube up commit)
 const remoteLines = [
     { cls: 'ln-normal', tc: 'cm', code: '# geo/create_geo.py — REMOTE (origin/main)' },
     { cls: 'ln-normal', tc: 'neutral', code: '' },
@@ -100,7 +100,7 @@ const remoteLines = [
     { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
     { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
     { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
-    { cls: 'hi-theirs', tc: 'theirs-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # ← THEIR change' },
+    { cls: 'hi-theirs', tc: 'theirs-text', code: '    cmds.move(0, 5, 0, cube[0])  # ← THEIR change' },
     { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
@@ -113,7 +113,7 @@ const workingCleanLines = [
     { cls: 'ln-normal', tc: 'fn', code: 'def create_geometry(name="myCube"):' },
     { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
     { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
-    { cls: 'hi-label', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # your local value' },
+    { cls: 'hi-label', tc: 'ours-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # your local value' },
     { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
@@ -127,10 +127,10 @@ const conflictLines = [
     { cls: 'ln-normal', tc: 'cm', code: '    """Generate primitive cube."""' },
     { cls: 'ln-normal', tc: 'neutral', code: '    cube = cmds.polyCube(n=name, w=2, h=2, d=2)' },
     { cls: 'ln-marker', tc: 'marker-text', code: '<<<<<<< HEAD' },
-    { cls: 'ln-ours', tc: 'ours-text', code: '    cmds.move(0, 5, 0, cube[0])  # (YOUR change)' },
+    { cls: 'ln-ours', tc: 'ours-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # (YOUR change)' },
     { cls: 'ln-marker', tc: 'marker-text', code: '=======' },
-    { cls: 'ln-theirs', tc: 'theirs-text', code: '    cmds.rotate(0, 45, 0, cube[0])  # (THEIR change)' },
-    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> b9c8d7e (Add rotation)' },
+    { cls: 'ln-theirs', tc: 'theirs-text', code: '    cmds.move(0, 5, 0, cube[0])  # (THEIR change)' },
+    { cls: 'ln-marker', tc: 'marker-text', code: '>>>>>>> p4q5r6s (Translate cube up)' },
     { cls: 'ln-normal', tc: 'neutral', code: '    return cube' }
 ];
 
