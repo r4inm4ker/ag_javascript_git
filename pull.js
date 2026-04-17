@@ -13,28 +13,29 @@ const localBranchBadge = document.getElementById('local-branch-badge');
 const localBranchName = document.getElementById('local-branch-name');
 const mainTag = document.getElementById('main-tag');
 const headTag = document.getElementById('head-tag');
+const baseLabels = document.getElementById('base-labels');
 
 const steps = [
     {
         num: 1,
-        title: "The Colleague's Workspace",
-        desc: "Imagine your colleague's laptop. They cloned the repository yesterday and are on commit 'j7k8l9m'. They don't have the new feature and merge commits that just happened on the remote.",
+        title: "Your Local Workspace",
+        desc: "You cloned the repo earlier and made a local commit editing shaders.py. Meanwhile, Alice pushed 'Translate cube up' to remote main. Your histories have diverged — run git pull to merge them.",
         actionBtn: "git pull origin main",
-        color: "#10b981" // Green
+        color: "#10b981"
     },
     {
         num: 2,
-        title: "Pulling... (git pull)",
-        desc: "Git automatically fetches the new commits from the remote repository and fast-forwards/merges them securely into their 'main' branch.",
+        title: "Pulling… Merge Required",
+        desc: "Git fetches the remote commit 'Translate cube up' and, because your histories diverged, creates a merge commit that ties both lines of work together.",
         actionBtn: "Pulling...",
-        color: "#f59e0b" // Orange
+        color: "#f59e0b"
     },
     {
         num: 3,
-        title: "Sync Complete",
-        desc: "Their local workspace is identically matched with the remote again! Everyone is now in sync and ready to code.",
+        title: "Merge Pull Complete",
+        desc: "Your local main now contains both your 'Edit shaders.py' work AND Alice's 'Translate cube up' commit, unified in a merge commit. You're fully in sync!",
         actionBtn: "Restart Tutorial",
-        color: "#3b82f6" // Blue
+        color: "#3b82f6"
     }
 ];
 
@@ -45,17 +46,23 @@ updateUI(0);
 
 btnNext.addEventListener('click', () => {
     if (isAnimating) return;
-    
+
+    if (currentStepIndex === 2) {
+        // Restart
+        btnReset.click();
+        return;
+    }
+
     currentStepIndex++;
-    
+
     if (currentStepIndex === 1) {
         updateUI(currentStepIndex);
         btnNext.disabled = true;
         btnNext.style.opacity = '0.5';
-        
+
         localRepo.classList.remove('dimmed');
         localRepo.classList.add('active-repo');
-        
+
         startPullAnimation().then(() => {
             currentStepIndex++;
             updateUI(currentStepIndex);
@@ -63,7 +70,7 @@ btnNext.addEventListener('click', () => {
             btnNext.style.opacity = '1';
             btnNext.classList.add('hidden');
             btnReset.classList.remove('hidden');
-            
+
             stepNumber.style.background = steps[currentStepIndex].color;
             stepNumber.style.boxShadow = `0 0 20px rgba(59, 130, 246, 0.4)`;
         });
@@ -72,23 +79,25 @@ btnNext.addEventListener('click', () => {
 
 btnReset.addEventListener('click', () => {
     currentStepIndex = 0;
-    
+
     localRepo.classList.add('dimmed');
     localRepo.classList.remove('active-repo');
-    
-    // Reset DOM
-    document.getElementById('base-labels').appendChild(mainTag);
-    document.getElementById('base-labels').appendChild(headTag);
-    
+
+    // Restore HEAD/main labels back to the local head node
+    baseLabels.appendChild(mainTag);
+    baseLabels.appendChild(headTag);
+
+    // Remove injected merge nodes
     localPullTarget.innerHTML = '';
-    localBranchBadge.style.color = 'currentColor';
+
+    localBranchBadge.style.color = '';
     localBranchName.textContent = 'main';
-    
+
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
-    
+
     updateUI(currentStepIndex);
 });
 
@@ -98,7 +107,7 @@ function updateUI(stepIndex) {
     stepTitle.textContent = step.title;
     stepDescription.textContent = step.desc;
     btnNext.textContent = step.actionBtn;
-    
+
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
 }
@@ -106,66 +115,81 @@ function updateUI(stepIndex) {
 function startPullAnimation() {
     return new Promise(resolve => {
         isAnimating = true;
-        
-        const branchSplitHTML = `<div class="branch-split" style="opacity:0; animation: drawPath 0.5s ease forwards;"></div>`;
-        const newCommitHTML = `
-            <div class="commit-node feature-track relative-node" style="z-index:3; opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
-                <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                <div class="commit-dot feature-bg"></div>
-                <div class="commit-msg"><span>Implement Maya cmds...</span><span class="commit-hash">x1y2z3w</span></div>
-            </div>`;
-        const mergeSplitHTML = `<div class="merge-split" style="opacity:0; animation: drawPath 0.5s ease forwards; animation-delay: 0.4s;"></div>`;
-        const mergeCommitHTML = `
-            <div class="commit-node main-track relative-node merge-commit" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 0.6s;">
-                <div class="commit-dot main-bg"></div>
-                <div class="commit-msg"><span>Merge pull request #1</span><span class="commit-hash">m9n8p7q</span></div>
-                <div class="labels-container" id="pulled-labels"></div>
-            </div>`;
-            
-        // Transfer particles (left to right uses transferAnim natively)
+
+        // Fire particles (remote → local direction)
         createParticle();
-        setTimeout(() => createParticle(), 300);
-        setTimeout(() => createParticle(), 600);
-        setTimeout(() => createParticle(), 900);
-        
+        setTimeout(() => createParticle(), 350);
+        setTimeout(() => createParticle(), 700);
+        setTimeout(() => createParticle(), 1050);
+
         setTimeout(() => {
-            localPullTarget.insertAdjacentHTML('beforeend', branchSplitHTML);
-            localPullTarget.insertAdjacentHTML('beforeend', newCommitHTML);
-            localPullTarget.insertAdjacentHTML('beforeend', mergeSplitHTML);
-            localPullTarget.insertAdjacentHTML('beforeend', mergeCommitHTML);
-            
+            // Detach main/head tags from the local head node before injecting merge
+            const pulledLabels = document.createElement('div');
+            pulledLabels.id = 'pulled-labels';
+            pulledLabels.className = 'labels-container';
+
+            // Remote commit absorbed into local
+            const remoteLine = document.createElement('div');
+            remoteLine.className = 'commit-line main-bg';
+            remoteLine.style.cssText = 'opacity:0; animation: popIn 0.4s ease 0.0s forwards;';
+
+            const remoteNode = document.createElement('div');
+            remoteNode.className = 'commit-node main-track relative-node';
+            remoteNode.style.cssText = 'z-index:3; opacity:0; animation: popIn 0.5s ease 0.15s forwards;';
+            remoteNode.innerHTML = `
+                <div class="commit-dot" style="background:#10b981; box-shadow:0 0 8px #10b981; width:12px; height:12px;"></div>
+                <div class="commit-msg">
+                    <span style="color:#10b981;">Translate cube up</span>
+                    <span class="commit-hash">p4q5r6s</span>
+                </div>
+                <div style="font-size:0.65rem; color:#6b7280; margin-top:0.2rem; margin-left:1.5rem;">(from origin/main)</div>`;
+
+            // Merge commit
+            const mergeLine = document.createElement('div');
+            mergeLine.className = 'commit-line main-bg';
+            mergeLine.style.cssText = 'opacity:0; animation: popIn 0.4s ease 0.4s forwards;';
+
+            const mergeNode = document.createElement('div');
+            mergeNode.className = 'commit-node main-track relative-node merge-commit';
+            mergeNode.style.cssText = 'opacity:0; animation: popIn 0.5s ease 0.55s forwards;';
+            mergeNode.innerHTML = `
+                <div class="commit-dot main-bg" style="box-shadow:0 0 10px var(--accent-primary);"></div>
+                <div class="commit-msg">
+                    <span>Merge branch 'main' of gitlab.com/mayatools</span>
+                    <span class="commit-hash">m3n4o5p</span>
+                </div>`;
+            mergeNode.appendChild(pulledLabels);
+
+            localPullTarget.appendChild(remoteLine);
+            localPullTarget.appendChild(remoteNode);
+            localPullTarget.appendChild(mergeLine);
+            localPullTarget.appendChild(mergeNode);
+
+            // Move main + HEAD tags to merge commit
             setTimeout(() => {
-                document.getElementById('pulled-labels').appendChild(mainTag);
-                document.getElementById('pulled-labels').appendChild(headTag);
-                
-                localBranchBadge.style.color = '#a855f7';
-                localBranchName.textContent = 'main, feature';
-                
+                pulledLabels.appendChild(mainTag);
+                pulledLabels.appendChild(headTag);
+                localBranchName.textContent = 'main';
+
                 isAnimating = false;
                 resolve();
-            }, 1000);
-        }, 1300);
+            }, 900);
+        }, 1400);
     });
 }
 
 function createParticle() {
     const particle = document.createElement('div');
-    particle.className = 'clone-particle'; // clone-particle uses transferAnim (left to right)
+    particle.className = 'clone-particle';
     particle.style.animation = 'transferAnim 1s ease-in-out forwards';
-    
-    // Add jitter natively
+
     const isMobile = window.innerWidth <= 900;
     if (isMobile) {
-        const randomX = (Math.random() - 0.5) * 40;
-        particle.style.marginLeft = `${randomX}px`;
+        particle.style.marginLeft = `${(Math.random() - 0.5) * 40}px`;
     } else {
-        const randomY = (Math.random() - 0.5) * 40;
-        particle.style.marginTop = `${randomY}px`;
+        particle.style.marginTop = `${(Math.random() - 0.5) * 40}px`;
     }
-    
+
     particlesContainer.appendChild(particle);
-    
-    setTimeout(() => {
-        particle.remove();
-    }, 1100);
+    setTimeout(() => particle.remove(), 1100);
 }

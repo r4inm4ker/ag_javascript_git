@@ -18,14 +18,14 @@
             <section class="explanation-panel">
                 <div class="step-indicator">
                     <span id="step-number">1</span>
-                    <h2 id="step-title">The Colleague's Workspace</h2>
+                    <h2 id="step-title">Your Local Workspace</h2>
                 </div>
-                <p id="step-description">Imagine your colleague's laptop. They cloned the repository yesterday and are on commit <code>j7k8l9m</code>. They don't have the new feature and merge commits that just happened on the remote.</p>
+                <p id="step-description">You cloned the repo earlier and made a local commit editing <code>shaders.py</code>. Meanwhile, Alice pushed <code>Translate cube up</code> to remote main. Your histories have diverged — run <code>git pull</code> to merge them.</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary">git pull origin main</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
-                
+
                 <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
                     <a href="merge_request.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Merge Request</a>
                     <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
@@ -37,17 +37,23 @@
                 <div class="bg-glow remote-glow"></div>
                 <div class="bg-glow local-glow"></div>
 
+                <!-- Remote Repository (push.html result) -->
                 <div class="repo-container remote-repo active-repo" id="remote-repo">
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
                         <h3>Remote Repository</h3>
                         <div class="repo-meta">
                             <span class="badge">gitlab.com/mayatools</span>
-                            <span class="badge branch-badge transition-color" style="color: #a855f7;">
+                            <span class="badge branch-badge transition-color" id="remote-branch-badge">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>main, feature</span>
+                                <span>main</span>
                             </span>
                         </div>
+                    </div>
+                    <div style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
+                        <span class="badge code-font" style="background: rgba(255,255,255,0.05);">create_geo.py</span>
+                        <span class="badge code-font" style="background: rgba(255,255,255,0.05);">shaders.py</span>
                     </div>
                     <div class="repo-body tree-container" id="remote-commits" style="padding-left: 10%">
                         <div class="commit-node main-track relative-node">
@@ -60,24 +66,16 @@
                             <div class="commit-msg"><span>Add Maya cube tool</span><span class="commit-hash">e4f5g6h</span></div>
                         </div>
                         <div class="commit-line main-bg"></div>
-                        <div class="commit-node main-track relative-node" style="z-index: 4">
+                        <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Update shaders</span><span class="commit-hash">j7k8l9m</span></div>
                         </div>
-                        
-                        <div class="branch-split" style="opacity: 1;"></div>
-                        <div class="commit-node feature-track relative-node" style="z-index: 3;">
-                            <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                            <div class="commit-dot feature-bg"></div>
-                            <div class="commit-msg"><span>Implement Maya cmds...</span><span class="commit-hash">x1y2z3w</span></div>
-                        </div>
-                        <div class="merge-split" style="opacity: 1;"></div>
-                        <div class="commit-node main-track relative-node merge-commit">
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 4">
                             <div class="commit-dot main-bg"></div>
-                            <div class="commit-msg"><span>Merge pull request #1</span><span class="commit-hash">m9n8p7q</span></div>
+                            <div class="commit-msg"><span>Translate cube up</span><span class="commit-hash">p4q5r6s</span></div>
                             <div class="labels-container">
                                 <span class="branch-tag main-tag">main</span>
-                                <span class="branch-tag feature-tag">feature</span>
                             </div>
                         </div>
                     </div>
@@ -89,20 +87,26 @@
                     <div class="transfer-particles" id="particles-container"></div>
                 </div>
 
+                <!-- Local Repository (clone base + Edit shaders.py) -->
                 <div class="repo-container local-repo dimmed" id="local-repo">
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                        <h3>Colleague's Laptop</h3>
+                        <h3>Your Laptop</h3>
                         <div class="repo-meta">
-                            <span class="badge">~/workstation</span>
+                            <span class="badge">~/laptop/mayatools</span>
                             <span class="badge branch-badge transition-color" id="local-branch-badge">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
                                 <span id="local-branch-name">main</span>
                             </span>
                         </div>
                     </div>
+                    <div style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
+                        <span class="badge code-font" style="background: rgba(255,255,255,0.05);">create_geo.py</span>
+                        <span class="badge code-font" style="background: rgba(255,255,255,0.05);">shaders.py</span>
+                    </div>
                     <div class="repo-body tree-container" style="padding-left: 10%">
-                        <!-- Base commits -->
+                        <!-- Base commits from clone.html -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
@@ -113,16 +117,22 @@
                             <div class="commit-msg"><span>Add Maya cube tool</span><span class="commit-hash">e4f5g6h</span></div>
                         </div>
                         <div class="commit-line main-bg"></div>
-                        <div class="commit-node main-track relative-node" style="z-index: 4">
+                        <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Update shaders</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <!-- Local-only commit (diverged) -->
+                        <div class="commit-node main-track relative-node" style="z-index: 4" id="local-head-node">
+                            <div class="commit-dot" style="background: #60a5fa; box-shadow: 0 0 8px #60a5fa;"></div>
+                            <div class="commit-msg"><span style="color: #60a5fa;">Edit shaders.py</span><span class="commit-hash">s7t8u9v</span></div>
                             <div class="labels-container" id="base-labels">
                                 <span class="branch-tag main-tag" id="main-tag">main</span>
                                 <span class="head-tag" id="head-tag">HEAD</span>
                             </div>
                         </div>
-                        
-                        <!-- Empty target for the incoming pull -->
+
+                        <!-- Injected pull result goes here -->
                         <div id="local-pull-target" style="display: contents;"></div>
                     </div>
                 </div>
