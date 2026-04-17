@@ -8,34 +8,29 @@ const stepDescription = document.getElementById('step-description');
 const remoteRepo = document.getElementById('remote-repo');
 const localRepo = document.getElementById('local-repo');
 const remotePushTarget = document.getElementById('remote-push-target');
-const localCommitTarget = document.getElementById('local-commit-target');
 const particlesContainer = document.getElementById('particles-container');
-
-const remoteBaseLabels = document.getElementById('remote-base-labels');
-const localBaseLabels = document.getElementById('local-base-labels');
-
-const localMainTag = document.getElementById('local-main-tag');
-const localHeadTag = document.getElementById('local-head-tag');
+const remoteFeatureText = document.getElementById('remote-feature-text');
+const remoteBranchBadge = document.getElementById('remote-branch-badge');
 
 const steps = [
     {
         num: 1,
-        title: "The Local Repository",
-        desc: "You have created the 'Translate cube up' commit locally. The remote repository does not have it yet.",
-        actionBtn: "git push origin main",
-        color: "#a855f7" // Purple
+        title: "The Local Feature",
+        desc: "You have created a new branch called 'feature' locally and made a new commit. The remote repository knows nothing about it yet.",
+        actionBtn: "git push origin feature",
+        color: "#10b981" // Green
     },
     {
         num: 2,
         title: "Pushing... (git push)",
-        desc: "Git securely transfers the new commits up to the remote repository. This makes your work available to your team.",
+        desc: "Git securely transfers the new commits and branch pointers up to the remote repository. This makes your work available to your team.",
         actionBtn: "Pushing...",
         color: "#f59e0b" // Orange
     },
     {
         num: 3,
         title: "Push Complete",
-        desc: "The remote repository now has your new commit on the 'main' branch. Both repositories are synced.",
+        desc: "The remote repository now has your 'feature' branch and the identical new commit. Anyone on the team can now fetch this branch.",
         actionBtn: "Restart Tutorial",
         color: "#3b82f6" // Blue
     }
@@ -88,15 +83,9 @@ btnReset.addEventListener('click', () => {
     // Reset remote push target
     remotePushTarget.innerHTML = '';
     
-    // Reset remote base tags
-    const remoteMainTag = document.querySelector('.remote-repo .main-tag');
-    if (remoteMainTag) {
-        remoteBaseLabels.appendChild(remoteMainTag);
-    } else {
-        remoteBaseLabels.innerHTML = '<span class="branch-tag main-tag">main</span>';
-    }
-    
-    // Reset local tags (leave them as they are, no local tag dragging happens in this tutorial anymore)
+    // Reset remote branch text
+    remoteFeatureText.classList.add('hidden');
+    remoteBranchBadge.style.color = 'var(--text-muted)';
     
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
@@ -121,6 +110,20 @@ function startPushAnimation() {
     return new Promise(resolve => {
         isAnimating = true;
         
+        // Single commit to push
+        const branchSplitHTML = `<div class="branch-split" style="opacity:0; animation: drawPath 0.5s ease forwards;"></div>`;
+        const newCommitHTML = `
+            <div class="commit-node feature-track relative-node" style="opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
+                <div class="commit-dot feature-bg"></div>
+                <div class="commit-msg">
+                    <span>Implement Maya cmds...</span>
+                    <span class="commit-hash">x1y2z3w</span>
+                </div>
+                <div class="labels-container">
+                    <span class="branch-tag feature-tag">feature</span>
+                </div>
+            </div>`;
+            
         // Transfer particles (right to left)
         createParticle();
         setTimeout(() => createParticle(), 400);
@@ -128,31 +131,17 @@ function startPushAnimation() {
         
         // When transfer finishes (approx 1200ms setup)
         setTimeout(() => {
-            const commitLineHTML = `<div class="commit-line main-bg" style="opacity:0; animation: drawPath 0.5s ease forwards;"></div>`;
-            const newCommitHTML = `
-                <div class="commit-node main-track relative-node" style="opacity:0; animation: slideUp 0.5s ease forwards; animation-delay: 0.2s; z-index: 3;">
-                    <div class="commit-dot main-bg"></div>
-                    <div class="commit-msg">
-                        <span>Translate cube up</span>
-                        <span class="commit-hash">p4q5r6s</span>
-                    </div>
-                    <div class="labels-container" id="remote-new-labels">
-                    </div>
-                </div>`;
-            
-            remotePushTarget.insertAdjacentHTML('beforeend', commitLineHTML);
+            // Notice: flex-direction is column-reverse, meaning the visual order matches bottom-to-top rendering. We append things chronologically.
+            remotePushTarget.insertAdjacentHTML('beforeend', branchSplitHTML);
             remotePushTarget.insertAdjacentHTML('beforeend', newCommitHTML);
             
+            remoteFeatureText.classList.remove('hidden');
+            remoteBranchBadge.style.color = '#a855f7';
+            
             setTimeout(() => {
-                const remoteNewLabels = document.getElementById('remote-new-labels');
-                const remoteMainTag = remoteBaseLabels.querySelector('.main-tag');
-                if (remoteMainTag && remoteNewLabels) {
-                    remoteNewLabels.appendChild(remoteMainTag);
-                }
-                
                 isAnimating = false;
                 resolve();
-            }, 300);
+            }, 800);
         }, 1300);
     });
 }

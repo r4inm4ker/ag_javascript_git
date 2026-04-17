@@ -4,9 +4,9 @@
     const PAGES = [
         { num: 1,  file: 'clone.html',          label: 'Git Clone',              color: '#f59e0b' },
         { num: 2,  file: 'edit_commit.html',    label: 'Git Add & Commit',       color: '#60a5fa' },
-        { num: 3,  file: 'commit.html',         label: 'Git Commit & Push',      color: '#10b981' },
+        { num: 3,  file: 'push.html',           label: 'Git Push',               color: '#10b981' },
         { num: 4,  file: 'branch.html',         label: 'Branch & Commits',       color: '#a855f7' },
-        { num: 5,  file: 'push.html',           label: 'Git Push',               color: '#10b981' },
+        { num: 5,  file: 'push_branch.html',    label: 'Git Push Branch',        color: '#10b981' },
         { num: 6,  file: 'merge_request.html',  label: 'Merge Requests',         color: '#3b82f6' },
         { num: 7,  file: 'pull.html',           label: 'Git Pull',               color: '#f59e0b' },
         { num: 8,  file: 'merge_conflict.html', label: 'Merge Conflict',         color: '#ef4444' },
