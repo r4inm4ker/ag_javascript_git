@@ -15,21 +15,21 @@ const steps = [
     {
         num: 1,
         title: "The Remote Repository",
-        desc: "A remote repository is a version of your project that is hosted on the internet or network somewhere (like GitHub, GitLab, or Bitbucket). It acts as the central source of truth for your team.",
+        desc: "A remote repository is a version of your mayatools that is hosted on the internet or network somewhere (like GitHub, GitLab, or Bitbucket). It acts as the central source of truth for your team.",
         actionBtn: "Next: The Local Repository",
         color: "#3b82f6" // blue
     },
     {
         num: 2,
         title: "The Local Repository",
-        desc: "A local repository is an empty directory on your computer where you want the project to live. Right now, it doesn't have the files or the Git history from the remote.",
+        desc: "A local repository is an empty directory on your computer where you want the mayatools to live. Right now, it doesn't have the files or the Git history from the remote.",
         actionBtn: "Action: Run git clone",
         color: "#10b981" // green
     },
     {
         num: 3,
         title: "Cloning... (git clone URL)",
-        desc: "When you run 'git clone', Git reaches out to the remote server and securely downloads every file, every branch, and the entire history of the project into your local folder.",
+        desc: "When you run 'git clone', Git reaches out to the remote server and securely downloads every file, every branch, and the entire history of the mayatools into your local folder.",
         actionBtn: "Cloning...",
         color: "#f59e0b" // orange
     },
