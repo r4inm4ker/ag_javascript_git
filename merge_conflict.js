@@ -408,8 +408,8 @@ btnReset.addEventListener('click', () => {
     remotePanel.style.borderColor = 'rgba(236,72,153,0.35)';
     remotePanel.style.boxShadow = '0 0 24px rgba(236,72,153,0.1)';
 
-    // Remove appended merge commit (keep 3 original children)
-    while (localCommits.children.length > 3) {
+    // Remove appended merge commit (keep 7 original children)
+    while (localCommits.children.length > 7) {
         localCommits.removeChild(localCommits.lastChild);
     }
     // Restore HEAD tag
