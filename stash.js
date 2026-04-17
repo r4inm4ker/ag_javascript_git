@@ -65,7 +65,7 @@ btnNext.addEventListener('click', () => {
         setTimeout(() => {
             uncommittedCode.style.opacity = '1';
         }, 50);
-        lineNumLast.textContent = '5'; // shifted down 2 lines
+        lineNumLast.textContent = '6'; // shifted down 2 lines
         
         // Ensure stash container is visible structurally
         stashContainer.style.opacity = '1';
@@ -78,7 +78,7 @@ btnNext.addEventListener('click', () => {
         uncommittedCode.style.opacity = '0';
         setTimeout(() => {
             uncommittedCode.style.display = 'none';
-            lineNumLast.textContent = '3';
+            lineNumLast.textContent = '4';
         }, 500);
         
         // Show stash item
@@ -116,7 +116,7 @@ btnNext.addEventListener('click', () => {
         uncommittedCode.style.display = 'block';
         setTimeout(() => {
             uncommittedCode.style.opacity = '1';
-            lineNumLast.textContent = '5';
+            lineNumLast.textContent = '6';
         }, 50);
         
         updateUI(currentStep);
@@ -129,7 +129,7 @@ btnReset.addEventListener('click', () => {
     // Reset Everything
     uncommittedCode.style.opacity = '0';
     uncommittedCode.style.display = 'none';
-    lineNumLast.textContent = '3';
+    lineNumLast.textContent = '4';
     
     stashContainer.style.opacity = '0';
     emptyStash.style.display = 'flex';

@@ -133,17 +133,17 @@
                     </div>
 
                     <div class="code-editor code-font">
-                        <div class="code-line"><span class="line-number">1</span><span class="code-content">import maya.cmds as cmds
-<span class="keyword">def</span> <span class="function">create_cube</span>(name):</span></div>
-                        <div class="code-line"><span class="line-number">2</span><span class="code-content">    cube = cmds.polyCube(w=2, h=2, d=2)</span></div>
+                        <div class="code-line"><span class="line-number">1</span><span class="code-content">import maya.cmds as cmds</span></div>
+                        <div class="code-line"><span class="line-number">2</span><span class="code-content"><span class="keyword">def</span> <span class="function">create_cube</span>(name):</span></div>
+                        <div class="code-line"><span class="line-number">3</span><span class="code-content">    cube = cmds.polyCube(w=2, h=2, d=2)</span></div>
                         
                         <!-- Dirty changes -->
                         <div id="uncommitted-code" style="display: none; transition: opacity 0.5s ease; opacity: 0;">
-                            <div class="code-line diff-added"><span class="line-number">3</span><span class="code-content">        <span class="comment"># Move cube up</span></span></div>
-                            <div class="code-line diff-added"><span class="line-number">4</span><span class="code-content">        cmds.move(0, 5, 0, cube[0])</span></div>
+                            <div class="code-line diff-added"><span class="line-number">4</span><span class="code-content">    <span class="comment"># Move cube up</span></span></div>
+                            <div class="code-line diff-added"><span class="line-number">5</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
                         </div>
 
-                        <div class="code-line"><span class="line-number" id="line-num-last">3</span><span class="code-content">        <span class="keyword">return</span> cube</span></div>
+                        <div class="code-line"><span class="line-number" id="line-num-last">4</span><span class="code-content">    <span class="keyword">return</span> cube</span></div>
                     </div>
                 </div>
 

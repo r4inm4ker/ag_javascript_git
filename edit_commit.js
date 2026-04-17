@@ -47,17 +47,15 @@ let isAnimating = false;
 
 // Base code HTML
 const baseCode = `
-<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds<br></span></div>
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
 <div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
 `;
 
 // Added code HTML
 const addedCode = `
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">3</span><span class="code-content"></span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">4</span><span class="code-content">cube = cmds.polyCube(n=name)</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.2s;"><span class="line-num">5</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.3s;"><span class="line-num">6</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.4s;"><span class="line-num">7</span><span class="code-content"></span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">3</span><span class="code-content">    cube = cmds.polyCube(n=name)</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">4</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.2s;"><span class="line-num">5</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
 `;
 
 const baseCommit = `
