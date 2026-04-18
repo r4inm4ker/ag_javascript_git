@@ -58,7 +58,7 @@ btnNext.addEventListener('click', () => {
         // then the merge commit directly under it.
         const structure = `
             <div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #06b6d4; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem; display:none;" id="target-main-line"></div>
-            <div class="commit-node feature-track relative-node" id="target-main-commit" style="display:none;">
+            <div class="commit-node wip-track relative-node" id="target-main-commit" style="display:none;">
                 <div class="commit-dot main-bg" id="target-main-dot"></div>
                 <div class="commit-msg">
                     <span class="main-color">Import rig modules</span>
@@ -67,7 +67,7 @@ btnNext.addEventListener('click', () => {
             </div>
             
             <div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #8b5cf6; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem; display:none;" id="target-merge-line"></div>
-            <div class="commit-node feature-track relative-node" id="target-merge-commit" style="display:none;">
+            <div class="commit-node wip-track relative-node" id="target-merge-commit" style="display:none;">
                 <div class="commit-dot" style="background: #8b5cf6;" id="target-merge-dot"></div>
                 <div class="commit-msg">
                     <span style="color: #8b5cf6; font-weight: 600;">Merge branch 'main'</span>

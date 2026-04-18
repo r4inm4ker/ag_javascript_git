@@ -18,11 +18,11 @@
             <section class="explanation-panel">
                 <div class="step-indicator">
                     <span id="step-number">1</span>
-                    <h2 id="step-title">The Local Feature</h2>
+                    <h2 id="step-title">The Local WIP</h2>
                 </div>
-                <p id="step-description">You have created a new branch called <strong>feature</strong> locally and made a new commit. The remote repository knows nothing about it yet.</p>
+                <p id="step-description">You have created a new branch called <strong>wip</strong> locally and made a new commit. The remote repository knows nothing about it yet.</p>
                 <div class="controls">
-                    <button id="btn-next" class="btn primary">git push origin feature</button>
+                    <button id="btn-next" class="btn primary">git push origin wip</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
                 <!-- Nav Links -->
@@ -45,7 +45,7 @@
                             <span class="badge">gitlab.com/mayatools</span>
                             <span class="badge branch-badge transition-color" id="remote-branch-badge">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>main</span><span class="hidden" id="remote-feature-text">,&nbsp;feature</span>
+                                <span>main</span><span class="hidden" id="remote-wip-text">,&nbsp;WIP</span>
                             </span>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                             <span class="badge">~/laptop/mayatools</span>
                             <span class="badge branch-badge" style="color: #a855f7;">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>feature</span>
+                                <span>WIP</span>
                             </span>
                         </div>
                     </div>
@@ -133,14 +133,14 @@
                         
                         <!-- The Split and Feature Commit (Already Exists locally) -->
                         <div class="commit-line main-bg" style="background: #a855f7;"></div>
-                        <div class="commit-node feature-track relative-node" style="margin-left: 0;">
-                            <div class="commit-dot feature-bg"></div>
+                        <div class="commit-node wip-track relative-node" style="margin-left: 0;">
+                            <div class="commit-dot wip-bg"></div>
                             <div class="commit-msg">
                                 <span>Translate cube up</span>
                                 <span class="commit-hash">p4q5r6s</span>
                             </div>
                             <div class="labels-container">
-                                <span class="branch-tag feature-tag">feature</span>
+                                <span class="branch-tag wip-tag">WIP</span>
                                 <span class="head-tag">HEAD</span>
                             </div>
                         </div>
@@ -153,3 +153,9 @@
     <script src="push_branch.js"></script>
 </body>
 </html>
+
+
+
+
+
+

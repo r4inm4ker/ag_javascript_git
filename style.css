@@ -444,7 +444,7 @@ main {
 }
 
 .main-bg { background: var(--accent-secondary); color: var(--accent-secondary); }
-.feature-bg { background: #a855f7; color: #a855f7; }
+.wip-bg { background: #a855f7; color: #a855f7; }
 
 .relative-node { position: relative; }
 
@@ -465,7 +465,7 @@ main {
 }
 
 .main-tag { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #10b981; }
-.feature-tag { background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); color: #a855f7; }
+.wip-tag { background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); color: #a855f7; }
 .head-tag { background: rgba(248, 250, 252, 0.2); border: 1px solid rgba(248, 250, 252, 0.5); color: #f8fafc; }
 
 .pop-in {
@@ -526,7 +526,7 @@ main {
     transform: translateY(0);
 }
 
-.feature-track {
+.wip-track {
     margin-left: 38px; /* Push right exactly the width of branch-split */
     margin-bottom: -3px; /* Ensure dot touches branch split top border */
     animation: slideInRight 0.5s ease forwards;

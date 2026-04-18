@@ -58,10 +58,10 @@ btnNext.addEventListener('click', () => {
         testRepo.classList.add('active-repo');
         
         // Setup target hidden node vertically on left track
-        // To match standard feature-track, margin-left: calc(1.2rem + 38px);
+        // To match standard wip-track, margin-left: calc(1.2rem + 38px);
         const commitLine = `<div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #06b6d4; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem; display:none;" id="target-line"></div>`;
         const commitNode = `
-            <div class="commit-node feature-track relative-node" id="target-commit" style="display:none;">
+            <div class="commit-node wip-track relative-node" id="target-commit" style="display:none;">
                 <div class="commit-dot wip-bg" id="target-dot"></div>
                 <div class="commit-msg">
                     <span class="wip-color">Translate cube up</span>

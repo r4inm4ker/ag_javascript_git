@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Special styles for layout */
-        .page-feature-active #local-repo-feature { border-color: rgba(168, 85, 247, 0.5); opacity: 1; transform: scale(1); pointer-events: auto; z-index: 2; }
-        .page-feature-active #local-repo-main { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
+        .page-wip-active #local-repo-wip { border-color: rgba(168, 85, 247, 0.5); opacity: 1; transform: scale(1); pointer-events: auto; z-index: 2; }
+        .page-wip-active #local-repo-main { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
 
         .page-main-active #local-repo-main { opacity: 1; filter: none; border-color: rgba(59, 130, 246, 0.5); z-index: 2; }
-        .page-main-active #local-repo-feature { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
+        .page-main-active #local-repo-wip { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
         
         .remote-pull-anim {
             animation: slideDownFadeIn 0.6s ease forwards;
@@ -37,9 +37,9 @@
             <section class="explanation-panel">
                 <div class="step-indicator">
                     <span id="step-number">1</span>
-                    <h2 id="step-title">Feature Branch Complete</h2>
+                    <h2 id="step-title">WIP Branch Complete</h2>
                 </div>
-                <p id="step-description">Your feature was merged into <code>main</code> online via a Merge Request. Locally, you are still on the <strong>feature</strong> branch.</p>
+                <p id="step-description">Your WIP was merged into <code>main</code> online via a Merge Request. Locally, you are still on the <strong>wip</strong> branch.</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary">git checkout main</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
@@ -52,7 +52,7 @@
                 </div>
             </section>
 
-            <section class="visualization-stage page-feature-active" id="vis-container">
+            <section class="visualization-stage page-wip-active" id="vis-container">
                 <!-- Background decorative elements -->
                 <div class="bg-glow remote-glow"></div>
                 <div class="bg-glow local-glow"></div>
@@ -103,14 +103,14 @@
                     </div>
                 </div>
 
-                <div class="repo-container local-repo" id="local-repo-feature" style="border-color: rgba(168, 85, 247, 0.3); transition: all 0.5s ease;">
+                <div class="repo-container local-repo" id="local-repo-wip" style="border-color: rgba(168, 85, 247, 0.3); transition: all 0.5s ease;">
                     <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                        <h3 style="color: #a855f7;">Feature Branch Context</h3>
+                        <h3 style="color: #a855f7;">WIP Branch Context</h3>
                         <div class="repo-meta">
-                            <span class="badge branch-badge transition-color" id="feature-branch-badge" style="color: #a855f7;">
+                            <span class="badge branch-badge transition-color" id="wip-branch-badge" style="color: #a855f7;">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>feature</span>
+                                <span>wip</span>
                             </span>
                         </div>
                     </div>
@@ -138,16 +138,16 @@
                                 <span class="commit-hash">j7k8l9m</span>
                             </div>
                         </div>
-                        <div class="commit-line main-bg" id="feature-commit-line" style="background: #a855f7;"></div>
-                        <div class="commit-node feature-track" id="new-commit" style="margin-left: 0;">
-                            <div class="commit-dot feature-bg"></div>
+                        <div class="commit-line main-bg" id="wip-commit-line" style="background: #a855f7;"></div>
+                        <div class="commit-node wip-track" id="new-commit" style="margin-left: 0;">
+                            <div class="commit-dot wip-bg"></div>
                             <div class="commit-msg">
                                 <span>Translate cube up</span>
                                 <span class="commit-hash">p4q5r6s</span>
                             </div>
-                            <div class="labels-container" id="feature-labels">
-                                <span class="branch-tag feature-tag" id="feature-tag">feature</span>
-                                <span class="head-tag" id="head-tag-feature">HEAD</span>
+                            <div class="labels-container" id="wip-labels">
+                                <span class="branch-tag wip-tag" id="wip-tag">wip</span>
+                                <span class="head-tag" id="head-tag-wip">HEAD</span>
                             </div>
                         </div>
                     </div>

@@ -295,7 +295,7 @@ btnNext.addEventListener('click', async () => {
 
         clearTerm();
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git status</span>`, 0);
-        await addTerm(`<span class="t-info">On branch feature/maya-tool</span>`, 220);
+        await addTerm(`<span class="t-info">On branch wip/maya-tool</span>`, 220);
         await addTerm(`<span class="t-info">You have unmerged paths.</span>`, 380);
         await addTerm(`<span class="t-err">  (fix conflicts and run "git commit")</span>`, 530);
         await addTerm(`<span class="t-info">Unmerged paths:</span>`, 700);
@@ -334,8 +334,8 @@ btnNext.addEventListener('click', async () => {
 
         clearTerm();
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git add geo/create_geo.py</span>`, 0);
-        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Merge 'main' into feature/maya-tool — resolve transform conflict"</span>`, 340);
-        await addTerm(`<span class="t-ok">[feature/maya-tool c4d5e6f] Merge 'main' into feature/maya-tool</span>`, 800);
+        await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">git commit -m "Merge 'main' into wip/maya-tool — resolve transform conflict"</span>`, 340);
+        await addTerm(`<span class="t-ok">[wip/maya-tool c4d5e6f] Merge 'main' into wip/maya-tool</span>`, 800);
         await addTerm(`<span class="t-info"> 1 file changed, 2 insertions(+), 8 deletions(-)</span>`, 1000);
         await addTerm(`<span class="t-prompt">$</span> <span class="t-cmd">_</span>`, 1200);
 

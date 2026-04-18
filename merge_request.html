@@ -22,8 +22,8 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">The Merge Request</h2>
                 </div>
-                <p id="step-description">Your feature branch has been pushed to the remote. A Merge Request compares
-                    your <code>feature</code> branch (source) against <code>main</code> (target), letting teammates
+                <p id="step-description">Your wip branch has been pushed to the remote. A Merge Request compares
+                    your <code>wip</code> branch (source) against <code>main</code> (target), letting teammates
                     review every commit before it is merged.</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary">Review Code</button>
@@ -112,7 +112,7 @@
                             <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem;">feat: translate cube up</div>
                             <div
                                 style="color: var(--text-muted); font-size: 0.8rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                                <span>feature &rarr; main</span>
+                                <span>wip &rarr; main</span>
                                 <span>1 commit</span>
                             </div>
                         </div>
@@ -149,14 +149,14 @@
                                 Activity</div>
                             <div id="mr-activity"
                                 style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.82rem; color: var(--text-muted);">
-                                <div>&#x1F4E4; Pushed <code>feature</code> branch</div>
+                                <div>&#x1F4E4; Pushed <code>wip</code> branch</div>
                                 <div>&#x1F517; Merge Request opened</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- RIGHT: Source Branch (feature) -->
+                <!-- RIGHT: Source Branch (wip) -->
                 <div class="repo-container" id="source-container" style="flex: 1; border-color: rgba(168,85,247,0.3);">
                     <div class="repo-header"
                         style="background: rgba(168,85,247,0.05); border-bottom-color: rgba(168,85,247,0.2);">
@@ -174,16 +174,16 @@
                                     <circle cx="6" cy="18" r="3" />
                                     <path d="M18 9a9 9 0 0 1-9 9" />
                                 </svg>
-                                feature
+                                wip
                             </span>
                         </div>
                     </div>
 
                     <div class="repo-body" id="source-commits" style="flex-direction: column;">
-                        <!-- Feature-branch commits (newest first) -->
-                        <div class="commit-node feature-track relative-node" id="feature-commit"
+                        <!-- WIP-branch commits (newest first) -->
+                        <div class="commit-node wip-track relative-node" id="wip-commit"
                             style="background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.3);">
-                            <div class="commit-dot feature-bg"></div>
+                            <div class="commit-dot wip-bg"></div>
                             <div class="commit-msg"><span>Translate cube up</span><span
                                     class="commit-hash">p4q5r6s</span></div>
                         </div>

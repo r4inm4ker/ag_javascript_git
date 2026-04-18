@@ -6,15 +6,15 @@ const stepTitle = document.getElementById('step-title');
 const stepDescription = document.getElementById('step-description');
 
 const visContainer = document.getElementById('vis-container');
-const headTagFeature = document.getElementById('head-tag-feature');
+const headTagWip = document.getElementById('head-tag-wip');
 const headTagMain = document.getElementById('head-tag-main');
 const mainPullTarget = document.getElementById('main-pull-target');
 
 const steps = [
     {
         num: 1,
-        title: "Feature Branch Complete",
-        desc: "Your feature was merged into main online via a Merge Request. Locally, you are still on the feature branch. First, you need to switch back to the main branch.",
+        title: "WIP Branch Complete",
+        desc: "Your WIP was merged into main online via a Merge Request. Locally, you are still on the wip branch. First, you need to switch back to the main branch.",
         actionBtn: "git checkout main",
         color: "#10b981"
     },
@@ -28,7 +28,7 @@ const steps = [
     {
         num: 3,
         title: "Branches Synchronized",
-        desc: "git pull fetched the remote main branch and applied the new merge and feature commits to your local repository. Your local main is now fully up to date.",
+        desc: "git pull fetched the remote main branch and applied the new merge and wip commits to your local repository. Your local main is now fully up to date.",
         actionBtn: "Restart Tutorial",
         color: "#3b82f6"
     }
@@ -43,16 +43,16 @@ btnNext.addEventListener('click', () => {
     
     if (currentStep === 1) {
         // Step 2: Checkout main
-        visContainer.classList.remove('page-feature-active');
+        visContainer.classList.remove('page-wip-active');
         visContainer.classList.add('page-main-active');
         
         // Move HEAD virtually
-        headTagFeature.classList.add('hidden');
+        headTagWip.classList.add('hidden');
         headTagMain.classList.remove('hidden');
         headTagMain.classList.add('pop-in');
         
         // Make the left container visually active
-        document.getElementById('local-repo-feature').classList.remove('active-repo');
+        document.getElementById('local-repo-wip').classList.remove('active-repo');
         document.getElementById('local-repo-main').classList.add('active-repo');
         
         updateUI(currentStep);
@@ -65,7 +65,7 @@ btnNext.addEventListener('click', () => {
         const pulledCommitsHTML = `
             <div class="commit-line main-bg" style="opacity:0; animation: slideUp 0.4s ease forwards; animation-delay: 0.2s;"></div>
             <div class="commit-node main-track relative-node" style="background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); opacity:0; animation: slideUp 0.5s ease forwards; animation-delay: 0.4s;">
-                <div class="commit-dot feature-bg"></div>
+                <div class="commit-dot wip-bg"></div>
                 <div class="commit-msg">
                     <span>Translate cube up</span>
                     <span class="commit-hash">p4q5r6s</span>
@@ -107,15 +107,15 @@ btnNext.addEventListener('click', () => {
 btnReset.addEventListener('click', () => {
     currentStep = 0;
     
-    visContainer.classList.add('page-feature-active');
+    visContainer.classList.add('page-wip-active');
     visContainer.classList.remove('page-main-active');
     
     document.getElementById('local-repo-main').classList.remove('active-repo');
-    document.getElementById('local-repo-feature').classList.add('active-repo');
+    document.getElementById('local-repo-wip').classList.add('active-repo');
     
     headTagMain.classList.add('hidden');
     headTagMain.classList.remove('pop-in');
-    headTagFeature.classList.remove('hidden');
+    headTagWip.classList.remove('hidden');
     
     mainPullTarget.innerHTML = '';
     const baseLabels = document.getElementById('base-labels-main');

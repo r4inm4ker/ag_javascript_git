@@ -26,7 +26,7 @@
                     <strong>main</strong> branch, which points to the latest commit.
                 </p>
                 <div class="controls">
-                    <button id="btn-next" class="btn primary">git checkout -b feature</button>
+                    <button id="btn-next" class="btn primary">git checkout -b wip</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
 
@@ -89,15 +89,15 @@
                     <div class="transfer-line"></div>
                 </div>
 
-                <div class="repo-container local-repo" id="local-repo-feature" style="border-color: rgba(168, 85, 247, 0.3); opacity: 0; pointer-events: none; transform: scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease;">
+                <div class="repo-container local-repo" id="local-repo-wip" style="border-color: rgba(168, 85, 247, 0.3); opacity: 0; pointer-events: none; transform: scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease;">
                     <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
-                        <h3 style="color: #a855f7;">Feature Branch Context</h3>
+                        <h3 style="color: #a855f7;">WIP Branch Context</h3>
                         <div class="repo-meta">
                             <span class="badge">~/laptop/mayatools</span>
-                            <span class="badge branch-badge transition-color" id="feature-branch-badge" style="color: #a855f7;">
+                            <span class="badge branch-badge transition-color" id="wip-branch-badge" style="color: #a855f7;">
                                 <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                <span>feature</span>
+                                <span>wip</span>
                             </span>
                         </div>
                     </div>
@@ -125,17 +125,17 @@
                                 <span class="commit-hash">j7k8l9m</span>
                             </div>
 
-                            <div class="labels-container" id="base-labels-feature">
+                            <div class="labels-container" id="base-labels-wip">
                                 <span class="branch-tag main-tag" style="opacity: 0.5;">main</span>
-                                <span class="branch-tag feature-tag hidden" id="feature-tag">feature</span>
-                                <span class="head-tag hidden" id="head-tag-feature">HEAD</span>
+                                <span class="branch-tag wip-tag hidden" id="wip-tag">wip</span>
+                                <span class="head-tag hidden" id="head-tag-wip">HEAD</span>
                             </div>
                         </div>
 
-                        <div class="commit-line main-bg hidden" id="feature-commit-line" style="background: #a855f7;"></div>
+                        <div class="commit-line main-bg hidden" id="wip-commit-line" style="background: #a855f7;"></div>
 
-                        <div class="commit-node feature-track hidden" id="new-commit" style="margin-left: 0; animation: slideUp 0.5s ease forwards;">
-                            <div class="commit-dot feature-bg"></div>
+                        <div class="commit-node wip-track hidden" id="new-commit" style="margin-left: 0; animation: slideUp 0.5s ease forwards;">
+                            <div class="commit-dot wip-bg"></div>
                             <div class="commit-msg">
                                 <span>Translate cube up</span>
                                 <span class="commit-hash">p4q5r6s</span>

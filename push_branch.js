@@ -9,15 +9,15 @@ const remoteRepo = document.getElementById('remote-repo');
 const localRepo = document.getElementById('local-repo');
 const remotePushTarget = document.getElementById('remote-push-target');
 const particlesContainer = document.getElementById('particles-container');
-const remoteFeatureText = document.getElementById('remote-feature-text');
+const remoteWipText = document.getElementById('remote-wip-text');
 const remoteBranchBadge = document.getElementById('remote-branch-badge');
 
 const steps = [
     {
         num: 1,
-        title: "The Local Feature",
-        desc: "You have created a new branch called 'feature' locally and made a new commit. The remote repository knows nothing about it yet.",
-        actionBtn: "git push origin feature",
+        title: "The Local WIP",
+        desc: "You have created a new branch called 'wip' locally and made a new commit. The remote repository knows nothing about it yet.",
+        actionBtn: "git push origin wip",
         color: "#10b981" // Green
     },
     {
@@ -30,7 +30,7 @@ const steps = [
     {
         num: 3,
         title: "Push Complete",
-        desc: "The remote repository now has your 'feature' branch and the identical new commit. Anyone on the team can now fetch this branch.",
+        desc: "The remote repository now has your 'wip' branch and the identical new commit. Anyone on the team can now fetch this branch.",
         actionBtn: "Restart Tutorial",
         color: "#3b82f6" // Blue
     }
@@ -84,7 +84,7 @@ btnReset.addEventListener('click', () => {
     remotePushTarget.innerHTML = '';
     
     // Reset remote branch text
-    remoteFeatureText.classList.add('hidden');
+    remoteWipText.classList.add('hidden');
     remoteBranchBadge.style.color = 'var(--text-muted)';
     
     btnNext.classList.remove('hidden');
@@ -113,14 +113,14 @@ function startPushAnimation() {
         // Single commit to push
         const branchSplitHTML = `<div class="commit-line main-bg" style="opacity:0; animation: drawPath 0.5s ease forwards; background: #a855f7;"></div>`;
         const newCommitHTML = `
-            <div class="commit-node feature-track relative-node" style="margin-left: 0; opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
-                <div class="commit-dot feature-bg"></div>
+            <div class="commit-node wip-track relative-node" style="margin-left: 0; opacity:0; animation: slideInRight 0.5s ease forwards; animation-delay: 0.2s;">
+                <div class="commit-dot wip-bg"></div>
                 <div class="commit-msg">
                     <span>Translate cube up</span>
                     <span class="commit-hash">p4q5r6s</span>
                 </div>
                 <div class="labels-container">
-                    <span class="branch-tag feature-tag">feature</span>
+                    <span class="branch-tag wip-tag">wip</span>
                 </div>
             </div>`;
             
@@ -135,7 +135,7 @@ function startPushAnimation() {
             remotePushTarget.insertAdjacentHTML('beforeend', branchSplitHTML);
             remotePushTarget.insertAdjacentHTML('beforeend', newCommitHTML);
             
-            remoteFeatureText.classList.remove('hidden');
+            remoteWipText.classList.remove('hidden');
             remoteBranchBadge.style.color = '#a855f7';
             
             setTimeout(() => {
@@ -168,3 +168,4 @@ function createParticle() {
         particle.remove();
     }, 1100);
 }
+
