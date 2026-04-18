@@ -12,7 +12,7 @@
         { num: 8,  file: 'push_branch.html',    label: 'Git Push Branch',        color: '#10b981' },
         { num: 9,  file: 'merge_request.html',  label: 'Merge Requests',         color: '#3b82f6' },
         { num: 10, file: 'checkout_main_pull_origin_main.html', label: 'Git Checkout & Pull', color: '#10b981' },
-        { num: 11, file: 'rollback.html',       label: 'Git Rollback',           color: '#ef4444' },
+        { num: 11, file: 'reset.html',          label: 'Git Reset',              color: '#ef4444' },
         { num: 12, file: 'squash.html',         label: 'Git Squash',             color: '#a855f7' },
         { num: 13, file: 'cherry_pick.html',    label: 'Git Cherry-Pick',        color: '#06b6d4' },
         { num: 14, file: 'merge.html',          label: 'Git Merge',              color: '#8b5cf6' },

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Reset Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .transition-fade { transition: all 0.5s ease; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>Understanding <code>git reset</code> (Rolling Back)</p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">The Broken Code</h2>
+                </div>
+                <p id="step-description">You have made two new commits locally on the <code>wip</code> branch. Oh no! You just realized the latest commit completely breaks the build.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary" style="background: #ef4444;">git reset --hard HEAD~1</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+                
+            </section>
+
+            <section class="visualization-stage single-stage">
+                <div class="bg-glow local-glow full-glow" style="background: rgba(239, 68, 68, 0.1);"></div>
+
+                <div class="repo-container local-repo active-repo" style="width: 100%; max-width: 700px; margin: 0 auto; box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);">
+                    <div class="repo-header" style="border-bottom-color: rgba(239, 68, 68, 0.2);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #ef4444;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Local Repository</h3>
+                        <div class="repo-meta">
+<span class="badge">~/dev/mayatools</span>
+                            <span class="badge branch-badge transition-color" id="local-branch-badge" style="color: #a855f7;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>wip</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" style="padding-left: 10%;">
+                        <!-- Commit 1 -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 2 -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Add Maya cube tool</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 3 -->
+                        <div class="commit-node main-track relative-node" style="z-index: 4">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update shaders</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                            <div class="labels-container">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
+                        </div>
+                        
+                        <div class="branch-split" style="opacity: 1;"></div>
+                        
+                        <!-- Commit 4 -->
+                        <div class="commit-node wip-track relative-node" style="z-index: 3">
+                            <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
+                            <div class="commit-dot wip-bg transition-fade" id="safe-dot"></div>
+                            <div class="commit-msg">
+                                <span class="transition-fade" id="safe-text">Add new wip</span>
+                                <span class="commit-hash">k8l9m0n</span>
+                            </div>
+                            <div class="labels-container" id="safe-labels">
+                                <!-- Tags will move here on rollback -->
+                            </div>
+                        </div>
+                        <div class="commit-line wip-bg transition-fade" id="broken-line" style="margin-left: calc(1.2rem + 38px);"></div>
+                        
+                        <!-- Commit 5 (BROKEN) -->
+                        <div class="commit-node wip-track relative-node transition-fade" id="broken-commit" style="z-index: 2">
+                            <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
+                            <div class="commit-dot wip-bg transition-fade" id="broken-dot"></div>
+                            <div class="commit-msg">
+                                <span style="color: #ef4444; font-weight: 600;" id="broken-text" class="transition-fade">
+                                    Refactor wip (BROKEN)
+                                </span>
+                                <span class="commit-hash">z9y8x7w</span>
+                            </div>
+                            <div class="labels-container" id="broken-labels">
+                                <span class="branch-tag wip-tag" id="wip-tag">wip</span>
+                                <span class="head-tag" id="head-tag">HEAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="reset.js"></script>
+</body>
+</html>
