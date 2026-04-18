@@ -135,5 +135,5 @@ function updateUI(stepIndex) {
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;
-    stepNumber.style.boxShadow = \`0 0 20px \${step.color}66\`;
+    stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
 }
