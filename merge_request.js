@@ -70,8 +70,8 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node main-track relative-node" style="background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.35); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.6s;">
                 <div class="commit-dot feature-bg"></div>
                 <div class="commit-msg">
-                    <span>Implement polyCube logic</span>
-                    <span class="commit-hash">x1y2z3w</span>
+                    <span>Translate cube up</span>
+                    <span class="commit-hash">p4q5r6s</span>
                 </div>
             </div>
             <div class="commit-line main-bg" style="opacity:0; animation: popIn 0.4s ease forwards; animation-delay: 1.0s;"></div>`;
