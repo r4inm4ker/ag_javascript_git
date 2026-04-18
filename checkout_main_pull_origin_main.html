@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Checkout & Pull</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Special styles for layout */
+        .page-feature-active #local-repo-feature { border-color: rgba(168, 85, 247, 0.5); opacity: 1; transform: scale(1); pointer-events: auto; z-index: 2; }
+        .page-feature-active #local-repo-main { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
+
+        .page-main-active #local-repo-main { opacity: 1; filter: none; border-color: rgba(59, 130, 246, 0.5); z-index: 2; }
+        .page-main-active #local-repo-feature { opacity: 0.5; filter: grayscale(50%); z-index: 1; }
+        
+        .remote-pull-anim {
+            animation: slideDownFadeIn 0.6s ease forwards;
+        }
+
+        @keyframes slideDownFadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow Diagram</h1>
+            <p>Understanding <code>git checkout</code> and <code>git pull</code></p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number">1</span>
+                    <h2 id="step-title">Feature Branch Complete</h2>
+                </div>
+                <p id="step-description">Your feature was merged into <code>main</code> online via a Merge Request. Locally, you are still on the <strong>feature</strong> branch.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary">git checkout main</button>
+                    <button id="btn-reset" class="btn secondary hidden">Reset</button>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; justify-content: space-between;">
+                    <a href="merge_request.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">&larr; Prev: Merge Request</a>
+                    <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Directory</a>
+                    <a href="rollback.html" style="color: var(--text-muted); text-decoration: none; font-weight: 600;">Next: Rollback &rarr;</a>
+                </div>
+            </section>
+
+            <section class="visualization-stage page-feature-active" id="vis-container">
+                <!-- Background decorative elements -->
+                <div class="bg-glow remote-glow"></div>
+                <div class="bg-glow local-glow"></div>
+
+                <div class="repo-container local-repo" id="local-repo-main" style="transition: all 0.5s ease;">
+                    <div class="repo-header">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3>Local Repository (main)</h3>
+                        <div class="repo-meta">
+                            <span class="badge branch-badge transition-color" id="main-branch-badge">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>main</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" id="main-commits" style="padding-left: 10%">
+                        <!-- Existing main branch commits -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Add Maya cube tool</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 2">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update shaders</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                            <div class="labels-container" id="base-labels-main">
+                                <span class="branch-tag main-tag">main</span>
+                                <span class="head-tag hidden" id="head-tag-main">HEAD</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Pull target for new commits -->
+                        <div id="main-pull-target" style="display: contents;"></div>
+                    </div>
+                </div>
+
+                <div class="repo-container local-repo" id="local-repo-feature" style="border-color: rgba(168, 85, 247, 0.3); transition: all 0.5s ease;">
+                    <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <h3 style="color: #a855f7;">Feature Branch Context</h3>
+                        <div class="repo-meta">
+                            <span class="badge branch-badge transition-color" id="feature-branch-badge" style="color: #a855f7;">
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>feature</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="repo-body tree-container" style="padding-left: 10%">
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Initial commit</span>
+                                <span class="commit-hash">a1b2c3d</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Add Maya cube tool</span>
+                                <span class="commit-hash">e4f5g6h</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        <div class="commit-node main-track relative-node" style="z-index: 2">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg">
+                                <span>Update shaders</span>
+                                <span class="commit-hash">j7k8l9m</span>
+                            </div>
+                        </div>
+                        <div class="commit-line main-bg" id="feature-commit-line" style="background: #a855f7;"></div>
+                        <div class="commit-node feature-track" id="new-commit" style="margin-left: 0;">
+                            <div class="commit-dot feature-bg"></div>
+                            <div class="commit-msg">
+                                <span>Translate cube up</span>
+                                <span class="commit-hash">p4q5r6s</span>
+                            </div>
+                            <div class="labels-container" id="feature-labels">
+                                <span class="branch-tag feature-tag" id="feature-tag">feature</span>
+                                <span class="head-tag" id="head-tag-feature">HEAD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="checkout_main_pull_origin_main.js"></script>
+</body>
+
+</html>

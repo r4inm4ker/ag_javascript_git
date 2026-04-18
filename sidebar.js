@@ -11,13 +11,14 @@
         { num: 7,  file: 'branch.html',         label: 'Branch & Commits',       color: '#a855f7' },
         { num: 8,  file: 'push_branch.html',    label: 'Git Push Branch',        color: '#10b981' },
         { num: 9,  file: 'merge_request.html',  label: 'Merge Requests',         color: '#3b82f6' },
-        { num: 10, file: 'rollback.html',       label: 'Git Rollback',           color: '#ef4444' },
-        { num: 11, file: 'squash.html',         label: 'Git Squash',             color: '#a855f7' },
-        { num: 12, file: 'cherry_pick.html',    label: 'Git Cherry-Pick',        color: '#06b6d4' },
-        { num: 13, file: 'merge.html',          label: 'Git Merge',              color: '#8b5cf6' },
-        { num: 14, file: 'rebase.html',         label: 'Git Rebase',             color: '#ec4899' },
-        { num: 15, file: 'stash.html',          label: 'Git Stash',              color: '#f59e0b' },
-        { num: 16, file: 'blame.html',          label: 'Git Blame',              color: '#6366f1' },
+        { num: 10, file: 'checkout_main_pull_origin_main.html', label: 'Git Checkout & Pull', color: '#10b981' },
+        { num: 11, file: 'rollback.html',       label: 'Git Rollback',           color: '#ef4444' },
+        { num: 12, file: 'squash.html',         label: 'Git Squash',             color: '#a855f7' },
+        { num: 13, file: 'cherry_pick.html',    label: 'Git Cherry-Pick',        color: '#06b6d4' },
+        { num: 14, file: 'merge.html',          label: 'Git Merge',              color: '#8b5cf6' },
+        { num: 15, file: 'rebase.html',         label: 'Git Rebase',             color: '#ec4899' },
+        { num: 16, file: 'stash.html',          label: 'Git Stash',              color: '#f59e0b' },
+        { num: 17, file: 'blame.html',          label: 'Git Blame',              color: '#6366f1' },
     ];
 
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
