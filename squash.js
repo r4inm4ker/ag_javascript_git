@@ -176,26 +176,21 @@ btnNext.addEventListener('click', () => {
                 bottomLabels.appendChild(headTag);
 
                 if (codeComm1) {
-                    codeComm1.style.background = 'rgba(16, 185, 129, 0.2)';
-                    codeComm1.style.borderLeftColor = '#10b981';
+                    codeComm1.classList.add('line-highlight-success');
                 }
                 if (codeComm2) {
-                    codeComm2.style.background = 'rgba(16, 185, 129, 0.2)';
-                    codeComm2.style.borderLeftColor = '#10b981';
+                    codeComm2.classList.add('line-highlight-success');
                 }
+                bottomCommit.classList.add('commit-row-success');
 
                 setTimeout(() => {
                     bottomDot.classList.remove('squash-glow');
 
                     if (codeComm1) {
                         codeComm1.classList.remove('line-highlight');
-                        codeComm1.style.background = '';
-                        codeComm1.style.borderLeftColor = 'transparent';
                     }
                     if (codeComm2) {
                         codeComm2.classList.remove('line-highlight');
-                        codeComm2.style.background = '';
-                        codeComm2.style.borderLeftColor = 'transparent';
                     }
 
                     if (fileStatus) {
@@ -256,10 +251,17 @@ btnReset.addEventListener('click', () => {
     setTimeout(() => {
         const codeComm1 = document.getElementById('code-commit-1');
         const codeComm2 = document.getElementById('code-commit-2');
-        if (codeComm1) codeComm1.classList.add('line-highlight');
-        if (codeComm2) codeComm2.classList.remove('line-highlight');
+        if (codeComm1) {
+            codeComm1.classList.add('line-highlight');
+            codeComm1.classList.remove('line-highlight-success');
+        }
+        if (codeComm2) {
+            codeComm2.classList.remove('line-highlight');
+            codeComm2.classList.remove('line-highlight-success');
+        }
         bottomDot.classList.add('squash-glow');
         bottomCommit.classList.add('commit-row-highlight');
+        bottomCommit.classList.remove('commit-row-success');
         if (topDot) topDot.classList.remove('squash-glow');
         topCommit.classList.remove('commit-row-highlight');
     }, 50);
