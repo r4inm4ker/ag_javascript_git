@@ -16,6 +16,7 @@ const bottomHash = document.getElementById('bottom-hash');
 const bottomDot = document.getElementById('bottom-dot');
 const bottomLabels = document.getElementById('bottom-labels');
 const topCommitFiller = document.getElementById('top-commit-filler');
+const topDot = document.getElementById('top-dot');
 
 const codeContent = document.getElementById('code-content');
 const fileStatus = document.getElementById('file-status');
@@ -48,13 +49,27 @@ function initEditor() {
 const steps = [
     {
         num: 1,
+        title: "Commit 1: Translate",
+        desc: "First, you made a WIP commit to translate the Maya cube.",
+        actionBtn: "Next Commit",
+        color: "#3b82f6" // Blue
+    },
+    {
+        num: 2,
+        title: "Commit 2: Scale",
+        desc: "Later, you added a second commit to scale the cube.",
+        actionBtn: "Review History",
+        color: "#a855f7" // Purple
+    },
+    {
+        num: 3,
         title: "The Messy History",
         desc: "You've been working on the 'wip' branch and made several small 'work in progress' commits. Before pushing, you want to clean up your history by combining (squashing) them into one.",
         actionBtn: "Interactive Rebase",
         color: "#a855f7" // Purple
     },
     {
-        num: 2,
+        num: 4,
         title: "Squashing...",
         desc: "Git rebase intercepts the commits. We tell Git to 'pick' the first commit and 'squash' the second one into it. They mathematically compress into a single logical changeset.",
         actionBtn: "Squashing...",
@@ -75,6 +90,13 @@ let isAnimating = false;
 updateUI(0);
 initEditor();
 
+// Initial Highlight
+setTimeout(() => {
+    const codeComm1 = document.getElementById('code-commit-1');
+    if (codeComm1) codeComm1.classList.add('line-highlight');
+    bottomDot.classList.add('squash-glow');
+}, 50);
+
 // For resetting purposes, store original values
 const origText = "tmp: translate cube";
 const origHash = "k8l9m0n";
@@ -85,6 +107,25 @@ btnNext.addEventListener('click', () => {
     currentStep++;
 
     if (currentStep === 1) {
+        // Step 1 -> 2 (Commit 2: Scale)
+        const codeComm1 = document.getElementById('code-commit-1');
+        const codeComm2 = document.getElementById('code-commit-2');
+        if (codeComm1) codeComm1.classList.remove('line-highlight');
+        bottomDot.classList.remove('squash-glow');
+        
+        if (codeComm2) codeComm2.classList.add('line-highlight');
+        if (topDot) topDot.classList.add('squash-glow');
+        
+        btnNext.style.background = '#a855f7';
+        updateUI(currentStep);
+    } else if (currentStep === 2) {
+        // Step 2 -> 3 (The Messy History)
+        const codeComm2 = document.getElementById('code-commit-2');
+        if (codeComm2) codeComm2.classList.remove('line-highlight');
+        if (topDot) topDot.classList.remove('squash-glow');
+
+        updateUI(currentStep);
+    } else if (currentStep === 3) {
         isAnimating = true;
         updateUI(currentStep);
         btnNext.disabled = true;
@@ -204,9 +245,18 @@ btnReset.addEventListener('click', () => {
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
-    btnNext.style.background = '#a855f7';
+    btnNext.style.background = '#3b82f6';
 
     updateUI(currentStep);
+
+    setTimeout(() => {
+        const codeComm1 = document.getElementById('code-commit-1');
+        const codeComm2 = document.getElementById('code-commit-2');
+        if (codeComm1) codeComm1.classList.add('line-highlight');
+        if (codeComm2) codeComm2.classList.remove('line-highlight');
+        bottomDot.classList.add('squash-glow');
+        if (topDot) topDot.classList.remove('squash-glow');
+    }, 50);
 });
 
 function updateUI(stepIndex) {
