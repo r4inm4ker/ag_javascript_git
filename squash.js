@@ -17,6 +17,34 @@ const bottomDot = document.getElementById('bottom-dot');
 const bottomLabels = document.getElementById('bottom-labels');
 const topCommitFiller = document.getElementById('top-commit-filler');
 
+const codeContent = document.getElementById('code-content');
+const fileStatus = document.getElementById('file-status');
+
+const baseCode = `
+<div class="code-line"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content">    cube = cmds.polyCube(n=name)</span></div>
+`;
+const commit1Code = `
+<div class="code-line transition-squash" id="code-commit-1"><span class="line-num">4</span><span class="code-content">    cmds.move(0, 5, 0, cube[0]) <span style="color:#a855f7"># translate</span></span></div>
+`;
+const commit2Code = `
+<div class="code-line transition-squash" id="code-commit-2"><span class="line-num">5</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#a855f7"># scale</span></span></div>
+`;
+const returnCode = `
+<div class="code-line transition-squash" id="code-return"><span class="line-num" id="line-return-num">6</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
+function initEditor() {
+    if (!codeContent) return;
+    codeContent.innerHTML = baseCode + commit1Code + commit2Code + returnCode;
+    if (fileStatus) {
+        fileStatus.textContent = 'Pending Squash';
+        fileStatus.style.color = '#a855f7';
+        fileStatus.style.background = 'rgba(168, 85, 247, 0.15)';
+    }
+}
+
 const steps = [
     {
         num: 1,
@@ -45,6 +73,7 @@ let currentStep = 0;
 let isAnimating = false;
 
 updateUI(0);
+initEditor();
 
 // For resetting purposes, store original values
 const origText = "tmp: translate cube";
@@ -73,6 +102,18 @@ btnNext.addEventListener('click', () => {
             squashLine.style.transformOrigin = 'bottom';
             squashLine.style.transform = `scaleY(0)`;
             squashLine.style.opacity = '0';
+            
+            const codeComm1 = document.getElementById('code-commit-1');
+            const codeComm2 = document.getElementById('code-commit-2');
+            
+            if (codeComm1) codeComm1.classList.add('line-highlight');
+            if (codeComm2) codeComm2.classList.add('line-highlight');
+
+            if (fileStatus) {
+                fileStatus.textContent = 'Squashing...';
+                fileStatus.style.color = '#f59e0b';
+                fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+            }
 
             setTimeout(() => {
                 // Flash and unify
@@ -89,8 +130,34 @@ btnNext.addEventListener('click', () => {
                 bottomLabels.appendChild(wipTag);
                 bottomLabels.appendChild(headTag);
 
+                if (codeComm1) {
+                    codeComm1.style.background = 'rgba(16, 185, 129, 0.2)';
+                    codeComm1.style.borderLeftColor = '#10b981';
+                }
+                if (codeComm2) {
+                    codeComm2.style.background = 'rgba(16, 185, 129, 0.2)';
+                    codeComm2.style.borderLeftColor = '#10b981';
+                }
+
                 setTimeout(() => {
                     bottomDot.classList.remove('squash-glow');
+
+                    if (codeComm1) {
+                        codeComm1.classList.remove('line-highlight');
+                        codeComm1.style.background = '';
+                        codeComm1.style.borderLeftColor = 'transparent';
+                    }
+                    if (codeComm2) {
+                        codeComm2.classList.remove('line-highlight');
+                        codeComm2.style.background = '';
+                        codeComm2.style.borderLeftColor = 'transparent';
+                    }
+
+                    if (fileStatus) {
+                        fileStatus.textContent = 'Squashed';
+                        fileStatus.style.color = '#10b981';
+                        fileStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+                    }
 
                     isAnimating = false;
                     currentStep++;
@@ -114,6 +181,8 @@ btnReset.addEventListener('click', () => {
 
     // Reset DOM elements
     topCommit.style.display = 'flex';
+
+    initEditor();
 
     setTimeout(() => {
         topCommit.style.transform = 'translateY(0) scale(1)';
