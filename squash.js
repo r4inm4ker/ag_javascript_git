@@ -52,7 +52,7 @@ const steps = [
         title: "Commit 1: Translate",
         desc: "First, you made a WIP commit to translate the Maya cube.",
         actionBtn: "Next Commit",
-        color: "#3b82f6" // Blue
+        color: "#a855f7" // Purple
     },
     {
         num: 2,
@@ -95,6 +95,7 @@ setTimeout(() => {
     const codeComm1 = document.getElementById('code-commit-1');
     if (codeComm1) codeComm1.classList.add('line-highlight');
     bottomDot.classList.add('squash-glow');
+    bottomCommit.classList.add('commit-row-highlight');
 }, 50);
 
 // For resetting purposes, store original values
@@ -112,9 +113,11 @@ btnNext.addEventListener('click', () => {
         const codeComm2 = document.getElementById('code-commit-2');
         if (codeComm1) codeComm1.classList.remove('line-highlight');
         bottomDot.classList.remove('squash-glow');
+        bottomCommit.classList.remove('commit-row-highlight');
         
         if (codeComm2) codeComm2.classList.add('line-highlight');
         if (topDot) topDot.classList.add('squash-glow');
+        topCommit.classList.add('commit-row-highlight');
         
         btnNext.style.background = '#a855f7';
         updateUI(currentStep);
@@ -123,6 +126,7 @@ btnNext.addEventListener('click', () => {
         const codeComm2 = document.getElementById('code-commit-2');
         if (codeComm2) codeComm2.classList.remove('line-highlight');
         if (topDot) topDot.classList.remove('squash-glow');
+        topCommit.classList.remove('commit-row-highlight');
 
         updateUI(currentStep);
     } else if (currentStep === 3) {
@@ -245,7 +249,7 @@ btnReset.addEventListener('click', () => {
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
-    btnNext.style.background = '#3b82f6';
+    btnNext.style.background = '#a855f7';
 
     updateUI(currentStep);
 
@@ -255,7 +259,9 @@ btnReset.addEventListener('click', () => {
         if (codeComm1) codeComm1.classList.add('line-highlight');
         if (codeComm2) codeComm2.classList.remove('line-highlight');
         bottomDot.classList.add('squash-glow');
+        bottomCommit.classList.add('commit-row-highlight');
         if (topDot) topDot.classList.remove('squash-glow');
+        topCommit.classList.remove('commit-row-highlight');
     }, 50);
 });
 
