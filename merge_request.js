@@ -22,13 +22,13 @@ const steps = [
         num: 2,
         title: "Code Review",
         desc: "Teammates inspect each commit on the wip branch, leave comments, and approve when satisfied (Looks Good To Me!). All commits must be reviewed before merging.",
-        actionBtn: "Merge Pull Request",
+        actionBtn: "Merge",
         color: "#10b981"
     },
     {
         num: 3,
         title: "Merge Complete",
-        desc: "The wip branch commits are merged into main via a new merge commit. The main branch pointer moves forward to include all wip work ??the Merge Request is now closed.",
+        desc: "The wip branch commits are merged into main via a new merge commit. The main branch pointer moves forward to include all wip work, and the Merge Request is now closed.",
         actionBtn: "Restart Tutorial",
         color: "#3b82f6"
     }
@@ -44,7 +44,7 @@ btnNext.addEventListener('click', () => {
         // Step 2: Show LGTM review badge and log review activity
         reviewBadge.classList.add('pop-in');
         addActivity('&#x1F440; bob reviewed all commits');
-        addActivity('&#x2705; Approved ??LGTM');
+        addActivity('&#x2705; Approved -- LGTM');
         updateUI(currentStep);
 
     } else if (currentStep === 2) {
@@ -62,7 +62,7 @@ btnNext.addEventListener('click', () => {
             <div class="commit-node main-track relative-node merge-commit" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.5); opacity:0; animation: popIn 0.5s ease forwards; animation-delay: 0.1s;">
                 <div class="commit-dot main-bg"></div>
                 <div class="commit-msg">
-                    <span>Merge pull request #1</span>
+                    <span>Merge branch 'wip' into 'main'</span>
                     <span class="commit-hash">m9n8p7q</span>
                 </div>
             </div>

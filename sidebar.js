@@ -2,24 +2,24 @@
     'use strict';
 
     const PAGES = [
-        { num: 1,  file: 'clone.html',          label: 'Git Clone',              color: '#f59e0b' },
-        { num: 2,  file: 'edit_commit.html',    label: 'Git Add & Commit',       color: '#60a5fa' },
-        { num: 3,  file: 'push.html',           label: 'Git Push',               color: '#10b981' },
-        { num: 4,  file: 'git_pull_main.html',  label: 'Git Pull Fast-Forward',  color: '#f59e0b' },
-        { num: 5,  file: 'pull.html',           label: 'Git Pull (Merge)',        color: '#f59e0b' },
-        { num: 6,  file: 'merge_conflict.html', label: 'Merge Conflict',         color: '#ef4444' },
-        { num: 7,  file: 'branch.html',         label: 'Branch & Commits',       color: '#a855f7' },
-        { num: 8,  file: 'push_branch.html',    label: 'Git Push Branch',        color: '#10b981' },
-        { num: 9,  file: 'merge_request.html',  label: 'Merge Requests',         color: '#3b82f6' },
+        { num: 1, file: 'clone.html', label: 'Git Clone', color: '#f59e0b' },
+        { num: 2, file: 'edit_commit.html', label: 'Git Add & Commit', color: '#60a5fa' },
+        { num: 3, file: 'push.html', label: 'Git Push', color: '#10b981' },
+        { num: 4, file: 'git_pull_main.html', label: 'Git Pull Fast-Forward', color: '#f59e0b' },
+        { num: 5, file: 'pull.html', label: 'Git Pull (Merge)', color: '#f59e0b' },
+        { num: 6, file: 'merge_conflict.html', label: 'Merge Conflict', color: '#ef4444' },
+        { num: 7, file: 'branch.html', label: 'Branch & Commits', color: '#a855f7' },
+        { num: 8, file: 'push_branch.html', label: 'Git Push Branch', color: '#10b981' },
+        { num: 9, file: 'merge_request.html', label: 'Merge Request', color: '#3b82f6' },
         { num: 10, file: 'checkout_main_pull_origin_main.html', label: 'Git Checkout & Pull', color: '#10b981' },
-        { num: 11, file: 'reset.html',          label: 'Git Reset --hard',       color: '#ef4444' },
-        { num: 12, file: 'reset_soft.html',     label: 'Git Reset --soft',       color: '#f59e0b' },
-        { num: 13, file: 'squash.html',         label: 'Git Squash',             color: '#a855f7' },
-        { num: 14, file: 'cherry_pick.html',    label: 'Git Cherry-Pick',        color: '#06b6d4' },
-        { num: 15, file: 'merge_in_branch.html', label: 'Git Merge',              color: '#8b5cf6' },
-        { num: 16, file: 'rebase.html',         label: 'Git Rebase',             color: '#ec4899' },
-        { num: 17, file: 'stash.html',          label: 'Git Stash',              color: '#f59e0b' },
-        { num: 18, file: 'blame.html',          label: 'Git Blame',              color: '#6366f1' },
+        { num: 11, file: 'reset.html', label: 'Git Reset --hard', color: '#ef4444' },
+        { num: 12, file: 'reset_soft.html', label: 'Git Reset --soft', color: '#f59e0b' },
+        { num: 13, file: 'squash.html', label: 'Git Squash', color: '#a855f7' },
+        { num: 14, file: 'cherry_pick.html', label: 'Git Cherry-Pick', color: '#06b6d4' },
+        { num: 15, file: 'merge_in_branch.html', label: 'Git Merge', color: '#8b5cf6' },
+        { num: 16, file: 'rebase.html', label: 'Git Rebase', color: '#ec4899' },
+        { num: 17, file: 'stash.html', label: 'Git Stash', color: '#f59e0b' },
+        { num: 18, file: 'blame.html', label: 'Git Blame', color: '#6366f1' },
     ];
 
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
@@ -113,7 +113,7 @@
             toggle.classList.add('hidden');
             if (!isNarrow() && content) content.classList.remove('expanded');
             if (isNarrow()) overlay.classList.add('active');
-            try { localStorage.setItem(STORAGE_KEY, '1'); } catch(e) {}
+            try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { }
         }
 
         function close() {
@@ -121,12 +121,12 @@
             toggle.classList.remove('hidden');
             if (content) content.classList.add('expanded');
             overlay.classList.remove('active');
-            try { localStorage.setItem(STORAGE_KEY, '0'); } catch(e) {}
+            try { localStorage.setItem(STORAGE_KEY, '0'); } catch (e) { }
         }
 
         // Restore state from localStorage
         let savedOpen = '1';
-        try { savedOpen = localStorage.getItem(STORAGE_KEY) ?? '1'; } catch(e) {}
+        try { savedOpen = localStorage.getItem(STORAGE_KEY) ?? '1'; } catch (e) { }
         if (isNarrow() || savedOpen === '0') {
             close();
         } else {
