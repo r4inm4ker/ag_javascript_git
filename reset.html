@@ -23,7 +23,7 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">The Broken Code</h2>
                 </div>
-                <p id="step-description">You have made two new commits locally on the <code>wip</code> branch. Oh no! You just realized the latest commit completely breaks the build.</p>
+                <p id="step-description">You have made a new commit locally on the <code>wip</code> branch. Oh no! You just realized the commit completely breaks the build.</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary" style="background: #ef4444;">git reset --hard HEAD~1</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
@@ -68,42 +68,38 @@
                         <div class="commit-line main-bg"></div>
                         
                         <!-- Commit 3 -->
-                        <div class="commit-node main-track relative-node" style="z-index: 4">
+                        <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg">
                                 <span>Update shaders</span>
                                 <span class="commit-hash">j7k8l9m</span>
                             </div>
-                            <div class="labels-container">
+                        </div>
+                        <div class="commit-line main-bg"></div>
+
+                        <!-- Commit 4 -->
+                        <div class="commit-node main-track relative-node" style="z-index: 5">
+                            <div class="commit-dot main-bg transition-fade" id="safe-dot"></div>
+                            <div class="commit-msg">
+                                <span class="transition-fade" id="safe-text">Translate cube up</span>
+                                <span class="commit-hash">p4q5r6s</span>
+                            </div>
+                            <div class="labels-container" id="safe-labels">
                                 <span class="branch-tag main-tag">main</span>
                             </div>
                         </div>
                         
-                        <div class="branch-split" style="opacity: 1;"></div>
-                        
-                        <!-- Commit 4 -->
-                        <div class="commit-node wip-track relative-node" style="z-index: 3">
-                            <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
-                            <div class="commit-dot wip-bg transition-fade" id="safe-dot"></div>
-                            <div class="commit-msg">
-                                <span class="transition-fade" id="safe-text">Add new wip</span>
-                                <span class="commit-hash">k8l9m0n</span>
-                            </div>
-                            <div class="labels-container" id="safe-labels">
-                                <!-- Tags will move here on rollback -->
-                            </div>
-                        </div>
-                        <div class="commit-line wip-bg transition-fade" id="broken-line" style="margin-left: calc(1.2rem + 38px);"></div>
+                        <div class="branch-split transition-fade" style="opacity: 1;" id="broken-line"></div>
                         
                         <!-- Commit 5 (BROKEN) -->
-                        <div class="commit-node wip-track relative-node transition-fade" id="broken-commit" style="z-index: 2">
+                        <div class="commit-node wip-track relative-node transition-fade" id="broken-commit" style="z-index: 4">
                             <div style="position: absolute; left: -36px; top: -10px; bottom: -20px; width: 2px; background: var(--accent-secondary); z-index: -1;"></div>
                             <div class="commit-dot wip-bg transition-fade" id="broken-dot"></div>
                             <div class="commit-msg">
                                 <span style="color: #ef4444; font-weight: 600;" id="broken-text" class="transition-fade">
-                                    Refactor wip (BROKEN)
+                                    Scale cube (BROKEN)
                                 </span>
-                                <span class="commit-hash">z9y8x7w</span>
+                                <span class="commit-hash">k8l9m0n</span>
                             </div>
                             <div class="labels-container" id="broken-labels">
                                 <span class="branch-tag wip-tag" id="wip-tag">wip</span>

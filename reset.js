@@ -22,7 +22,7 @@ const steps = [
     {
         num: 1,
         title: "The Broken Code",
-        desc: "You've made two new commits locally on the 'wip' branch. Oh no! You realize the latest commit completely breaks the build and you want to pretend it never happened.",
+        desc: "You've made a new commit locally on the 'wip' branch. Oh no! You realize the commit completely breaks the build and you want to pretend it never happened.",
         actionBtn: "git reset --hard HEAD~1",
         color: "#ef4444" // Red
     },
@@ -113,7 +113,7 @@ btnReset.addEventListener('click', () => {
     brokenLine.style.display = 'block';
     
     // Reset safe
-    safeDot.style.boxShadow = '0 0 10px currentColor';
+    safeDot.style.boxShadow = 'none';
     safeText.style.color = 'var(--text-main)';
     
     setTimeout(() => {
