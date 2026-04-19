@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="app-container">
         <header>
@@ -20,12 +22,13 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">The Remote Repository</h2>
                 </div>
-                <p id="step-description">A remote repository is a version of your mayatools that is hosted on the internet or network somewhere (like GitHub, GitLab, or Bitbucket).</p>
+                <p id="step-description">A remote repository is a version of your mayatools that is hosted on the
+                    internet or network somewhere (like GitHub, GitLab, or Bitbucket).</p>
                 <div class="controls">
                     <button id="btn-next" class="btn primary">Start Animation</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
-                
+
             </section>
 
             <section class="visualization-stage">
@@ -35,18 +38,29 @@
 
                 <div class="repo-container remote-repo" id="remote-repo">
                     <div class="repo-header">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z" />
+                        </svg>
                         <h3>Remote Repository</h3>
                         <div class="repo-meta">
                             <span class="badge">gitlab.com/mayatools</span>
                             <span class="badge branch-badge">
-                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M6 3v12" />
+                                    <circle cx="18" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <path d="M18 9a9 9 0 0 1-9 9" />
+                                </svg>
                                 main
                             </span>
                         </div>
                     </div>
-                    <div style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem;">
-                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
+                    <div
+                        style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
                         <span class="badge code-font" style="background: rgba(255,255,255,0.05);">create_geo.py</span>
                         <span class="badge code-font" style="background: rgba(255,255,255,0.05);">shaders.py</span>
                     </div>
@@ -80,18 +94,29 @@
 
                 <div class="repo-container local-repo" id="local-repo">
                     <div class="repo-header">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                            <rect x="9" y="9" width="6" height="6" />
+                        </svg>
                         <h3>Local Repository</h3>
                         <div class="repo-meta">
-<span class="badge">~/dev/mayatools</span>
+                            <span class="badge">~/dev/mayatools</span>
                             <span class="badge branch-badge">
-                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <svg class="branch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M6 3v12" />
+                                    <circle cx="18" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <path d="M18 9a9 9 0 0 1-9 9" />
+                                </svg>
                                 main
                             </span>
                         </div>
                     </div>
-                    <div id="local-files-container" style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem; opacity: 0; transition: opacity 0.5s ease;">
-                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
+                    <div id="local-files-container"
+                        style="padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 1rem; opacity: 0; transition: opacity 0.5s ease;">
+                        <span
+                            style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Files:</span>
                         <span class="badge code-font" style="background: rgba(255,255,255,0.05);">create_geo.py</span>
                         <span class="badge code-font" style="background: rgba(255,255,255,0.05);">shaders.py</span>
                     </div>
@@ -103,6 +128,7 @@
         </main>
     </div>
     <script src="sidebar.js"></script>
-    <script src="script.js"></script>
+    <script src="clone.js"></script>
 </body>
+
 </html>
