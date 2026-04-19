@@ -35,7 +35,7 @@ const steps = [
     {
         num: 3,
         title: "Squash Complete",
-        desc: "The commits are now perfectly merged into one unified 'Feature: complete polyCube tool' commit with a brand new hash. Your branch is pristine!",
+        desc: "The commits are now perfectly merged into one unified 'translate and scale cube' commit with a brand new hash. Your branch is pristine!",
         actionBtn: "Restart Tutorial",
         color: "#10b981" // Green
     }
@@ -47,51 +47,51 @@ let isAnimating = false;
 updateUI(0);
 
 // For resetting purposes, store original values
-const origText = "WIP: start polyCube script";
+const origText = "tmp: translate cube";
 const origHash = "k8l9m0n";
 
 btnNext.addEventListener('click', () => {
     if (isAnimating) return;
-    
+
     currentStep++;
-    
+
     if (currentStep === 1) {
         isAnimating = true;
         updateUI(currentStep);
         btnNext.disabled = true;
         btnNext.style.opacity = '0.5';
-        
+
         // Wait mechanically
         setTimeout(() => {
             // Squashing animation: The top commit slides completely down over the bottom commit
             // and the line connecting them shrinks to 0 height
-            
+
             topCommit.style.transform = `translateY(40px) scale(0.9)`;
             topCommit.style.opacity = '0.4';
             topCommitFiller.style.opacity = '0';
-            
+
             squashLine.style.transformOrigin = 'bottom';
             squashLine.style.transform = `scaleY(0)`;
             squashLine.style.opacity = '0';
-            
+
             setTimeout(() => {
                 // Flash and unify
                 bottomDot.classList.add('squash-glow');
                 topCommit.style.opacity = '0';
                 topCommit.style.display = 'none';
-                
+
                 // Change text of bottom commit to unified text
-                bottomText.textContent = "Feature: complete polyCube tool";
+                bottomText.textContent = "translate and scale cube";
                 bottomText.style.fontWeight = "600";
                 bottomHash.textContent = "s2q3u4a";
-                
+
                 // Move tags down logically
                 bottomLabels.appendChild(wipTag);
                 bottomLabels.appendChild(headTag);
-                
+
                 setTimeout(() => {
                     bottomDot.classList.remove('squash-glow');
-                    
+
                     isAnimating = false;
                     currentStep++;
                     updateUI(currentStep);
@@ -100,7 +100,7 @@ btnNext.addEventListener('click', () => {
                     btnNext.style.background = '#10b981';
                     btnNext.classList.add('hidden');
                     btnReset.classList.remove('hidden');
-                    
+
                     stepNumber.style.background = steps[currentStep].color;
                     stepNumber.style.boxShadow = `0 0 20px rgba(16, 185, 129, 0.4)`;
                 }, 800);
@@ -111,32 +111,32 @@ btnNext.addEventListener('click', () => {
 
 btnReset.addEventListener('click', () => {
     currentStep = 0;
-    
+
     // Reset DOM elements
     topCommit.style.display = 'flex';
-    
+
     setTimeout(() => {
         topCommit.style.transform = 'translateY(0) scale(1)';
         topCommit.style.opacity = '1';
         topCommitFiller.style.opacity = '1';
-        
+
         squashLine.style.transform = 'scaleY(1)';
         squashLine.style.opacity = '1';
-        
+
         bottomText.textContent = origText;
         bottomText.style.fontWeight = "400";
         bottomHash.textContent = origHash;
-        
+
         document.getElementById('top-labels').appendChild(wipTag);
         document.getElementById('top-labels').appendChild(headTag);
     }, 50);
-    
+
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
     btnNext.style.background = '#a855f7';
-    
+
     updateUI(currentStep);
 });
 
@@ -146,7 +146,7 @@ function updateUI(stepIndex) {
     stepTitle.textContent = step.title;
     stepDescription.textContent = step.desc;
     btnNext.textContent = step.actionBtn;
-    
+
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
 }
