@@ -64,6 +64,7 @@
             display: flex;
             line-height: 1.6;
             padding-right: 1rem;
+            border-left: 3px solid transparent;
         }
 
         .line-num {
@@ -76,6 +77,11 @@
 
         .code-content {
             white-space: pre;
+        }
+
+        .line-del {
+            background: rgba(239, 68, 68, 0.15);
+            border-left: 3px solid #ef4444;
         }
     </style>
 </head>
@@ -209,7 +215,7 @@
                                             <div class="commit-msg">
                                                 <span style="color: #ef4444; font-weight: 600;" id="broken-text"
                                                     class="transition-fade">
-                                                    Scale cube (BROKEN)
+                                                    Scale cube
                                                 </span>
                                                 <span class="commit-hash">k8l9m0n</span>
                                             </div>
