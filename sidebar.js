@@ -16,7 +16,7 @@
         { num: 12, file: 'reset_soft.html',     label: 'Git Reset --soft',       color: '#f59e0b' },
         { num: 13, file: 'squash.html',         label: 'Git Squash',             color: '#a855f7' },
         { num: 14, file: 'cherry_pick.html',    label: 'Git Cherry-Pick',        color: '#06b6d4' },
-        { num: 15, file: 'merge.html',          label: 'Git Merge',              color: '#8b5cf6' },
+        { num: 15, file: 'merge_in_branch.html', label: 'Git Merge',              color: '#8b5cf6' },
         { num: 16, file: 'rebase.html',         label: 'Git Rebase',             color: '#ec4899' },
         { num: 17, file: 'stash.html',          label: 'Git Stash',              color: '#f59e0b' },
         { num: 18, file: 'blame.html',          label: 'Git Blame',              color: '#6366f1' },
