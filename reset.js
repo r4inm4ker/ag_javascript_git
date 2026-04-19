@@ -5,6 +5,9 @@ const stepNumber = document.getElementById('step-number');
 const stepTitle = document.getElementById('step-title');
 const stepDescription = document.getElementById('step-description');
 
+const codeContent = document.getElementById('code-content');
+const fileStatus = document.getElementById('file-status');
+
 const wipTag = document.getElementById('wip-tag');
 const headTag = document.getElementById('head-tag');
 const safeLabels = document.getElementById('safe-labels');
@@ -45,7 +48,30 @@ const steps = [
 let currentStep = 0;
 let isAnimating = false;
 
+const baseCode = `
+<div class="code-line"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content">    cube = cmds.polyCube(n=name)</span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
+`;
+const brokenCode = `
+<div class="code-line line-del transition-fade" id="code-broken-1"><span class="line-num">5</span><span class="code-content">    <span style="color:#ef4444"># This scale breaks the constraints!</span></span></div>
+<div class="code-line line-del transition-fade" id="code-broken-2"><span class="line-num">6</span><span class="code-content">    cmds.scale(100, 100, 100, cube[0])</span></div>
+`;
+const returnCode = `
+<div class="code-line transition-fade" id="code-return"><span class="line-num" id="line-return-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
+function initEditor() {
+    if(!codeContent) return;
+    codeContent.innerHTML = baseCode + brokenCode + returnCode;
+    fileStatus.textContent = 'Broken';
+    fileStatus.style.color = '#ef4444';
+    fileStatus.style.background = 'rgba(239, 68, 68, 0.15)';
+}
+
 updateUI(0);
+initEditor();
 
 btnNext.addEventListener('click', () => {
     if (isAnimating) return;
@@ -78,6 +104,11 @@ btnNext.addEventListener('click', () => {
             brokenText.style.textDecoration = 'line-through';
             brokenText.style.color = 'var(--text-muted)';
             
+            const broken1 = document.getElementById('code-broken-1');
+            const broken2 = document.getElementById('code-broken-2');
+            if (broken1) broken1.style.opacity = '0';
+            if (broken2) broken2.style.opacity = '0';
+            
             setTimeout(() => {
                 brokenCommit.style.opacity = '0';
                 brokenLine.style.opacity = '0';
@@ -86,6 +117,20 @@ btnNext.addEventListener('click', () => {
                     // Finally remove from visual space entirely
                     brokenCommit.style.display = 'none';
                     brokenLine.style.display = 'none';
+                    
+                    const broken1 = document.getElementById('code-broken-1');
+                    const broken2 = document.getElementById('code-broken-2');
+                    const lineNum = document.getElementById('line-return-num');
+                    
+                    if (broken1) broken1.style.display = 'none';
+                    if (broken2) broken2.style.display = 'none';
+                    if (lineNum) lineNum.textContent = '5';
+                    
+                    if (fileStatus) {
+                        fileStatus.textContent = 'Clean';
+                        fileStatus.style.color = '#10b981';
+                        fileStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+                    }
                     
                     isAnimating = false;
                     currentStep++;
@@ -115,6 +160,8 @@ btnReset.addEventListener('click', () => {
     // Reset safe
     safeDot.style.boxShadow = 'none';
     safeText.style.color = 'var(--text-main)';
+    
+    initEditor();
     
     setTimeout(() => {
         brokenCommit.style.opacity = '1';
