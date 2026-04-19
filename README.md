@@ -29,32 +29,17 @@ This project is designed to teach Git concepts visually — no terminal required
 | 17 | **Git Stash** | `stash.html` | Temporarily shelve unfinished changes and restore them later |
 | 18 | **Git Blame** | `blame.html` | Trace which commit last modified each line of a file |
 
-## Project Structure
 
-```
-ag_javascript_git/
-├── index.html                  # Tutorial directory / home page
-├── style.css                   # Shared design system and component styles
-├── sidebar.js                  # Collapsible sidebar navigation (shared across all pages)
-├── <tutorial>.html             # One HTML file per tutorial
-├── <tutorial>.js               # Matching JS logic and animation controller per tutorial
-└── README.md
-```
 
 ## Tech Stack
 
 - **HTML / CSS / Vanilla JavaScript** — No frameworks or build tools required
-- **Google Fonts** (Inter) — Typography
-- **Fira Code** — Monospace font for code editor panels
+
 
 ## Running Locally
 
 Open `index.html` directly in any modern browser. No server required — all pages are standalone static files.
 
-```bash
-# Optional: serve with any static file server
-npx serve .
-```
 
 ## Design
 
