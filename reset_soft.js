@@ -8,6 +8,7 @@ const stepDescription = document.getElementById('step-description');
 const codeContent = document.getElementById('code-content');
 const fileStatus = document.getElementById('file-status');
 const stagedBadge = document.getElementById('staged-badge');
+const gitStatusContent = document.getElementById('git-status-content');
 
 const wipTag = document.getElementById('wip-tag');
 const headTag = document.getElementById('head-tag');
@@ -132,6 +133,10 @@ btnNext.addEventListener('click', () => {
                         fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
                     }
                     if (stagedBadge) stagedBadge.classList.add('visible');
+                    
+                    if (gitStatusContent) {
+                        gitStatusContent.innerHTML = `<span style="color: #10b981">Changes to be committed:</span>\n<span style="color: #10b981; padding-left: 1rem;">modified:   create_geo.py</span>`;
+                    }
 
                     const lineNum = document.getElementById('line-return-num');
                     if (lineNum) lineNum.textContent = '7'; // keep line numbers as-is (staged, not deleted)
@@ -163,6 +168,10 @@ btnReset.addEventListener('click', () => {
     // Reset safe
     safeDot.style.boxShadow = 'none';
     safeText.style.color = 'var(--text-main)';
+
+    if (gitStatusContent) {
+        gitStatusContent.innerHTML = `<span style="color: #10b981">nothing to commit, working tree clean</span>`;
+    }
 
     initEditor();
 
