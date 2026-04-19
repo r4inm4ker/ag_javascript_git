@@ -8,7 +8,7 @@ const stepDescription = document.getElementById('step-description');
 const wipTag = document.getElementById('wip-tag');
 const headTag = document.getElementById('head-tag');
 
-const sourceDot = document.getElementById('source-target-dot');
+const sourceDot = document.querySelector('#source-commit .commit-dot');
 const wipTarget = document.getElementById('wip-target');
 const wipLabels = document.getElementById('wip-labels-base');
 const testRepo = document.getElementById('test-repo');
@@ -17,8 +17,8 @@ const steps = [
     {
         num: 1,
         title: "The Target Commit",
-        desc: "You are checked out on 'wip' (left). Your colleague added a useful coordinate transform code on 'test' (right). You want that specific code without merging their whole branch.",
-        actionBtn: "git cherry-pick z9y8x7w",
+        desc: "You are checked out on 'wip' (left). Your colleague added a useful 'Translate cube up' commit on 'test' (right). You want that specific commit without merging their whole branch.",
+        actionBtn: "git cherry-pick r4s5t6u",
         color: "#06b6d4" // Cyan
     },
     {
@@ -79,7 +79,8 @@ btnNext.addEventListener('click', () => {
         const newWipLabels = document.getElementById('new-wip-labels');
         
         // Highlight source
-        sourceDot.style.boxShadow = '0 0 25px #f59e0b';
+        const sourceCommitDot = document.querySelector('#source-commit .commit-dot');
+        if (sourceCommitDot) sourceCommitDot.style.boxShadow = '0 0 25px #f59e0b';
         
         // Animate dynamic arc directly across panes using our generic calculation algorithm
         animateCherryPick(sourceDot, targetDot, targetNode).then(() => {

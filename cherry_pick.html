@@ -53,9 +53,9 @@
                     <span id="step-number">1</span>
                     <h2 id="step-title">The Target Commit</h2>
                 </div>
-                <p id="step-description">You are checked out on <code>wip</code> (left). Your colleague added a useful coordinate transform code on <code>test</code> (right). You want that specific code without merging their whole branch.</p>
+                <p id="step-description">You are checked out on <code>wip</code> (left). Your colleague added two commits on <code>test</code> (right): "Deform cube" and "Scale cube". You only want the "Scale cube" commit without merging the whole branch.</p>
                 <div class="controls">
-                    <button id="btn-next" class="btn primary" style="background: #06b6d4;">git cherry-pick z9y8x7w</button>
+                    <button id="btn-next" class="btn primary" style="background: #06b6d4;">git cherry-pick r4s5t6u</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
                 
@@ -81,15 +81,31 @@
                     </div>
                     
                     <div class="repo-body tree-container" style="padding-left: 10%;">
-                        <!-- Commit 1 & 2 (Main Base) -->
+                        <!-- Commit 1 - Initial commit -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
                         </div>
                         <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 2 - Add Maya cube tool -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Add Maya cube tool</span><span class="commit-hash">e4f5g6h</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 3 - Update shaders -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Update shaders</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 4 - Translate cube up (main branch) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Translate cube up</span><span class="commit-hash">p4q5r6s</span></div>
                             <div class="labels-container">
                                 <span class="branch-tag main-tag">main</span>
                             </div>
@@ -98,10 +114,10 @@
                         <!-- WIP Split -->
                         <div class="branch-split" style="opacity: 1;"></div>
                         
-                        <!-- Commit 3 (WIP) -->
+                        <!-- Commit 5 - WIP branch start -->
                         <div class="commit-node wip-track relative-node">
                              <div class="commit-dot wip-bg"></div>
-                             <div class="commit-msg"><span class="wip-color">WIP: setup db</span><span class="commit-hash">u8v7w6x</span></div>
+                             <div class="commit-msg"><span class="wip-color">Rotate cube</span><span class="commit-hash">u8v7w6x</span></div>
                              <div class="labels-container" id="wip-labels-base">
                                  <span class="branch-tag branch-tag wip-tag" id="wip-tag">wip</span>
                                  <span class="head-tag" id="head-tag">HEAD</span>
@@ -133,31 +149,50 @@
                     </div>
                     
                     <div class="repo-body tree-container" style="padding-left: 10%;">
-                        <!-- Commit 1 & 2 (Main Base) -->
+                        <!-- Commit 1 - Initial commit -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Initial commit</span><span class="commit-hash">a1b2c3d</span></div>
                         </div>
                         <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 2 - Add Maya cube tool -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Add Maya cube tool</span><span class="commit-hash">e4f5g6h</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 3 - Update shaders -->
                         <div class="commit-node main-track relative-node">
                             <div class="commit-dot main-bg"></div>
                             <div class="commit-msg"><span>Update shaders</span><span class="commit-hash">j7k8l9m</span></div>
+                        </div>
+                        <div class="commit-line main-bg"></div>
+                        
+                        <!-- Commit 4 - Translate cube up (main branch) -->
+                        <div class="commit-node main-track relative-node">
+                            <div class="commit-dot main-bg"></div>
+                            <div class="commit-msg"><span>Translate cube up</span><span class="commit-hash">p4q5r6s</span></div>
+                            <div class="labels-container">
+                                <span class="branch-tag main-tag">main</span>
+                            </div>
                         </div>
                         
                         <!-- Test Split -->
                         <div class="branch-split" style="opacity: 1;"></div>
                         
-                        <!-- Commit 3 (Test) -->
-                        <div class="commit-node wip-track relative-node" id="source-commit">
+                        <!-- Commit 5 - Test branch: deform cube -->
+                        <div class="commit-node wip-track relative-node">
                              <div class="commit-dot test-bg"></div>
-                             <div class="commit-msg"><span class="test-color">Test: add config</span><span class="commit-hash">a9b8c7d</span></div>
+                             <div class="commit-msg"><span class="test-color">Deform cube</span><span class="commit-hash">n1o2p3q</span></div>
                         </div>
                         <div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #f59e0b; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem;"></div>
                         
-                        <!-- Commit 4 (Test - The Target) -->
-                        <div class="commit-node wip-track relative-node">
+                        <!-- Commit 6 - Test branch: scale cube (the one to cherry-pick) -->
+                        <div class="commit-node wip-track relative-node" id="source-commit">
                              <div class="commit-dot test-bg" id="source-target-dot"></div>
-                             <div class="commit-msg"><span class="test-color">Translate cube up</span><span class="commit-hash" id="source-hash">z9y8x7w</span></div>
+                             <div class="commit-msg"><span class="test-color">Scale cube</span><span class="commit-hash" id="source-hash">r4s5t6u</span></div>
                              <div class="labels-container">
                                  <span class="branch-tag test-tag">test</span>
                              </div>
