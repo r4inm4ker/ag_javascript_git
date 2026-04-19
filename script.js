@@ -23,7 +23,7 @@ const steps = [
     {
         num: 2,
         title: "The Local Repository",
-        desc: "A local repository is an empty directory on your computer where you want the mayatools to live. Right now, it doesn't have the files or the Git history from the remote.",
+        desc: "A local repository is a directory on your computer where you want the mayatools to live. Right now, it doesn't have the files or the Git history from the remote.",
         actionBtn: "Action: Run git clone",
         color: "#10b981" // green
     },
@@ -53,25 +53,25 @@ remoteRepo.classList.add('active-repo');
 
 btnNext.addEventListener('click', () => {
     if (isAnimating) return;
-    
+
     currentStepIndex++;
-    
+
     if (currentStepIndex === 1) {
         // Step 2: Show Local Repo
         remoteRepo.classList.remove('active-repo');
         localRepo.classList.remove('dimmed');
         localRepo.classList.add('active-repo');
         updateUI(currentStepIndex);
-    } 
+    }
     else if (currentStepIndex === 2) {
         // Step 3: Trigger Clone Animation
         updateUI(currentStepIndex);
         btnNext.disabled = true;
         btnNext.style.opacity = '0.5';
-        
+
         remoteRepo.classList.add('active-repo');
         localRepo.classList.add('active-repo');
-        
+
         startCloneAnimation().then(() => {
             // Move to step 4 when done
             currentStepIndex++;
@@ -80,7 +80,7 @@ btnNext.addEventListener('click', () => {
             btnNext.style.opacity = '1';
             btnNext.classList.add('hidden');
             btnReset.classList.remove('hidden');
-            
+
             // Highlight step 4 UI special case
             stepNumber.style.background = steps[currentStepIndex].color;
             stepNumber.style.boxShadow = `0 0 20px rgba(16, 185, 129, 0.4)`;
@@ -90,26 +90,26 @@ btnNext.addEventListener('click', () => {
 
 btnReset.addEventListener('click', () => {
     currentStepIndex = 0;
-    
+
     // Reset classes
     localRepo.classList.add('dimmed');
     localRepo.classList.remove('active-repo');
     remoteRepo.classList.add('active-repo');
-    
+
     // Reset local commits
     localCommits.innerHTML = '<div class="empty-msg">Not yet cloned</div>';
     localCommits.classList.add('empty-state');
-    
-    if(localFilesContainer) {
+
+    if (localFilesContainer) {
         localFilesContainer.style.opacity = '0';
     }
-    
+
     // Reset buttons
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
-    
+
     updateUI(currentStepIndex);
 });
 
@@ -119,7 +119,7 @@ function updateUI(stepIndex) {
     stepTitle.textContent = step.title;
     stepDescription.textContent = step.desc;
     btnNext.textContent = step.actionBtn;
-    
+
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
 }
@@ -127,15 +127,15 @@ function updateUI(stepIndex) {
 function startCloneAnimation() {
     return new Promise(resolve => {
         isAnimating = true;
-        
+
         // Remove empty state text
         localCommits.innerHTML = '';
         localCommits.classList.remove('empty-state');
-        
+
         // Simulate sending 3 objects (commits/files)
         const totalItems = 3;
         let itemsFinished = 0;
-        
+
         const commitsHTML = [
             `<div class="commit-node" data-id="c1">
                 <div class="commit-dot"></div>
@@ -155,12 +155,12 @@ function startCloneAnimation() {
                 <div class="commit-hash">j7k8l9m</div>
             </div>`
         ];
-        
+
         // Delay for each particle
         for (let i = 0; i < totalItems; i++) {
             setTimeout(() => {
                 createParticle();
-                
+
                 // After particle journey (approx 1000ms), show commit in local
                 setTimeout(() => {
                     // Add HTML
@@ -173,16 +173,16 @@ function startCloneAnimation() {
                         localCommits.insertAdjacentHTML('beforeend', commitsHTML[3]);
                         localCommits.insertAdjacentHTML('beforeend', commitsHTML[4]);
                     }
-                    
+
                     // Animate the dynamically added commit
                     const nodes = localCommits.querySelectorAll('.commit-node');
                     nodes[i].style.animation = 'popIn 0.5s forwards';
                     nodes[i].style.animationDelay = '0.1s';
-                    
+
                     itemsFinished++;
                     if (itemsFinished === totalItems) {
                         setTimeout(() => {
-                            if(localFilesContainer) {
+                            if (localFilesContainer) {
                                 localFilesContainer.style.opacity = '1';
                             }
                             isAnimating = false;
@@ -190,7 +190,7 @@ function startCloneAnimation() {
                         }, 500); // Wait a final few ms
                     }
                 }, 1000); // Particle transit time
-                
+
             }, i * 1200); // Stagger particles
         }
     });
@@ -200,7 +200,7 @@ function createParticle() {
     const particle = document.createElement('div');
     particle.className = 'clone-particle';
     particle.style.animation = 'transferAnim 1s ease-in-out forwards';
-    
+
     // Add jitter
     const isMobile = window.innerWidth <= 900;
     if (isMobile) {
@@ -210,9 +210,9 @@ function createParticle() {
         const randomY = (Math.random() - 0.5) * 40;
         particle.style.marginTop = `${randomY}px`;
     }
-    
+
     particlesContainer.appendChild(particle);
-    
+
     // Clean up
     setTimeout(() => {
         particle.remove();
