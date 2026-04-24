@@ -43,12 +43,19 @@ const steps = [
         num: 2,
         title: "Creating a Branch",
         desc: "Running 'git checkout -b wip' creates a new branch named 'wip'. We visualize this as a separate Local context on the right to show how branching creates an independent parallel workflow.",
-        actionBtn: "git commit -m 'Implement Maya cmds...'",
-        color: "#a855f7",
-        command: "git commit -m 'Implement Maya cmds...'" // Purple
+        actionBtn: "Write Code",
+        color: "#a855f7" // Purple
     },
     {
         num: 3,
+        title: "Editing the File",
+        desc: "You have added new logic to your file. Git sees this as modified. Next, you will commit these changes directly to the new branch.",
+        actionBtn: "git commit -am 'Translate cube up'",
+        color: "#3b82f6",
+        command: "git commit -am 'Translate cube up'" // Blue
+    },
+    {
+        num: 4,
         title: "Making a Commit",
         desc: "When you make a new commit, it is added to the current branch ('wip'). The 'wip' pointer and HEAD move forward to the new commit in your wip working context, while the 'main' context stays unchanged.",
         actionBtn: "Restart Tutorial",
@@ -64,45 +71,46 @@ updateUI(0);
 
 btnNext.addEventListener('click', () => {
     currentStep++;
-    
+
     if (currentStep === 1) {
         // Step 2: Show branch creation -> Fade in the WIP layout on the right
         localRepoMain.classList.remove('active-repo');
         localRepoMain.classList.add('dimmed');
-        
+
         // Ensure styling triggers
         localRepoWip.style.pointerEvents = 'auto';
         localRepoWip.style.opacity = '1';
         localRepoWip.style.transform = 'scale(1)';
         localRepoWip.classList.add('active-repo');
-        
+
         wipTag.classList.remove('hidden');
         wipTag.classList.add('pop-in');
         headTagWip.classList.remove('hidden');
         headTagWip.classList.add('pop-in');
-        
-        setTimeout(() => {
-            codeContent.insertAdjacentHTML('beforeend', addedCode);
-            fileStatus.innerHTML = 'Modified (Unstaged)';
-            fileStatus.style.color = '#f59e0b';
-            fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
-        }, 500);
-        
+
         updateUI(currentStep);
     } else if (currentStep === 2) {
-        // Step 3: Show new commit branching off
+        // Step 3: Write Code
+        codeContent.insertAdjacentHTML('beforeend', addedCode);
+        fileStatus.innerHTML = 'Modified (Unstaged)';
+        fileStatus.style.color = '#f59e0b';
+        fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+
+        updateUI(currentStep);
+    } else if (currentStep === 3) {
+        // Step 4: Show new commit branching off
         btnNext.classList.add('hidden');
         btnReset.classList.remove('hidden');
-        
+
         wipCommitLine.classList.remove('hidden');
         newCommit.classList.remove('hidden');
-        
+
         // Move HEAD and wip tag to the new commit smoothly
         setTimeout(() => {
             newCommitLabels.appendChild(wipTag);
             newCommitLabels.appendChild(headTagWip);
         }, 100);
-        
+
         fileStatus.innerHTML = 'Unmodified';
         fileStatus.style.color = '#94a3b8';
         fileStatus.style.background = 'rgba(255,255,255,0.1)';
@@ -117,37 +125,37 @@ btnNext.addEventListener('click', () => {
 
 btnReset.addEventListener('click', () => {
     currentStep = 0;
-    
+
     // Step 1: Hide second layout completely
     localRepoMain.classList.add('active-repo');
     localRepoMain.classList.remove('dimmed');
-    
+
     localRepoWip.style.opacity = '0';
     localRepoWip.style.pointerEvents = 'none';
     localRepoWip.style.transform = 'scale(0.95)';
     localRepoWip.classList.remove('active-repo');
-    
+
     // Reset branch tags back to base commit
     baseLabelsWip.appendChild(wipTag);
     baseLabelsWip.appendChild(headTagWip);
-    
+
     wipTag.classList.add('hidden');
     wipTag.classList.remove('pop-in');
     headTagWip.classList.add('hidden');
     headTagWip.classList.remove('pop-in');
-    
+
     // Hide new commit
     wipCommitLine.classList.add('hidden');
     newCommit.classList.add('hidden');
-    
+
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
-    
+
     codeContent.innerHTML = baseCode;
     fileStatus.innerHTML = 'Unmodified';
     fileStatus.style.color = '#94a3b8';
     fileStatus.style.background = 'rgba(255,255,255,0.1)';
-    
+
     updateUI(currentStep);
 });
 
@@ -161,7 +169,7 @@ function updateUI(stepIndex) {
         stepDescription.innerHTML = step.desc;
     }
     btnNext.textContent = step.actionBtn;
-    
+
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
 }
