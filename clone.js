@@ -25,14 +25,16 @@ const steps = [
         title: "The Local Repository",
         desc: "A local repository is a directory on your computer where you want the mayatools to live. Right now, it doesn't have the files or the Git history from the remote.",
         actionBtn: "Action: Run git clone",
-        color: "#10b981" // green
+        color: "#10b981", // green
+        command: "git clone git@gitlab.com:mayatools.git"
     },
     {
         num: 3,
         title: "Cloning... (git clone URL)",
         desc: "When you run 'git clone', Git reaches out to the remote server and securely downloads every file, every branch, and the entire history of the mayatools into your local folder.",
         actionBtn: "Cloning...",
-        color: "#f59e0b" // orange
+        color: "#f59e0b", // orange
+        command: "git clone git@gitlab.com:mayatools.git"
     },
     {
         num: 4,
