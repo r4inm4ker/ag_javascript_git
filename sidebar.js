@@ -30,50 +30,49 @@
         const links = PAGES.map(p => {
             const isActive = p.file === currentFile;
             return `
-            <a href="${p.file}" class="sidebar-link${isActive ? ' active' : ''}">
-                <span class="nav-num">${p.num}</span>
-                <span class="nav-dot" style="background:${p.color};"></span>
-                <span>${p.label}</span>
+            <a href="${p.file}" class="sidebar-link${isActive ? ' active' : ''}" title="${p.label}">
+                <div class="nav-icon-container">
+                    <span class="nav-num">${p.num}</span>
+                    <span class="nav-dot" style="background:${p.color};"></span>
+                </div>
+                <span class="nav-label">${p.label}</span>
             </a>`;
         }).join('');
 
         return `
         <nav class="sidebar" id="sidebar" aria-label="Tutorial navigation">
             <div class="sidebar-header">
-                <a href="index.html" class="sidebar-logo" title="Directory">
+                <a href="index.html" class="sidebar-logo" title="Git Workflow">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
                     <span class="sidebar-logo-text">Git Workflow</span>
                 </a>
-                <button class="sidebar-close" id="sidebar-close" title="Close sidebar" aria-label="Close sidebar">
+                <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" title="Toggle sidebar" aria-label="Toggle sidebar">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                        <polyline points="15 18 9 12 15 6"/>
                     </svg>
                 </button>
             </div>
 
             <div class="sidebar-section-label">Directory</div>
             <div style="padding: 0 0.6rem 0.25rem;">
-                <a href="index.html" class="sidebar-home-link${isIndex ? ' active' : ''}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                    </svg>
-                    All Tutorials
+                <a href="index.html" class="sidebar-home-link${isIndex ? ' active' : ''}" title="All Tutorials">
+                    <div class="nav-icon-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">All Tutorials</span>
                 </a>
             </div>
 
             <div class="sidebar-section-label">Tutorials</div>
             <div class="sidebar-nav">${links}</div>
         </nav>
-        <div class="sidebar-overlay" id="sidebar-overlay"></div>
-        <button class="sidebar-toggle hidden" id="sidebar-toggle" title="Open sidebar" aria-label="Open sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
-        </button>`;
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>`;
     }
 
     // Wrap page body content into sidebar layout
@@ -99,43 +98,47 @@
 
     function setupToggle() {
         const sidebar = document.getElementById('sidebar');
-        const toggle = document.getElementById('sidebar-toggle');
-        const closeBtn = document.getElementById('sidebar-close');
+        const toggleBtn = document.getElementById('sidebar-toggle-btn');
         const overlay = document.getElementById('sidebar-overlay');
         const content = document.getElementById('sidebar-content');
 
-        const STORAGE_KEY = 'git_sidebar_open';
-        // On narrow screens, start collapsed
-        const isNarrow = () => window.innerWidth <= 1100;
+        const STORAGE_KEY = 'git_sidebar_collapsed';
+        // On narrow screens, always start completely collapsed off-screen
+        const isNarrow = () => window.innerWidth <= 900;
 
-        function open() {
-            sidebar.classList.remove('collapsed');
-            toggle.classList.add('hidden');
-            if (!isNarrow() && content) content.classList.remove('expanded');
-            if (isNarrow()) overlay.classList.add('active');
-            try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { }
-        }
-
-        function close() {
-            sidebar.classList.add('collapsed');
-            toggle.classList.remove('hidden');
-            if (content) content.classList.add('expanded');
-            overlay.classList.remove('active');
-            try { localStorage.setItem(STORAGE_KEY, '0'); } catch (e) { }
+        function toggleSidebar() {
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            if (isCollapsed) {
+                sidebar.classList.remove('collapsed');
+                if (content && !isNarrow()) content.classList.remove('expanded');
+                if (isNarrow()) overlay.classList.add('active');
+                try { localStorage.setItem(STORAGE_KEY, '0'); } catch (e) { }
+            } else {
+                sidebar.classList.add('collapsed');
+                if (content && !isNarrow()) content.classList.add('expanded');
+                overlay.classList.remove('active');
+                try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { }
+            }
         }
 
         // Restore state from localStorage
-        let savedOpen = '1';
-        try { savedOpen = localStorage.getItem(STORAGE_KEY) ?? '1'; } catch (e) { }
-        if (isNarrow() || savedOpen === '0') {
-            close();
-        } else {
-            open();
+        let savedCollapsed = '0';
+        try { savedCollapsed = localStorage.getItem(STORAGE_KEY) ?? '0'; } catch (e) { }
+        
+        if (isNarrow()) {
+            sidebar.classList.add('collapsed');
+            if (content) content.classList.add('expanded');
+        } else if (savedCollapsed === '1') {
+            sidebar.classList.add('collapsed');
+            if (content) content.classList.add('expanded');
         }
 
-        closeBtn.addEventListener('click', close);
-        toggle.addEventListener('click', open);
-        overlay.addEventListener('click', close);
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', () => {
+            if (isNarrow() && !sidebar.classList.contains('collapsed')) {
+                toggleSidebar();
+            }
+        });
 
         // Scroll active link into view
         const activeLink = document.querySelector('.sidebar-link.active');
