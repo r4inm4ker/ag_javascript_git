@@ -16,6 +16,9 @@ const testRepo = document.getElementById('test-repo');
 const codeContent = document.getElementById('code-content');
 const fileStatus = document.getElementById('file-status');
 
+const deformCommitNode = document.querySelectorAll('#test-repo .wip-track')[0];
+const scaleCommitNode = document.getElementById('source-commit');
+
 const baseCode = `
 <div class="code-line"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
 <div class="code-line"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
@@ -24,42 +27,73 @@ const baseCode = `
 <div class="code-line"><span class="line-num">5</span><span class="code-content">    cmds.rotate(45, 0, 0, cube[0]) <span style="color:#06b6d4"># rotate</span></span></div>
 `;
 
+const deformViewCode = `
+<div class="code-line line-add" style="background: rgba(245, 158, 11, 0.15); border-left: 3px solid #f59e0b !important;"><span class="line-num">6</span><span class="code-content">    cmds.nonLinear(type='bend', curvature=45, cube[0]) <span style="color:#f59e0b"># deform</span></span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
+const scaleViewCode = `
+<div class="code-line line-add" style="background: rgba(245, 158, 11, 0.15); border-left: 3px solid #f59e0b !important;"><span class="line-num">6</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
+<div class="code-line"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
 const cherryPickedCode = `
-<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">6</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards; background: rgba(6, 182, 212, 0.15); border-left: 3px solid #06b6d4 !important;"><span class="line-num">6</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
 <div class="code-line" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
 `;
 
 const steps = [
     {
         num: 1,
-        title: "The Target Commit",
-        desc: "You are checked out on 'wip' (left). Your colleague added a useful 'Scale cube' commit on 'test' (right). You want that specific commit without merging their whole branch.",
-        actionBtn: "git cherry-pick r4s5t6u",
-        color: "#06b6d4",
-        command: "git cherry-pick r4s5t6u" // Cyan
+        title: "Reviewing Commits: Deform",
+        desc: "You are checked out on 'wip' (left). Your colleague added two commits on 'test' (right). The first is 'Deform cube'. You inspect it, but decide you don't need this change.",
+        actionBtn: "View Next Commit",
+        color: "#a855f7",
+        command: "git show n1o2p3q" // Purple
     },
     {
         num: 2,
-        title: "Cherry-Picking...",
-        desc: "Git mathematically extracts exactly the changes made in that single specific commit, ignores the rest of the 'test' branch, and floats a copy over to your active branch.",
-        actionBtn: "Cherry-Picking...",
-        color: "#f59e0b" // Orange
+        title: "Reviewing Commits: Scale",
+        desc: "The next commit is 'Scale cube'. You realize you DO want this specific commit on your 'wip' branch without taking the 'Deform cube' change.",
+        actionBtn: "git cherry-pick r4s5t6u",
+        color: "#06b6d4",
+        command: "git show r4s5t6u" // Cyan
     },
     {
         num: 3,
+        title: "Cherry-Picking...",
+        desc: "Git mathematically extracts exactly the changes made in that single specific commit, ignores the rest of the 'test' branch, and floats a copy over to your active branch.",
+        actionBtn: "Cherry-Picking...",
+        color: "#f59e0b", // Orange
+        command: "git cherry-pick r4s5t6u"
+    },
+    {
+        num: 4,
         title: "Cherry-Pick Complete",
         desc: "The commit has been successfully applied to your 'wip' branch! It receives a fresh commit signature but contains identical code changes.",
         actionBtn: "Restart Tutorial",
-        color: "#10b981" // Green
+        color: "#10b981", // Green
+        command: "git log --oneline"
     }
 ];
 
 let currentStep = 0;
 let isAnimating = false;
 
-codeContent.innerHTML = baseCode;
+function initStepZero() {
+    testRepo.classList.remove('dimmed');
+    testRepo.classList.add('active-repo');
+    codeContent.innerHTML = baseCode + deformViewCode;
+    fileStatus.innerHTML = 'Viewing n1o2p3q';
+    fileStatus.style.color = '#f59e0b';
+    fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+    fileStatus.style.animation = 'none';
+    deformCommitNode.querySelector('.commit-dot').style.boxShadow = '0 0 25px #f59e0b';
+    scaleCommitNode.querySelector('.commit-dot').style.boxShadow = 'none';
+    updateUI(0);
+}
 
-updateUI(0);
+initStepZero();
 
 btnNext.addEventListener('click', () => {
     if (isAnimating) return;
@@ -67,17 +101,27 @@ btnNext.addEventListener('click', () => {
     currentStep++;
     
     if (currentStep === 1) {
+        // Step 1 -> 2 (Reviewing Commits: Scale)
+        deformCommitNode.querySelector('.commit-dot').style.boxShadow = 'none';
+        scaleCommitNode.querySelector('.commit-dot').style.boxShadow = '0 0 25px #f59e0b';
+        codeContent.innerHTML = baseCode + scaleViewCode;
+        fileStatus.innerHTML = 'Viewing r4s5t6u';
+        updateUI(currentStep);
+        
+    } else if (currentStep === 2) {
+        // Step 2 -> 3 (Cherry-Picking...)
         isAnimating = true;
         updateUI(currentStep);
         btnNext.disabled = true;
         btnNext.style.opacity = '0.5';
         
-        // Temporarily activate the right pane visually
-        testRepo.classList.remove('dimmed');
-        testRepo.classList.add('active-repo');
+        // Reset code editor to 'wip' branch state before cherry-picking
+        codeContent.innerHTML = baseCode;
+        fileStatus.innerHTML = 'Unmodified';
+        fileStatus.style.color = '#94a3b8';
+        fileStatus.style.background = 'rgba(255,255,255,0.1)';
         
         // Setup target hidden node vertically on left track
-        // To match standard wip-track, margin-left: calc(1.2rem + 38px);
         const commitLine = `<div class="commit-line" style="margin-left: calc(1.2rem + 38px); background: #06b6d4; width: 2px; height: 1.5rem; margin-top: 0.2rem; margin-bottom: -0.2rem; display:none;" id="target-line"></div>`;
         const commitNode = `
             <div class="commit-node wip-track relative-node" id="target-commit" style="display:none;">
@@ -97,13 +141,9 @@ btnNext.addEventListener('click', () => {
         const targetDot = document.getElementById('target-dot');
         const newWipLabels = document.getElementById('new-wip-labels');
         
-        // Highlight source
-        const sourceCommitDot = document.querySelector('#source-commit .commit-dot');
-        if (sourceCommitDot) sourceCommitDot.style.boxShadow = '0 0 25px #f59e0b';
-        
         // Animate dynamic arc directly across panes using our generic calculation algorithm
         animateCherryPick(sourceDot, targetDot, targetNode).then(() => {
-            sourceDot.style.boxShadow = '0 0 10px currentColor';
+            scaleCommitNode.querySelector('.commit-dot').style.boxShadow = 'none';
             
             // Pop in new exact line and commit
             targetLine.style.display = 'block';
@@ -143,10 +183,6 @@ btnNext.addEventListener('click', () => {
 btnReset.addEventListener('click', () => {
     currentStep = 0;
     
-    // Dim the test repo again
-    testRepo.classList.add('dimmed');
-    testRepo.classList.remove('active-repo');
-    
     // Reset tags
     wipLabels.appendChild(wipTag);
     wipLabels.appendChild(headTag);
@@ -154,20 +190,13 @@ btnReset.addEventListener('click', () => {
     // Clear dynamic DOM edits
     wipTarget.innerHTML = '';
     
-    // Reset code panel
-    codeContent.innerHTML = baseCode;
-    fileStatus.innerHTML = 'Unmodified';
-    fileStatus.style.color = '#94a3b8';
-    fileStatus.style.background = 'rgba(255,255,255,0.1)';
-    fileStatus.style.animation = 'none';
-    
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
     btnNext.disabled = false;
     btnNext.style.opacity = '1';
     btnNext.style.background = steps[0].color;
     
-    updateUI(currentStep);
+    initStepZero();
 });
 
 function updateUI(stepIndex) {
