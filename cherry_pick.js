@@ -13,11 +13,27 @@ const wipTarget = document.getElementById('wip-target');
 const wipLabels = document.getElementById('wip-labels-base');
 const testRepo = document.getElementById('test-repo');
 
+const codeContent = document.getElementById('code-content');
+const fileStatus = document.getElementById('file-status');
+
+const baseCode = `
+<div class="code-line"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
+<div class="code-line"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
+<div class="code-line"><span class="line-num">3</span><span class="code-content">    cube = cmds.polyCube(n=name)</span></div>
+<div class="code-line"><span class="line-num">4</span><span class="code-content">    cmds.move(0, 5, 0, cube[0]) <span style="color:#a855f7"># translate</span></span></div>
+<div class="code-line"><span class="line-num">5</span><span class="code-content">    cmds.rotate(45, 0, 0, cube[0]) <span style="color:#06b6d4"># rotate</span></span></div>
+`;
+
+const cherryPickedCode = `
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">6</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
+<div class="code-line" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
 const steps = [
     {
         num: 1,
         title: "The Target Commit",
-        desc: "You are checked out on 'wip' (left). Your colleague added a useful 'Translate cube up' commit on 'test' (right). You want that specific commit without merging their whole branch.",
+        desc: "You are checked out on 'wip' (left). Your colleague added a useful 'Scale cube' commit on 'test' (right). You want that specific commit without merging their whole branch.",
         actionBtn: "git cherry-pick r4s5t6u",
         color: "#06b6d4",
         command: "git cherry-pick r4s5t6u" // Cyan
@@ -40,6 +56,8 @@ const steps = [
 
 let currentStep = 0;
 let isAnimating = false;
+
+codeContent.innerHTML = baseCode;
 
 updateUI(0);
 
@@ -94,6 +112,13 @@ btnNext.addEventListener('click', () => {
             targetNode.style.display = 'flex';
             targetNode.style.animation = 'popIn 0.5s ease forwards';
             
+            // Inject cherry-picked code
+            codeContent.insertAdjacentHTML('beforeend', cherryPickedCode);
+            fileStatus.innerHTML = 'Cherry-Picked';
+            fileStatus.style.color = '#06b6d4';
+            fileStatus.style.background = 'rgba(6, 182, 212, 0.15)';
+            fileStatus.style.animation = 'popIn 0.3s ease forwards';
+            
             // Move tracking tags up
             setTimeout(() => {
                 newWipLabels.appendChild(wipTag);
@@ -128,6 +153,13 @@ btnReset.addEventListener('click', () => {
     
     // Clear dynamic DOM edits
     wipTarget.innerHTML = '';
+    
+    // Reset code panel
+    codeContent.innerHTML = baseCode;
+    fileStatus.innerHTML = 'Unmodified';
+    fileStatus.style.color = '#94a3b8';
+    fileStatus.style.background = 'rgba(255,255,255,0.1)';
+    fileStatus.style.animation = 'none';
     
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');

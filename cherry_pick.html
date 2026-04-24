@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Git Cherry-Pick Workflow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
         .wip-color { color: #06b6d4; }
@@ -38,6 +38,12 @@
             border-left-color: #f59e0b;
             border-top-color: #f59e0b;
         }
+
+        .code-area { flex: 1; padding: 1rem 0; font-family: 'Fira Code', monospace; font-size: 0.85rem; overflow-y: auto; color: #e2e8f0; }
+        .code-line { display: flex; line-height: 1.6; padding-right: 1rem; border-left: 3px solid transparent; }
+        .line-num { color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
+        .code-content { white-space: pre; }
+        .line-add { background: rgba(6, 182, 212, 0.15); border-left: 3px solid #06b6d4 !important; }
     </style>
 </head>
 <body>
@@ -61,13 +67,25 @@
                 
             </section>
 
-            <section class="visualization-stage">
+            <section class="visualization-stage" style="gap: 1.5rem;">
                 <!-- Background decorative elements -->
                 <div class="bg-glow remote-glow" style="background: rgba(6, 182, 212, 0.05);"></div>
                 <div class="bg-glow local-glow" style="background: rgba(245, 158, 11, 0.05);"></div>
 
+                <!-- Code Editor -->
+                <div class="repo-container editor-panel" id="editor-panel" style="width: 31%; border-color: rgba(6, 182, 212, 0.3);">
+                    <div class="repo-header" style="background: rgba(6, 182, 212, 0.05); padding: 0.75rem 1rem; flex-direction: row; justify-content: flex-start;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
+                        <span id="file-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.1); border-radius:12px; color:#94a3b8">Unmodified</span>
+                    </div>
+                    <div class="code-area" id="code-content">
+                        <!-- Base code injected via JS -->
+                    </div>
+                </div>
+
                 <!-- LEFT: WIP Branch -->
-                <div class="repo-container active-repo" id="wip-repo" style="box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
+                <div class="repo-container active-repo" id="wip-repo" style="width: 31%; box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);">
                     <div class="repo-header" style="border-bottom-color: rgba(6, 182, 212, 0.2);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #06b6d4;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                         <h3>WIP Workspace</h3>
@@ -129,13 +147,8 @@
                     </div>
                 </div>
                 
-                <!-- Center Transfer Path (optional styling) -->
-                <div class="transfer-path" id="transfer-path">
-                    <div class="transfer-line" style="border-top: 2px dashed rgba(245, 158, 11, 0.3);"></div>
-                </div>
-
                 <!-- RIGHT: Test Branch -->
-                <div class="repo-container test-repo dimmed" id="test-repo" style="box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);">
+                <div class="repo-container test-repo dimmed" id="test-repo" style="width: 31%; box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);">
                     <div class="repo-header" style="border-bottom-color: rgba(245, 158, 11, 0.2);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #f59e0b;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                         <h3>Test Workspace</h3>
