@@ -16,6 +16,20 @@ const wipCommitLine = document.getElementById('wip-commit-line');
 const newCommit = document.getElementById('new-commit');
 const newCommitLabels = document.getElementById('new-commit-labels');
 
+const codeContent = document.getElementById('code-content');
+const fileStatus = document.getElementById('file-status');
+
+const baseCode = `
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">1</span><span class="code-content"><span style="color:#c084fc">import</span> <span style="color:#60a5fa">maya.cmds</span> as cmds</span></div>
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">2</span><span class="code-content"><span style="color:#c084fc">def</span> <span style="color:#60a5fa">create_cube</span>(name):</span></div>
+<div class="code-line" style="border-left: 3px solid transparent;"><span class="line-num">3</span><span class="code-content">    cube = cmds.polyCube(n=name)</span></div>
+`;
+
+const addedCode = `
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards;"><span class="line-num">4</span><span class="code-content">    cmds.move(0, 5, 0, cube[0])</span></div>
+<div class="code-line line-add" style="opacity:0; animation: slideInRight 0.3s forwards 0.1s;"><span class="line-num">5</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+`;
+
 const steps = [
     {
         num: 1,
@@ -44,6 +58,8 @@ const steps = [
 
 let currentStep = 0;
 
+codeContent.innerHTML = baseCode;
+
 updateUI(0);
 
 btnNext.addEventListener('click', () => {
@@ -65,6 +81,13 @@ btnNext.addEventListener('click', () => {
         headTagWip.classList.remove('hidden');
         headTagWip.classList.add('pop-in');
         
+        setTimeout(() => {
+            codeContent.insertAdjacentHTML('beforeend', addedCode);
+            fileStatus.innerHTML = 'Modified (Unstaged)';
+            fileStatus.style.color = '#f59e0b';
+            fileStatus.style.background = 'rgba(245, 158, 11, 0.15)';
+        }, 500);
+        
         updateUI(currentStep);
     } else if (currentStep === 2) {
         // Step 3: Show new commit branching off
@@ -80,6 +103,14 @@ btnNext.addEventListener('click', () => {
             newCommitLabels.appendChild(headTagWip);
         }, 100);
         
+        fileStatus.innerHTML = 'Unmodified';
+        fileStatus.style.color = '#94a3b8';
+        fileStatus.style.background = 'rgba(255,255,255,0.1)';
+        document.querySelectorAll('.line-add').forEach(el => {
+            el.style.borderLeft = '3px solid transparent';
+            el.style.background = 'transparent';
+        });
+
         updateUI(currentStep);
     }
 });
@@ -111,6 +142,11 @@ btnReset.addEventListener('click', () => {
     
     btnNext.classList.remove('hidden');
     btnReset.classList.add('hidden');
+    
+    codeContent.innerHTML = baseCode;
+    fileStatus.innerHTML = 'Unmodified';
+    fileStatus.style.color = '#94a3b8';
+    fileStatus.style.background = 'rgba(255,255,255,0.1)';
     
     updateUI(currentStep);
 });

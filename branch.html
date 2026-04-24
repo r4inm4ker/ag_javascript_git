@@ -5,8 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Git Branch Workflow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .code-area {
+            flex: 1;
+            padding: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-y: auto;
+            color: #e2e8f0;
+        }
+        .code-line { display: flex; line-height: 1.6; padding-right: 1rem;}
+        .line-num { color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
+        .line-add { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
+        .code-content { white-space: pre; }
+    </style>
 </head>
 
 <body>
@@ -32,12 +46,24 @@
 
             </section>
 
-            <section class="visualization-stage">
+            <section class="visualization-stage" style="gap: 1.5rem;">
                 <!-- Background decorative elements -->
                 <div class="bg-glow remote-glow"></div>
                 <div class="bg-glow local-glow"></div>
 
-                <div class="repo-container local-repo active-repo" id="local-repo-main">
+                <!-- Code Editor -->
+                <div class="repo-container editor-panel" id="editor-panel" style="width: 31%; border-color: rgba(96, 165, 250, 0.3);">
+                    <div class="repo-header" style="background: rgba(96, 165, 250, 0.05); padding: 0.75rem 1rem; flex-direction: row; justify-content: flex-start;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
+                        <span id="file-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.1); border-radius:12px; color:#94a3b8">Unmodified</span>
+                    </div>
+                    <div class="code-area" id="code-content">
+                        <!-- Base code injected via JS -->
+                    </div>
+                </div>
+
+                <div class="repo-container local-repo active-repo" id="local-repo-main" style="width: 31%;">
                     <div class="repo-header">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                         <h3>Local Repository (main)</h3>
@@ -80,12 +106,7 @@
                     </div>
                 </div>
 
-                <!-- The Animation Path -->
-                <div class="transfer-path" id="transfer-path">
-                    <div class="transfer-line"></div>
-                </div>
-
-                <div class="repo-container local-repo" id="local-repo-wip" style="border-color: rgba(168, 85, 247, 0.3); opacity: 0; pointer-events: none; transform: scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease;">
+                <div class="repo-container local-repo" id="local-repo-wip" style="width: 31%; border-color: rgba(168, 85, 247, 0.3); opacity: 0; pointer-events: none; transform: scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease;">
                     <div class="repo-header" style="background: rgba(168, 85, 247, 0.05);">
                         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
                         <h3 style="color: #a855f7;">WIP Branch Context</h3>
