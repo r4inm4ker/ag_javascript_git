@@ -73,10 +73,10 @@
                 <div class="bg-glow local-glow" style="background: rgba(245, 158, 11, 0.05);"></div>
 
                 <!-- Code Editor -->
-                <div class="repo-container editor-panel" id="editor-panel" style="width: 31%; border-color: rgba(6, 182, 212, 0.3);">
-                    <div class="repo-header" style="background: rgba(6, 182, 212, 0.05); padding: 0.75rem 1rem; flex-direction: row; justify-content: flex-start;">
+                <div class="editor-panel" id="editor-panel" style="width: 31%; border-color: rgba(6, 182, 212, 0.3); background: var(--bg-panel); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+                    <div class="panel-header" style="padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
+                        <span style="font-family: monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
                         <span id="file-status" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.1); border-radius:12px; color:#94a3b8">Unmodified</span>
                     </div>
                     <div class="code-area" id="code-content">
