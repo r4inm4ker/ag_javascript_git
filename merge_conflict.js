@@ -36,6 +36,7 @@ const steps = [
                <strong style="color:#ec4899;">remote</strong> (origin/main) set
                <code>cmds.move()</code>. Both touch the same lines — Git cannot
                auto-merge.`,
+        command: "git pull origin main"
     },
     {
         num: 2, color: '#ef4444', glow: 'rgba(239,68,68,0.4)',
@@ -47,6 +48,7 @@ const steps = [
                (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>) and their code
                (<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) sit side-by-side, separated
                by <code>=======</code>.`,
+        command: "git status"
     },
     {
         num: 3, color: '#f59e0b', glow: 'rgba(245,158,11,0.4)',
@@ -65,6 +67,7 @@ const steps = [
         desc: `You kept <strong style="color:#ec4899;">both transformations</strong>
                so the cube translates and rotates.
                All conflict markers removed — the working copy is clean again.`,
+        command: 'git add geo/create_geo.py && git commit'
     },
     {
         num: 5, color: '#10b981', glow: 'rgba(16,185,129,0.4)',
@@ -220,7 +223,11 @@ function setViewerBorder(color, shadow) {
 function applyStep(s) {
     stepNumber.textContent = s.num;
     stepTitle.textContent = s.title;
-    stepDesc.innerHTML = s.desc;
+    if (s.command) {
+        stepDesc.innerHTML = s.desc + '<br><br><code class="command-code">$ ' + s.command + '</code>';
+    } else {
+        stepDesc.innerHTML = s.desc;
+    }
     stepBlock.style.background = s.color;
     stepBlock.style.boxShadow = `0 0 20px ${s.glow}`;
     btnNext.style.background = s.color;
