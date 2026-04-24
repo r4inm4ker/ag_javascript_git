@@ -33,8 +33,9 @@ const deformViewCode = `
 `;
 
 const scaleViewCode = `
-<div class="code-line line-add" style="background: rgba(245, 158, 11, 0.15); border-left: 3px solid #f59e0b !important;"><span class="line-num">6</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
-<div class="code-line"><span class="line-num">7</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
+<div class="code-line"><span class="line-num">6</span><span class="code-content">    cmds.nonLinear(type='bend', curvature=45, cube[0]) <span style="color:#f59e0b"># deform</span></span></div>
+<div class="code-line line-add" style="background: rgba(245, 158, 11, 0.15); border-left: 3px solid #f59e0b !important;"><span class="line-num">7</span><span class="code-content">    cmds.scale(10, 10, 10, cube[0]) <span style="color:#f59e0b"># scale</span></span></div>
+<div class="code-line"><span class="line-num">8</span><span class="code-content">    <span style="color:#c084fc">return</span> cube</span></div>
 `;
 
 const cherryPickedCode = `
