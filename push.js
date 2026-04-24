@@ -23,7 +23,8 @@ const steps = [
         title: "The Local Repository",
         desc: "You have created the 'Translate cube up' commit locally. The remote repository does not have it yet.",
         actionBtn: "git push origin main",
-        color: "#a855f7" // Purple
+        color: "#a855f7",
+        command: "git push origin main" // Purple
     },
     {
         num: 2,
@@ -110,7 +111,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

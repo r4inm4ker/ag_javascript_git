@@ -22,14 +22,16 @@ const steps = [
         title: "The Local Repository",
         desc: "You are currently on the 'main' branch. The HEAD pointer indicates your current working context.",
         actionBtn: "git checkout -b wip",
-        color: "#10b981" // Green
+        color: "#10b981",
+        command: "git checkout -b wip" // Green
     },
     {
         num: 2,
         title: "Creating a Branch",
         desc: "Running 'git checkout -b wip' creates a new branch named 'wip'. We visualize this as a separate Local context on the right to show how branching creates an independent parallel workflow.",
         actionBtn: "git commit -m 'Implement Maya cmds...'",
-        color: "#a855f7" // Purple
+        color: "#a855f7",
+        command: "git commit -m 'Implement Maya cmds...'" // Purple
     },
     {
         num: 3,
@@ -117,7 +119,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

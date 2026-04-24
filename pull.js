@@ -21,7 +21,8 @@ const steps = [
         title: "Your Local Workspace",
         desc: "You cloned the repo earlier and made a local commit editing shaders.py. Meanwhile, Alice pushed 'Translate cube up' to remote main. Your histories have diverged — run git pull to merge them.",
         actionBtn: "git pull origin main",
-        color: "#10b981"
+        color: "#10b981",
+        command: "git pull origin main"
     },
     {
         num: 2,
@@ -105,7 +106,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
 
     stepNumber.style.background = step.color;

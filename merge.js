@@ -18,7 +18,8 @@ const steps = [
         title: "The Diverged State",
         desc: "You are on 'wip' (left) which has an older unique commit. The 'main' branch (right) has a newer unique commit. You need to merge main into wip.",
         actionBtn: "git merge main",
-        color: "#8b5cf6" // Purple
+        color: "#8b5cf6",
+        command: "git merge main" // Purple
     },
     {
         num: 2,
@@ -160,7 +161,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

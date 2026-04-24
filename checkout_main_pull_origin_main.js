@@ -16,14 +16,16 @@ const steps = [
         title: "WIP Branch Complete",
         desc: "Your WIP was merged into main online via a Merge Request. Locally, you are still on the wip branch. First, you need to switch back to the main branch.",
         actionBtn: "git checkout main",
-        color: "#10b981"
+        color: "#10b981",
+        command: "git checkout main"
     },
     {
         num: 2,
         title: "Switched Context",
         desc: "You are back on the main branch locally. Notice that your local main branch is behind the remote, as it lacks the new commits introduced online.",
         actionBtn: "git pull origin main",
-        color: "#3b82f6"
+        color: "#3b82f6",
+        command: "git pull origin main"
     },
     {
         num: 3,
@@ -131,7 +133,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

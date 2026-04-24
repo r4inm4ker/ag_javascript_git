@@ -24,7 +24,8 @@ const steps = [
         title: "The Broken Code",
         desc: "You've made two new commits locally on the 'wip' branch. Oh no! You realize the latest commit completely breaks the build and you want to pretend it never happened.",
         actionBtn: "git reset --hard HEAD~1",
-        color: "#ef4444" // Red
+        color: "#ef4444",
+        command: "git reset --hard HEAD~1" // Red
     },
     {
         num: 2,
@@ -143,7 +144,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

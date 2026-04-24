@@ -18,7 +18,8 @@ const steps = [
         title: "The Local WIP",
         desc: "You have created a new branch called 'wip' locally and made a new commit. The remote repository knows nothing about it yet.",
         actionBtn: "git push origin wip",
-        color: "#10b981" // Green
+        color: "#10b981",
+        command: "git push origin wip" // Green
     },
     {
         num: 2,
@@ -99,7 +100,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

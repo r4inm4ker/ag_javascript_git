@@ -24,7 +24,8 @@ const steps = [
         title: "Staging the Changes",
         desc: "You've securely saved changes, and Git sees the file as 'modified'. To include these in your next commit, you must stage them to the index using 'git add'.",
         actionBtn: "git add create_geo.py",
-        color: "#f59e0b" // Orange
+        color: "#f59e0b",
+        command: "git add create_geo.py" // Orange
     },
     {
         num: 3,
@@ -106,7 +107,11 @@ function updateUI(idx) {
     const step = steps[idx];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;

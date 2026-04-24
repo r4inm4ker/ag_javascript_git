@@ -21,7 +21,8 @@ const steps = [
         title: "The Diverged State",
         desc: "You are working on 'wip' (left). Meanwhile, a new commit was merged into 'main' (right). The base of your work is now outdated.",
         actionBtn: "git rebase main",
-        color: "#06b6d4" // Cyan
+        color: "#06b6d4",
+        command: "git rebase main" // Cyan
     },
     {
         num: 2,
@@ -151,7 +152,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

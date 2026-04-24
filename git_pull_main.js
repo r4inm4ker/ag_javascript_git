@@ -18,7 +18,8 @@ const steps = [
         title: "The Colleague's Workspace",
         desc: "Imagine Jharyono's laptop. They cloned the repository earlier and are on commit 'j7k8l9m'. They don't have the new commit that Alice just pushed.",
         actionBtn: "git pull origin main",
-        color: "#10b981" // Green
+        color: "#10b981",
+        command: "git pull origin main" // Green
     },
     {
         num: 2,
@@ -92,7 +93,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

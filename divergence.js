@@ -24,7 +24,8 @@ const steps = [
         title: "The Problem Scope",
         desc: "You have committed new work locally on 'main' (left). However, someone else has pushed a different commit to the remote 'main' (right). The histories have completely diverged.",
         actionBtn: "git push",
-        color: "#3b82f6" // Blue
+        color: "#3b82f6",
+        command: "git push" // Blue
     },
     {
         num: 2,
@@ -131,7 +132,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepIndicatorBlock.style.background = step.color;

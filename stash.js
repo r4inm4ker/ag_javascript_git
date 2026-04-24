@@ -28,21 +28,24 @@ const steps = [
         title: "Uncommitted Changes",
         desc: "You started experimentally drafting Maya cmds logic, but suddenly you need to switch branches to fix an urgent bug! You aren't ready to commit this incomplete code.",
         actionBtn: "git stash",
-        color: "#f59e0b" // Orange
+        color: "#f59e0b",
+        command: "git stash" // Orange
     },
     {
         num: 3,
         title: "Safely Stashed",
         desc: "Running `git stash` isolates your uncommitted changes and stores them safely in an isolated stack. Your working directory is instantly completely clean again, ready to switch branches or fix bugs.",
         actionBtn: "git merge main",
-        color: "#3b82f6" // Blue
+        color: "#3b82f6",
+        command: "git merge main" // Blue
     },
     {
         num: 4,
         title: "Merging the Bugfix",
         desc: "With your working directory newly clean, you freely merged the hotfix from `main` into your local `wip` branch history without any conflicting unsaved files blocking you.",
         actionBtn: "git stash pop",
-        color: "#10b981" // Green
+        color: "#10b981",
+        command: "git stash pop" // Green
     },
     {
         num: 5,
@@ -152,7 +155,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;

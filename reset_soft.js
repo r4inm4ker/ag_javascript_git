@@ -29,7 +29,8 @@ const steps = [
         title: "The Scale Commit",
         desc: "You committed a 'Scale cube' change to the 'wip' branch but realized the commit message needs to be fixed. You want to undo the commit but keep your changes staged and ready.",
         actionBtn: "git reset --soft HEAD~1",
-        color: "#f59e0b" // Amber
+        color: "#f59e0b",
+        command: "git reset --soft HEAD~1" // Amber
     },
     {
         num: 2,
@@ -202,7 +203,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
 
     stepNumber.style.background = step.color;

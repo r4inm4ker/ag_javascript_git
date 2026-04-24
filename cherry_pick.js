@@ -19,7 +19,8 @@ const steps = [
         title: "The Target Commit",
         desc: "You are checked out on 'wip' (left). Your colleague added a useful 'Translate cube up' commit on 'test' (right). You want that specific commit without merging their whole branch.",
         actionBtn: "git cherry-pick r4s5t6u",
-        color: "#06b6d4" // Cyan
+        color: "#06b6d4",
+        command: "git cherry-pick r4s5t6u" // Cyan
     },
     {
         num: 2,
@@ -141,7 +142,11 @@ function updateUI(stepIndex) {
     const step = steps[stepIndex];
     stepNumber.textContent = step.num;
     stepTitle.textContent = step.title;
-    stepDescription.textContent = step.desc;
+    if (step.command) {
+        stepDescription.innerHTML = step.desc + '<br><br><code class="command-code">$ ' + step.command + '</code>';
+    } else {
+        stepDescription.innerHTML = step.desc;
+    }
     btnNext.textContent = step.actionBtn;
     
     stepNumber.style.background = step.color;
