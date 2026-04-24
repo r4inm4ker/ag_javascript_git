@@ -52,21 +52,24 @@ const steps = [
         title: "Commit 1: Translate",
         desc: "First, you made a WIP commit to translate the Maya cube.",
         actionBtn: "Next Commit",
-        color: "#a855f7" // Purple
+        color: "#a855f7", // Purple
+        command: "git show HEAD~1"
     },
     {
         num: 2,
         title: "Commit 2: Scale",
         desc: "Later, you added a second commit to scale the cube.",
         actionBtn: "Review History",
-        color: "#a855f7" // Purple
+        color: "#a855f7", // Purple
+        command: "git show HEAD"
     },
     {
         num: 3,
         title: "The Messy History",
         desc: "You've been working on the 'wip' branch and made several small 'work in progress' commits. Before pushing, you want to clean up your history by combining (squashing) them into one.",
         actionBtn: "Interactive Rebase",
-        color: "#a855f7" // Purple
+        color: "#a855f7", // Purple
+        command: "git rebase -i HEAD~2"
     },
     {
         num: 4,
@@ -76,11 +79,12 @@ const steps = [
         color: "#f59e0b" // Orange
     },
     {
-        num: 3,
+        num: 5,
         title: "Squash Complete",
         desc: "The commits are now perfectly merged into one unified 'translate and scale cube' commit with a brand new hash. Your branch is pristine!",
         actionBtn: "Restart Tutorial",
-        color: "#10b981" // Green
+        color: "#10b981", // Green
+        command: "git log --oneline"
     }
 ];
 
