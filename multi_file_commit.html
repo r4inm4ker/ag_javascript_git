@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-File Commits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .mf-layout {
+            display: flex;
+            gap: 2rem;
+            height: 75vh;
+            min-height: 600px;
+        }
+
+        .mf-visual {
+            flex: 1;
+            display: flex;
+            gap: 1.5rem;
+            min-width: 0;
+        }
+
+        /* File tree + code split */
+        .files-code-area {
+            flex: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-panel);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header {
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* File tree strip */
+        .file-tree {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .file-tab {
+            padding: 0.55rem 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .file-tab:hover { background: rgba(255,255,255,0.04); }
+
+        .file-tab.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-main);
+        }
+
+        .file-tab .ft-badge {
+            font-size: 0.62rem;
+            padding: 0.05rem 0.35rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .ft-badge.new { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .ft-badge.mod { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .ft-badge.del { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .ft-badge.ren { background: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+
+        /* Code area */
+        .code-area {
+            flex: 1;
+            padding: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow: auto;
+            color: #e2e8f0;
+        }
+
+        .code-line {
+            display: flex;
+            line-height: 1.7;
+            padding-right: 1rem;
+            border-left: 3px solid transparent;
+            width: fit-content;
+            min-width: 100%;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .line-num {
+            flex-shrink: 0;
+            color: #475569;
+            width: 2.5rem;
+            text-align: right;
+            margin-right: 1rem;
+            user-select: none;
+        }
+
+        .code-content { white-space: pre; }
+        .line-add { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
+        .line-del { background: rgba(239, 68, 68, 0.12); border-left: 3px solid #ef4444; text-decoration: line-through; opacity: 0.6; }
+        .line-mod { background: rgba(245, 158, 11, 0.12); border-left: 3px solid #f59e0b; }
+
+        /* Deleted file overlay */
+        .deleted-overlay {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #ef4444;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .deleted-overlay svg { width: 48px; height: 48px; opacity: 0.6; }
+        .deleted-overlay p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* New file overlay */
+        .new-overlay {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #10b981;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .new-overlay svg { width: 48px; height: 48px; opacity: 0.6; }
+
+        /* Commit summary panel */
+        .commit-panel {
+            flex: 0.5;
+            background: var(--bg-panel);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .commit-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .cm-card {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .cm-card:hover { border-color: rgba(255,255,255,0.2); }
+        .cm-card.active { border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.08); }
+
+        .cm-hash {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .cm-msg {
+            font-size: 0.88rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .cm-files {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .cm-file-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .cm-file-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .diff-legend {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .diff-legend span { display: flex; align-items: center; gap: 0.3rem; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>Understanding <code>multi-file commits</code></p>
+        </header>
+
+        <main>
+            <div class="mf-layout">
+                <section class="explanation-panel" style="flex: 0 0 310px; padding: 2rem 1.5rem;">
+                    <div class="step-indicator">
+                        <span id="step-number" style="background: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">1</span>
+                        <h2 id="step-title">Starting Point</h2>
+                    </div>
+                    <p id="step-description">Your project has a single file so far. Each commit can touch <strong>multiple files</strong> at once — adding new ones, modifying existing ones, or even deleting files that are no longer needed.</p>
+                    <div class="controls">
+                        <button id="btn-next" class="btn primary" style="background: #10b981;">Next Commit →</button>
+                        <button id="btn-prev" class="btn secondary hidden">← Previous</button>
+                    </div>
+                </section>
+
+                <div class="mf-visual">
+                    <div class="files-code-area">
+                        <div class="panel-header">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            <span id="active-file-name" style="font-family:'Fira Code',monospace;font-size:0.85rem;flex-grow:1;">create_geo.py</span>
+                            <span id="file-status" style="font-size:0.72rem;padding:0.15rem 0.5rem;background:rgba(96,165,250,0.15);border-radius:12px;color:#60a5fa;">Commit 1 of 4</span>
+                        </div>
+                        <div class="file-tree" id="file-tree">
+                            <!-- tabs injected by JS -->
+                        </div>
+                        <div class="code-area" id="code-content">
+                            <!-- code injected by JS -->
+                        </div>
+                        <div class="diff-legend">
+                            <span><div class="legend-dot" style="background:#10b981;"></div> Added</span>
+                            <span><div class="legend-dot" style="background:#ef4444;"></div> Deleted</span>
+                            <span><div class="legend-dot" style="background:#f59e0b;"></div> Modified</span>
+                        </div>
+                    </div>
+
+                    <div class="commit-panel">
+                        <div class="panel-header" style="background:rgba(16,185,129,0.05);border-bottom:1px solid rgba(16,185,129,0.2);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span style="font-weight:600;color:#10b981;font-size:0.9rem;">Commits</span>
+                        </div>
+                        <div class="commit-body" id="commit-body">
+                            <!-- commit cards injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="multi_file_commit.js"></script>
+</body>
+
+</html>
