@@ -39,9 +39,9 @@
             border-top-color: #f59e0b;
         }
 
-        .code-area { flex: 1; padding: 1rem 0; font-family: 'Fira Code', monospace; font-size: 0.85rem; overflow-y: auto; color: #e2e8f0; }
-        .code-line { display: flex; line-height: 1.6; padding-right: 1rem; border-left: 3px solid transparent; }
-        .line-num { color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
+        .code-area { flex: 1; padding: 1rem 0; font-family: 'Fira Code', monospace; font-size: 0.85rem; overflow: auto; color: #e2e8f0; }
+        .code-line { display: flex; line-height: 1.6; padding-right: 1rem; border-left: 3px solid transparent; width: fit-content; min-width: 100%; }
+        .line-num { flex-shrink: 0; color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
         .code-content { white-space: pre; }
         .line-add { background: rgba(6, 182, 212, 0.15); border-left: 3px solid #06b6d4 !important; }
     </style>

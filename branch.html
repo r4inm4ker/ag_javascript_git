@@ -13,11 +13,11 @@
             padding: 1rem 0;
             font-family: 'Fira Code', monospace;
             font-size: 0.85rem;
-            overflow-y: auto;
+            overflow: auto;
             color: #e2e8f0;
         }
-        .code-line { display: flex; line-height: 1.6; padding-right: 1rem;}
-        .line-num { color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
+        .code-line { display: flex; line-height: 1.6; padding-right: 1rem; width: fit-content; min-width: 100%; }
+        .line-num { flex-shrink: 0; color: #475569; width: 2.5rem; text-align: right; margin-right: 1rem; user-select: none; }
         .line-add { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
         .code-content { white-space: pre; }
     </style>

@@ -58,7 +58,7 @@
             padding: 1rem 0;
             font-family: 'Fira Code', monospace;
             font-size: 0.85rem;
-            overflow-y: auto;
+            overflow: auto;
             color: #e2e8f0;
         }
 
@@ -67,9 +67,12 @@
             line-height: 1.6;
             padding-right: 1rem;
             border-left: 3px solid transparent;
+            width: fit-content;
+            min-width: 100%;
         }
 
         .line-num {
+            flex-shrink: 0;
             color: #475569;
             width: 2.5rem;
             text-align: right;
