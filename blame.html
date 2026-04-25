@@ -4,123 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Git Blame Workflow</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional styles specifically for the Blame page to handle code lines */
-        .blame-container {
+        /* Author color scheme */
+        .author-a { color: #06b6d4; }
+        .author-b { color: #f59e0b; }
+
+        /* Code editor panel */
+        .editor-panel {
+            background: var(--bg-panel);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-        }
-        .blame-line {
-            display: flex;
-            gap: 1rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        .blame-line:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--border-color);
-        }
-        .blame-line.active {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--accent-primary);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .blame-list {
+        .panel-header {
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-area {
+            flex: 1;
+            padding: 0.5rem 0;
             font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            width: 100%;
+            font-size: 0.82rem;
+            overflow: auto;
+            color: #e2e8f0;
         }
-        .blame-row {
+
+        .code-line {
             display: flex;
-            gap: 0;
-            border-radius: 4px;
-            transition: all 0.2s ease;
+            line-height: 1.7;
+            padding-right: 1rem;
+            border-left: 3px solid transparent;
+            width: fit-content;
+            min-width: 100%;
             cursor: pointer;
-            border: 1px solid transparent;
-            overflow: hidden;
+            transition: background 0.2s ease;
         }
-        .blame-row:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .blame-row.active {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: var(--accent-primary);
-        }
-        .blame-row .author-col {
-            width: 120px;
-            padding: 0.2rem 0.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--accent-primary);
-            font-weight: 600;
+
+        .code-line:hover { background: rgba(255, 255, 255, 0.04); }
+        .code-line.active { background: rgba(99, 102, 241, 0.12); border-left-color: #6366f1; }
+
+        .line-num {
+            flex-shrink: 0;
+            color: #475569;
+            width: 2rem;
             text-align: right;
-            border-right: 1px solid var(--border-color);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .blame-row .code-col {
-            padding: 0.2rem 0.5rem;
-            flex-grow: 1;
-            white-space: pre-wrap;
-            color: var(--text-main);
-        }
-        .line-number {
-            color: var(--text-muted);
-            width: 20px;
-            text-align: right;
+            margin-right: 0.8rem;
             user-select: none;
         }
-        .line-content {
-            flex-grow: 1;
-            white-space: pre-wrap;
+
+        .code-content { white-space: pre; flex-grow: 1; }
+
+        /* Blame annotation columns */
+        .blame-author {
+            flex-shrink: 0;
+            width: 6.5rem;
+            text-align: right;
+            padding-right: 0.6rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .blame-info-panel {
+
+        .blame-hash {
+            flex-shrink: 0;
+            width: 5rem;
+            color: #475569;
+            font-size: 0.72rem;
+            padding-right: 0.6rem;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            margin-right: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .blame-visible .blame-author,
+        .blame-visible .blame-hash {
+            opacity: 1;
+        }
+
+        /* Commit detail panel */
+        .detail-panel {
+            background: var(--bg-panel);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .detail-body {
+            flex: 1;
+            padding: 1.2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .detail-empty {
+            flex: 1;
+            display: flex;
             align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-style: italic;
             text-align: center;
             padding: 2rem;
-            gap: 1.5rem;
         }
-        .commit-card {
-            background: rgba(0, 0, 0, 0.3);
+
+        .detail-card {
+            background: rgba(0, 0, 0, 0.25);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 300px;
-            transition: all 0.5s ease;
+            border-radius: 10px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
+            transition: all 0.35s ease;
         }
-        .commit-card.visible {
+
+        .detail-card.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .commit-card h4 {
-            color: var(--accent-primary);
-            margin-bottom: 0.5rem;
+
+        .detail-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
         }
-        .commit-card .meta {
-            font-size: 0.8rem;
+
+        .detail-field .label {
             color: var(--text-muted);
-            margin-bottom: 1rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            min-width: 55px;
         }
-        .commit-card .author {
-            font-weight: 600;
+
+        .detail-field .value {
             color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .detail-field .hash-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            background: rgba(0,0,0,0.3);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .author-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.72rem;
+            flex-shrink: 0;
+        }
+
+        .avatar-a { background: rgba(6, 182, 212, 0.2); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
+        .avatar-b { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+        .detail-msg {
+            font-size: 0.92rem;
+            font-weight: 600;
+            padding: 0.6rem 0.8rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 6px;
+            border-left: 3px solid #6366f1;
+        }
+
+        /* Legend */
+        .author-legend {
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .author-legend span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -128,53 +229,65 @@
     <div class="app-container">
         <header>
             <h1>Git Workflow</h1>
-            <p>Understanding <code style="color: var(--accent-secondary);">git blame</code></p>
+            <p>Understanding <code style="color: #6366f1;">git blame</code></p>
         </header>
 
         <main>
             <section class="explanation-panel">
                 <div class="step-indicator">
-                    <span id="step-number">1</span>
-                    <h2 id="step-title">What is Git Blame?</h2>
+                    <span id="step-number" style="background: #6366f1; box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);">1</span>
+                    <h2 id="step-title">The File</h2>
                 </div>
-                <p id="step-description"><code>git blame</code> allows you to examine a file line-by-line to see exactly who last modified each line and in which commit.</p>
+                <p id="step-description">You're looking at <code>create_geo.py</code> — a Maya tools script edited by two developers: <strong style="color:#06b6d4">Aisha</strong> and <strong style="color:#f59e0b">Ben</strong>. Something is wrong with a line and you need to find out who wrote it.</p>
                 <div class="controls">
-                    <button id="btn-next" class="btn primary">Run git blame</button>
+                    <button id="btn-next" class="btn primary" style="background: #6366f1;">git blame create_geo.py</button>
                     <button id="btn-reset" class="btn secondary hidden">Reset</button>
                 </div>
             </section>
 
-            <section class="visualization-stage">
-                <div class="repo-container" id="file-repo">
-                    <div class="repo-header">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-                        <h3>Source Code</h3>
-                        <div class="repo-meta">
-                        <span class="badge">src/main.py</span>
-                        </div>
+            <section class="visualization-stage" style="gap: 1.5rem;">
+                <div class="bg-glow remote-glow" style="background: rgba(99, 102, 241, 0.05);"></div>
+                <div class="bg-glow local-glow" style="background: rgba(245, 158, 11, 0.05);"></div>
+
+                <!-- Code Editor with blame annotations -->
+                <div class="editor-panel" id="editor-panel" style="width: 60%;">
+                    <div class="panel-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span style="font-family: 'Fira Code', monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
+                        <span id="file-status" style="font-size: 0.72rem; padding: 0.15rem 0.5rem; background: rgba(255,255,255,0.1); border-radius:12px; color:#94a3b8">Source</span>
                     </div>
-                    <div class="repo-body" id="file-content">
-                        <div class="blame-container" id="code-lines">
-                            <!-- Lines will be injected here -->
-                        </div>
+                    <div class="code-area" id="code-content">
+                        <!-- Lines injected by JS -->
+                    </div>
+                    <div class="author-legend">
+                        <span><div class="legend-dot" style="background: #06b6d4;"></div> Aisha</span>
+                        <span><div class="legend-dot" style="background: #f59e0b;"></div> Ben</span>
                     </div>
                 </div>
 
-                <div class="repo-container" id="blame-repo">
-                    <div class="repo-header">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <h3>Blame Analysis</h3>
-                        <div class="repo-meta">
-                            <span class="badge">Line Details</span>
-                        </div>
+                <!-- Commit Detail panel -->
+                <div class="detail-panel" id="detail-panel" style="width: 36%;">
+                    <div class="panel-header" style="background: rgba(99, 102, 241, 0.05); border-bottom: 1px solid rgba(99, 102, 241, 0.2);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span style="font-weight: 600; color: #6366f1; font-size: 0.9rem;">Blame Details</span>
                     </div>
-                    <div class="repo-body blame-info-panel" id="blame-details">
-                        <p class="empty-state">Select a line to see who changed it</p>
-                        <div id="commit-card" class="commit-card">
-                            <h4>Commit Info</h4>
-                            <div class="meta" id="blame-hash">hash: a1b2c3d</div>
-                            <div class="author" id="blame-author">Author Name</div>
-                            <div class="meta" id="blame-date" style="margin-top: 0.5rem;">2023-10-01</div>
+                    <div class="detail-body" id="detail-body">
+                        <div class="detail-empty" id="detail-empty">Click a line to see who wrote it and when</div>
+                        <div class="detail-card" id="detail-card">
+                            <div class="detail-field">
+                                <span class="label">Author</span>
+                                <div class="author-avatar" id="detail-avatar">A</div>
+                                <span class="value" id="detail-author">—</span>
+                            </div>
+                            <div class="detail-field">
+                                <span class="label">Commit</span>
+                                <span class="hash-value" id="detail-hash">—</span>
+                            </div>
+                            <div class="detail-field">
+                                <span class="label">Date</span>
+                                <span class="value" id="detail-date">—</span>
+                            </div>
+                            <div class="detail-msg" id="detail-msg">—</div>
                         </div>
                     </div>
                 </div>
