@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commit History — Line Changes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .history-layout {
+            display: flex;
+            gap: 2rem;
+            height: 75vh;
+            min-height: 600px;
+        }
+
+        .history-visual {
+            flex: 1;
+            display: flex;
+            gap: 1.5rem;
+            min-width: 0;
+        }
+
+        /* Code Editor Panel */
+        .editor-panel {
+            flex: 1.4;
+            background: var(--bg-panel);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel-header {
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-area {
+            flex: 1;
+            padding: 1rem 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow: auto;
+            color: #e2e8f0;
+        }
+
+        .code-line {
+            display: flex;
+            line-height: 1.7;
+            padding-right: 1rem;
+            border-left: 3px solid transparent;
+            width: fit-content;
+            min-width: 100%;
+            transition: background 0.4s ease, border-color 0.4s ease, opacity 0.4s ease;
+        }
+
+        .line-num {
+            flex-shrink: 0;
+            color: #475569;
+            width: 2.5rem;
+            text-align: right;
+            margin-right: 1rem;
+            user-select: none;
+        }
+
+        .code-content { white-space: pre; }
+
+        .line-add {
+            background: rgba(16, 185, 129, 0.15);
+            border-left: 3px solid #10b981;
+        }
+
+        .line-del {
+            background: rgba(239, 68, 68, 0.12);
+            border-left: 3px solid #ef4444;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .line-mod {
+            background: rgba(245, 158, 11, 0.12);
+            border-left: 3px solid #f59e0b;
+        }
+
+        /* Commit Timeline Panel */
+        .timeline-panel {
+            flex: 0.6;
+            background: var(--bg-panel);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .tl-commit {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 0.7rem 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .tl-commit:hover { background: rgba(255, 255, 255, 0.05); }
+
+        .tl-commit.active {
+            background: rgba(59, 130, 246, 0.12);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+
+        .tl-dot-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            width: 20px;
+        }
+
+        .tl-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #475569;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .tl-commit.active .tl-dot {
+            background: var(--accent-primary);
+            box-shadow: 0 0 12px var(--accent-primary-glow);
+        }
+
+        .tl-line {
+            width: 2px;
+            flex: 1;
+            min-height: 18px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tl-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            padding-bottom: 0.6rem;
+        }
+
+        .tl-msg {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .tl-hash {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .tl-stats {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.15rem;
+        }
+
+        .tl-stat {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            padding: 0.1rem 0.35rem;
+            border-radius: 4px;
+        }
+
+        .tl-stat.add { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+        .tl-stat.del { color: #ef4444; background: rgba(239, 68, 68, 0.12); }
+        .tl-stat.mod { color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+
+        /* Diff legend */
+        .diff-legend {
+            display: flex;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .diff-legend span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>Understanding <code>commit history</code> and line changes</p>
+        </header>
+
+        <main>
+            <div class="history-layout">
+                <section class="explanation-panel" style="flex: 0 0 310px; padding: 2rem 1.5rem;">
+                    <div class="step-indicator">
+                        <span id="step-number" style="background: #60a5fa; box-shadow: 0 0 20px rgba(96, 165, 250, 0.4);">1</span>
+                        <h2 id="step-title">Initial Commit</h2>
+                    </div>
+                    <p id="step-description">The project begins with a simple Python script that imports <code>maya.cmds</code> and creates a basic cube. This is the starting point — the very first snapshot saved in Git.</p>
+                    <div class="controls">
+                        <button id="btn-next" class="btn primary" style="background: #60a5fa;">Next Commit →</button>
+                        <button id="btn-prev" class="btn secondary hidden">← Previous</button>
+                    </div>
+                </section>
+
+                <div class="history-visual">
+                    <!-- Code Editor -->
+                    <div class="editor-panel">
+                        <div class="panel-header">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            <span id="file-name" style="font-family: 'Fira Code', monospace; font-size: 0.85rem; flex-grow:1;">create_geo.py</span>
+                            <span id="file-status" style="font-size: 0.72rem; padding: 0.15rem 0.5rem; background: rgba(96, 165, 250, 0.15); border-radius: 12px; color: #60a5fa;">Commit 1 of 5</span>
+                        </div>
+                        <div class="code-area" id="code-content">
+                            <!-- Lines injected by JS -->
+                        </div>
+                        <div class="diff-legend">
+                            <span><div class="legend-dot" style="background: #10b981;"></div> Added</span>
+                            <span><div class="legend-dot" style="background: #ef4444;"></div> Deleted</span>
+                            <span><div class="legend-dot" style="background: #f59e0b;"></div> Modified</span>
+                        </div>
+                    </div>
+
+                    <!-- Commit Timeline -->
+                    <div class="timeline-panel">
+                        <div class="panel-header" style="background: rgba(16, 185, 129, 0.05); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span style="font-weight: 600; color: #10b981; font-size: 0.9rem;">Commit History</span>
+                        </div>
+                        <div class="timeline-body" id="timeline-body">
+                            <!-- Timeline nodes injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="commit_history.js"></script>
+</body>
+
+</html>
