@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What is Git?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
         .concept-stage {
@@ -69,15 +71,36 @@
             animation: chaosFloat 3s ease-in-out infinite;
         }
 
-        .chaos-file:nth-child(2) { animation-delay: 0.4s; }
-        .chaos-file:nth-child(3) { animation-delay: 0.8s; }
-        .chaos-file:nth-child(4) { animation-delay: 1.2s; }
-        .chaos-file:nth-child(5) { animation-delay: 0.2s; }
-        .chaos-file:nth-child(6) { animation-delay: 0.6s; }
+        .chaos-file:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .chaos-file:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        .chaos-file:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        .chaos-file:nth-child(5) {
+            animation-delay: 0.2s;
+        }
+
+        .chaos-file:nth-child(6) {
+            animation-delay: 0.6s;
+        }
 
         @keyframes chaosFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
         }
 
         .chaos-file svg {
@@ -98,9 +121,13 @@
             box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
         }
 
-        .chaos-file.bad svg { color: #ef4444; }
+        .chaos-file.bad svg {
+            color: #ef4444;
+        }
 
-        .chaos-file.ok svg { color: #475569; }
+        .chaos-file.ok svg {
+            color: #475569;
+        }
 
         /* ---- Scene 2: Timeline / snapshots ---- */
         .timeline {
@@ -155,7 +182,7 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.68rem;
             color: #94a3b8;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             padding: 0.2rem 0.5rem;
             border-radius: 6px;
             white-space: nowrap;
@@ -243,9 +270,15 @@
             transition: opacity 0.5s ease;
         }
 
-        .model-arrow.visible { opacity: 1; }
+        .model-arrow.visible {
+            opacity: 1;
+        }
 
-        .model-arrow svg { width: 36px; height: 36px; color: var(--accent-transfer); }
+        .model-arrow svg {
+            width: 36px;
+            height: 36px;
+            color: var(--accent-transfer);
+        }
 
         .model-arrow span {
             font-family: 'Fira Code', monospace;
@@ -311,8 +344,15 @@
             transform: scale(1);
         }
 
-        .branch-commit.main-c { background: var(--accent-secondary); color: var(--accent-secondary); }
-        .branch-commit.feat-c { background: #a855f7; color: #a855f7; }
+        .branch-commit.main-c {
+            background: var(--accent-secondary);
+            color: var(--accent-secondary);
+        }
+
+        .branch-commit.feat-c {
+            background: #a855f7;
+            color: #a855f7;
+        }
 
         .branch-line {
             width: 4px;
@@ -321,9 +361,17 @@
             transition: opacity 0.3s ease;
         }
 
-        .branch-line.visible { opacity: 1; }
-        .branch-line.main-l { background: var(--accent-secondary); }
-        .branch-line.feat-l { background: #a855f7; }
+        .branch-line.visible {
+            opacity: 1;
+        }
+
+        .branch-line.main-l {
+            background: var(--accent-secondary);
+        }
+
+        .branch-line.feat-l {
+            background: #a855f7;
+        }
 
         .branch-tag-label {
             font-size: 0.75rem;
@@ -335,9 +383,21 @@
             transition: opacity 0.4s ease;
         }
 
-        .branch-tag-label.visible { opacity: 1; }
-        .branch-tag-label.main-tl { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #10b981; }
-        .branch-tag-label.feat-tl { background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); color: #a855f7; }
+        .branch-tag-label.visible {
+            opacity: 1;
+        }
+
+        .branch-tag-label.main-tl {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #10b981;
+        }
+
+        .branch-tag-label.feat-tl {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: #a855f7;
+        }
 
         /* Curved connector between fork */
         .fork-connector {
@@ -353,8 +413,8 @@
             top: 0;
             width: 50%;
             height: 100%;
-            border-left: 4px solid var(--accent-secondary);
-            border-bottom: 4px solid var(--accent-secondary);
+            border-left: 4px solid #a855f7;
+            border-bottom: 4px solid #a855f7;
             border-bottom-left-radius: 20px;
             box-sizing: border-box;
         }
@@ -366,8 +426,8 @@
             top: 0;
             width: 50%;
             height: 100%;
-            border-right: 4px solid #a855f7;
-            border-bottom: 4px solid #a855f7;
+            border-right: 4px solid var(--accent-secondary);
+            border-bottom: 4px solid var(--accent-secondary);
             border-bottom-right-radius: 20px;
             box-sizing: border-box;
         }
@@ -431,12 +491,16 @@
         <main>
             <section class="explanation-panel">
                 <div class="step-indicator">
-                    <span id="step-number" style="background: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">1</span>
+                    <span id="step-number"
+                        style="background: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">1</span>
                     <h2 id="step-title">The Problem</h2>
                 </div>
-                <p id="step-description">Imagine you are working on a project — a collection of files like scripts, configs and assets. Without any system to track changes, things quickly spiral out of control. Files get overwritten, you lose previous versions, and collaborating with others becomes a nightmare.</p>
+                <p id="step-description">Imagine you are working on a project — a collection of files like scripts,
+                    configs and assets. Without any system to track changes, things quickly spiral out of control. Files
+                    get overwritten, you lose previous versions, and collaborating with others becomes a nightmare.</p>
                 <div class="controls">
-                    <button id="btn-next" class="btn primary" style="background: #8b5cf6;">What is Version Control?</button>
+                    <button id="btn-next" class="btn primary" style="background: #8b5cf6;">What is Version
+                        Control?</button>
                     <button id="btn-reset" class="btn secondary hidden">Restart</button>
                 </div>
             </section>
@@ -447,27 +511,45 @@
                     <div class="scene active" id="scene-1">
                         <div class="chaos-grid">
                             <div class="chaos-file ok">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene_v1.py</span>
                             </div>
                             <div class="chaos-file bad">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene_v2_FINAL.py</span>
                             </div>
                             <div class="chaos-file bad">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene_FINAL_v3.py</span>
                             </div>
                             <div class="chaos-file bad">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene_backup.py</span>
                             </div>
                             <div class="chaos-file bad">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene_old_DONT_DELETE.py</span>
                             </div>
                             <div class="chaos-file ok">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
                                 <span class="file-label">scene.py</span>
                             </div>
                         </div>
@@ -495,7 +577,8 @@
                             </div>
                             <div class="timeline-line" id="tl-3"></div>
                             <div class="snapshot" id="snap-4">
-                                <div class="snapshot-dot" style="background: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">4</div>
+                                <div class="snapshot-dot"
+                                    style="background: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);">4</div>
                                 <div class="snapshot-label">Current state</div>
                                 <div class="snapshot-desc">p4q5r6s</div>
                             </div>
@@ -506,19 +589,35 @@
                     <div class="scene" id="scene-3">
                         <div class="repo-model">
                             <div class="model-box local" id="model-local">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                                    <rect x="9" y="9" width="6" height="6" />
+                                </svg>
                                 <h4 style="color: #10b981;">Local Repository</h4>
-                                <p>A copy of the project that lives on <strong>your computer</strong>. You edit, commit, and experiment here freely.</p>
+                                <p>A copy of the project that lives on <strong>your computer</strong>. You edit, commit,
+                                    and experiment here freely.</p>
                             </div>
                             <div class="model-arrow" id="model-arrow">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
                                 <span>push / pull</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform: rotate(180deg);"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    style="transform: rotate(180deg);">
+                                    <path d="M5 12h14" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
                             </div>
                             <div class="model-box remote" id="model-remote">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z" /></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <path
+                                        d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z" />
+                                </svg>
                                 <h4 style="color: #3b82f6;">Remote Repository</h4>
-                                <p>A shared copy hosted online (e.g. <strong>GitHub</strong> or <strong>GitLab</strong>). Everyone on the team syncs through this.</p>
+                                <p>A shared copy hosted online (e.g. <strong>GitHub</strong> or
+                                    <strong>GitLab</strong>). Everyone on the team syncs through this.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -527,25 +626,29 @@
                     <div class="scene" id="scene-4">
                         <div class="branch-visual">
                             <!-- Root commit -->
-                            <div class="branch-commit main-c visible" id="bv-root" style="color: var(--accent-secondary);">●</div>
+                            <div class="branch-commit main-c visible" id="bv-root"
+                                style="color: var(--accent-secondary);">●</div>
                             <div class="branch-line main-l visible"></div>
-                            <div class="branch-commit main-c visible" id="bv-c2" style="color: var(--accent-secondary);">●</div>
+                            <div class="branch-commit main-c visible" id="bv-c2"
+                                style="color: var(--accent-secondary);">●</div>
 
                             <!-- Fork -->
                             <div class="fork-connector" id="bv-fork"></div>
 
                             <div class="branch-fork">
                                 <div class="branch-fork-left">
-                                    <div class="branch-commit main-c" id="bv-main-c3" style="color: var(--accent-secondary);">●</div>
+                                    <div class="branch-commit main-c" id="bv-main-c3"
+                                        style="color: var(--accent-secondary);">●</div>
                                     <div class="branch-line main-l" id="bv-main-l3"></div>
-                                    <div class="branch-commit main-c" id="bv-main-c4" style="color: var(--accent-secondary);">●</div>
+                                    <div class="branch-commit main-c" id="bv-main-c4"
+                                        style="color: var(--accent-secondary);">●</div>
                                     <div class="branch-tag-label main-tl" id="bv-main-tag">main</div>
                                 </div>
                                 <div class="branch-fork-right">
                                     <div class="branch-commit feat-c" id="bv-feat-c1" style="color: #a855f7;">●</div>
                                     <div class="branch-line feat-l" id="bv-feat-l1"></div>
                                     <div class="branch-commit feat-c" id="bv-feat-c2" style="color: #a855f7;">●</div>
-                                    <div class="branch-tag-label feat-tl" id="bv-feat-tag">feature</div>
+                                    <div class="branch-tag-label feat-tl" id="bv-feat-tag">wip</div>
                                 </div>
                             </div>
                         </div>
@@ -555,28 +658,46 @@
                     <div class="scene" id="scene-5">
                         <div class="summary-grid">
                             <div class="summary-card" id="sum-1">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z"/><polyline points="12 11 12 17"/><polyline points="9 14 12 17 15 14"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                    <path
+                                        d="M17.5 19c2.5 0 4.5-2 4.5-4.5a4.53 4.53 0 0 0-4-4.47v-.03A5.5 5.5 0 0 0 7.5 6.5c-3.5 0-6.5 2.5-6.5 6.5A4.5 4.5 0 0 0 5.5 17.5H17.5Z" />
+                                    <polyline points="12 11 12 17" />
+                                    <polyline points="9 14 12 17 15 14" />
+                                </svg>
                                 <div>
                                     <h5>Clone</h5>
                                     <p>Download a full copy of a remote repository to your machine.</p>
                                 </div>
                             </div>
                             <div class="summary-card" id="sum-2">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                                    <circle cx="12" cy="12" r="4" />
+                                    <line x1="1.05" y1="12" x2="7" y2="12" />
+                                    <line x1="17.01" y1="12" x2="22.96" y2="12" />
+                                </svg>
                                 <div>
                                     <h5>Commit</h5>
                                     <p>Save a snapshot of your changes with a message describing what you did.</p>
                                 </div>
                             </div>
                             <div class="summary-card" id="sum-3">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
                                 <div>
                                     <h5>Push &amp; Pull</h5>
                                     <p>Upload your commits to remote, or download updates from your team.</p>
                                 </div>
                             </div>
                             <div class="summary-card" id="sum-4">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                                    <path d="M6 3v12" />
+                                    <circle cx="18" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <path d="M18 9a9 9 0 0 1-9 9" />
+                                </svg>
                                 <div>
                                     <h5>Branch</h5>
                                     <p>Work on features in isolation without affecting the main codebase.</p>

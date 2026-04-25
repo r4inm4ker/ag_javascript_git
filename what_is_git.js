@@ -22,7 +22,7 @@ const steps = [
     {
         num: 3,
         title: "Local & Remote",
-        desc: "Git works with two copies of your project. The <strong>local</strong> repository is on your computer \u2014 it is where you write code, make commits, and experiment. The <strong>remote</strong> repository is hosted online (e.g. GitHub, GitLab) and acts as the shared source of truth for your team. You sync between them using <code>push</code> and <code>pull</code>.",
+        desc: "Git works with various copies of your project. The <strong>local</strong> repository is on your computer \u2014 it is where you usually write code, make commits, and experiment. The <strong>remote</strong> repository is hosted online (e.g. GitHub, GitLab) and acts as the shared source of truth for your team. You sync between them using <code>push</code> and <code>pull</code>.",
         actionBtn: "What are Branches?",
         color: "#10b981"
     },
@@ -52,6 +52,12 @@ function updateUI(stepIndex) {
     btnNext.textContent = step.actionBtn;
     stepNumber.style.background = step.color;
     stepNumber.style.boxShadow = `0 0 20px ${step.color}66`;
+
+    if (stepIndex === steps.length - 1) {
+        btnNext.classList.add('hidden');
+    } else {
+        btnNext.classList.remove('hidden');
+    }
 }
 
 function showScene(index) {
@@ -127,7 +133,7 @@ function animateBranches() {
         delay += 250;
     });
 
-    // Feature branch
+    // wip branch
     ['bv-feat-c1', 'bv-feat-l1', 'bv-feat-c2', 'bv-feat-tag'].forEach(id => {
         setTimeout(() => {
             const el = document.getElementById(id);
