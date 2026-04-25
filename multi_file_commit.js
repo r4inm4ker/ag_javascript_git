@@ -214,6 +214,7 @@ function renderFileTabs(commitIndex, activeFileIndex) {
     const c = commits[commitIndex];
     fileTree.innerHTML = '';
     c.files.forEach((f, i) => {
+        if (f.status === 'del') return; // deleted files don't appear in file tabs
         const tab = document.createElement('div');
         tab.className = 'file-tab' + (i === activeFileIndex ? ' active' : '');
 
