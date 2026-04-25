@@ -66,8 +66,8 @@ const commits = [
     {
         hash: 'j7k8l9m',
         message: 'Add transform utils, update geo',
-        title: 'Three Files in One Commit',
-        desc: `This commit creates a new <code>transforms.py</code> utility, modifies <code>create_geo.py</code> to use it, and leaves <code>shaders.py</code> untouched. Notice how Git only records <strong>what actually changed</strong> — unchanged files have no diff.`,
+        title: 'Two Files Changed',
+        desc: `This commit creates a new <code>transforms.py</code> utility and modifies <code>create_geo.py</code> to use it. Notice that <code>shaders.py</code> is not listed — Git only tracks <strong>files that actually changed</strong>.`,
         color: '#f59e0b',
         files: [
             {
@@ -189,7 +189,7 @@ function buildCommitCards() {
         card.className = 'cm-card' + (i === currentCommit ? ' active' : '');
         card.dataset.index = i;
 
-        const filesHtml = c.files.map(f => {
+        const filesHtml = c.files.filter(f => f.status).map(f => {
             let dotColor = '#475569';
             let label = f.name;
             if (f.status === 'new') dotColor = '#10b981';
