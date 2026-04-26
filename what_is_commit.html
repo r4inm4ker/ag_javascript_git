@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a Commit?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .concept-stage {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .concept-visual {
+            width: 100%;
+            max-width: 900px;
+            min-height: 420px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .scene.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ---- Scene 1: Messy files ---- */
+        .files-before {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .file-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.9rem 1.2rem;
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: all 0.4s ease;
+        }
+
+        .file-row.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .file-row svg { width: 24px; height: 24px; flex-shrink: 0; }
+
+        .file-row .fname {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .file-row .fstatus {
+            font-size: 0.72rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .fstatus.modified { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .fstatus.new { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .fstatus.deleted { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+
+        /* ---- Scene 2: Snapshot box ---- */
+        .snapshot-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .snap-envelope {
+            width: 100%;
+            background: var(--bg-panel);
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.12);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .snap-envelope.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .snap-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .snap-header svg { width: 28px; height: 28px; color: #3b82f6; }
+
+        .snap-header span {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #3b82f6;
+        }
+
+        .snap-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .snap-field {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .snap-field .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .snap-field .value {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: var(--text-main);
+        }
+
+        .snap-arrow {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .snap-arrow.visible { opacity: 1; }
+
+        /* ---- Scene 3: Hash anatomy ---- */
+        .hash-anatomy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .hash-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.4rem;
+            letter-spacing: 0.08em;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            color: #f59e0b;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.1);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        .hash-display.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .hash-parts {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hash-part {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.4s ease;
+            min-width: 130px;
+        }
+
+        .hash-part.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hash-part svg { width: 24px; height: 24px; }
+
+        .hash-part .hp-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .hash-part .hp-desc {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* ---- Scene 4: Timeline chain ---- */
+        .chain-visual {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .chain-commit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .chain-commit.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .chain-dot {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+        }
+
+        .chain-dot.c1 { background: #475569; box-shadow: 0 0 15px rgba(71, 85, 105, 0.5); }
+        .chain-dot.c2 { background: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .chain-dot.c3 { background: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
+
+        .chain-msg {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 100px;
+            line-height: 1.3;
+        }
+
+        .chain-arrow-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .chain-link {
+            width: 50px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            position: relative;
+        }
+
+        .chain-link.visible { opacity: 1; }
+
+        .chain-link::after {
+            content: '→';
+            position: absolute;
+            top: -10px;
+            right: -2px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ---- Scene 5: Summary cards ---- */
+        .commit-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .cs-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s ease;
+        }
+
+        .cs-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cs-card svg {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .cs-card h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .cs-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>Understanding <code>what is a commit?</code></p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number" style="background: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);">1</span>
+                    <h2 id="step-title">You Made Changes</h2>
+                </div>
+                <p id="step-description">You have been editing files in your project — modifying scripts, adding new ones, or removing old code. Right now these changes only exist in your <strong>working directory</strong>. Git sees them, but has not recorded them yet.</p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary" style="background: #3b82f6;">What Happens Next?</button>
+                    <button id="btn-prev" class="btn secondary hidden">← Back</button>
+                    <button id="btn-reset" class="btn secondary hidden">Restart</button>
+                </div>
+            </section>
+
+            <section class="concept-stage">
+                <div class="concept-visual">
+                    <!-- Scene 1: Changed files -->
+                    <div class="scene active" id="scene-1">
+                        <div class="files-before">
+                            <div class="file-row" id="fr-1">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <span class="fname">create_geo.py</span>
+                                <span class="fstatus modified">modified</span>
+                            </div>
+                            <div class="file-row" id="fr-2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <span class="fname">shader_utils.py</span>
+                                <span class="fstatus new">new file</span>
+                            </div>
+                            <div class="file-row" id="fr-3">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <span class="fname">old_helper.py</span>
+                                <span class="fstatus deleted">deleted</span>
+                            </div>
+                            <div class="file-row" id="fr-4">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <span class="fname">scene_setup.py</span>
+                                <span class="fstatus modified">modified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 2: Snapshot envelope -->
+                    <div class="scene" id="scene-2">
+                        <div class="snapshot-box">
+                            <div class="snap-arrow" id="snap-arrow-1">⬇ git add + git commit</div>
+                            <div class="snap-envelope" id="snap-envelope">
+                                <div class="snap-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg>
+                                    <span>Commit Snapshot</span>
+                                </div>
+                                <div class="snap-meta">
+                                    <div class="snap-field">
+                                        <span class="label">Hash</span>
+                                        <span class="value">a3f7c2e</span>
+                                    </div>
+                                    <div class="snap-field">
+                                        <span class="label">Author</span>
+                                        <span class="value">you@studio.com</span>
+                                    </div>
+                                    <div class="snap-field">
+                                        <span class="label">Date</span>
+                                        <span class="value">2026-04-26 12:00</span>
+                                    </div>
+                                    <div class="snap-field">
+                                        <span class="label">Message</span>
+                                        <span class="value">"Add shader utils, update geo"</span>
+                                    </div>
+                                    <div class="snap-field">
+                                        <span class="label">Files</span>
+                                        <span class="value">3 changed (+42 −8)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 3: Hash anatomy -->
+                    <div class="scene" id="scene-3">
+                        <div class="hash-anatomy">
+                            <div class="hash-display" id="hash-disp">a3f7c2e9b1d04e8f6a23c...</div>
+                            <div class="hash-parts">
+                                <div class="hash-part" id="hp-1">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                    <span class="hp-label">Content</span>
+                                    <span class="hp-desc">All file changes included</span>
+                                </div>
+                                <div class="hash-part" id="hp-2">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg>
+                                    <span class="hp-label">Author</span>
+                                    <span class="hp-desc">Who made the commit</span>
+                                </div>
+                                <div class="hash-part" id="hp-3">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <span class="hp-label">Timestamp</span>
+                                    <span class="hp-desc">When it was created</span>
+                                </div>
+                                <div class="hash-part" id="hp-4">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5 .5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>
+                                    <span class="hp-label">Parent</span>
+                                    <span class="hp-desc">Link to previous commit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 4: Linked chain -->
+                    <div class="scene" id="scene-4">
+                        <div class="chain-visual">
+                            <div class="chain-commit" id="cc-1">
+                                <div class="chain-dot c1">c0a1</div>
+                                <div class="chain-msg">Initial setup</div>
+                            </div>
+                            <div class="chain-link" id="cl-1"></div>
+                            <div class="chain-commit" id="cc-2">
+                                <div class="chain-dot c2">b2d3</div>
+                                <div class="chain-msg">Add cube tool</div>
+                            </div>
+                            <div class="chain-link" id="cl-2"></div>
+                            <div class="chain-commit" id="cc-3">
+                                <div class="chain-dot c3">a3f7</div>
+                                <div class="chain-msg">Add shaders</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 5: Summary -->
+                    <div class="scene" id="scene-5">
+                        <div class="commit-summary-grid">
+                            <div class="cs-card" id="cs-1">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg>
+                                <div>
+                                    <h5>Snapshot</h5>
+                                    <p>A commit captures the state of every tracked file at a point in time.</p>
+                                </div>
+                            </div>
+                            <div class="cs-card" id="cs-2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                <div>
+                                    <h5>Message</h5>
+                                    <p>Every commit has a human-readable message describing what changed and why.</p>
+                                </div>
+                            </div>
+                            <div class="cs-card" id="cs-3">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5 .5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>
+                                <div>
+                                    <h5>Linked</h5>
+                                    <p>Each commit points to its parent, forming a chain you can walk through.</p>
+                                </div>
+                            </div>
+                            <div class="cs-card" id="cs-4">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <div>
+                                    <h5>Permanent</h5>
+                                    <p>Once committed, changes are safely stored. You can always return to any commit.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="what_is_commit.js"></script>
+</body>
+
+</html>
