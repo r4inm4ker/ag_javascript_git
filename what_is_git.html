@@ -588,18 +588,22 @@
                     <!-- Scene 3: Local vs Remote -->
                     <div class="scene" id="scene-3">
                         <div class="repo-model">
-                            <div class="model-box local" id="model-local">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-                                    <rect x="9" y="9" width="6" height="6" />
-                                </svg>
-                                <h4 style="color: #10b981;">Local Repository</h4>
-                                <p>A copy of the project that lives on <strong>your computer</strong>. You edit, commit,
-                                    and experiment here freely.</p>
-                                <div class="local-branches" style="display: flex; gap: 0.5rem; margin-top: 1.2rem; justify-content: center;">
-                                    <span class="branch-tag main-tag">main</span>
-                                    <span class="branch-tag wip-tag">wip</span>
-                                    <span class="branch-tag head-tag">feature</span>
+                            <div class="local-repos-container" id="local-repos-container" style="display: flex; flex-direction: column; gap: 1rem; flex: 1.2;">
+                                <div class="model-box local" id="model-local" style="padding: 1.2rem; margin: 0;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" style="width: 36px; height: 36px;">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                                        <rect x="9" y="9" width="6" height="6" />
+                                    </svg>
+                                    <h4 style="color: #10b981; font-size: 1rem;">Your Local Repo</h4>
+                                    <p style="font-size: 0.82rem;">A full copy of the project on <strong>your computer</strong>.</p>
+                                </div>
+                                <div class="model-box local" id="model-local-2" style="padding: 1.2rem; margin: 0;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" style="width: 36px; height: 36px;">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                                        <rect x="9" y="9" width="6" height="6" />
+                                    </svg>
+                                    <h4 style="color: #10b981; font-size: 1rem;">Alice's Local Repo</h4>
+                                    <p style="font-size: 0.82rem;">A separate full copy on a <strong>colleague's computer</strong>.</p>
                                 </div>
                             </div>
                             <div class="model-arrow" id="model-arrow">

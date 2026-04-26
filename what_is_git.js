@@ -100,14 +100,19 @@ function animateTimeline() {
 
 function animateRepoModel() {
     const local = document.getElementById('model-local');
+    const local2 = document.getElementById('model-local-2');
     const remote = document.getElementById('model-remote');
     const arrow = document.getElementById('model-arrow');
 
     local.classList.remove('visible');
+    if (local2) local2.classList.remove('visible');
     remote.classList.remove('visible');
     arrow.classList.remove('visible');
 
-    setTimeout(() => local.classList.add('visible'), 200);
+    setTimeout(() => {
+        local.classList.add('visible');
+        if (local2) local2.classList.add('visible');
+    }, 200);
     setTimeout(() => arrow.classList.add('visible'), 600);
     setTimeout(() => remote.classList.add('visible'), 800);
 }
