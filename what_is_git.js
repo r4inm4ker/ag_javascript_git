@@ -22,7 +22,7 @@ const steps = [
     {
         num: 3,
         title: "Local & Remote",
-        desc: "Git works with various copies of your project. The <strong>local</strong> repository is on your computer \u2014 it is where you usually write code, make commits, and experiment. The <strong>remote</strong> repository is hosted online (e.g. GitHub, GitLab) and acts as the shared source of truth for your team. You sync between them using <code>push</code> and <code>pull</code>.",
+        desc: "Git works with various copies of your project. Each person on your team has their own <strong>local repository</strong> on their machine to work independently. A shared <strong>remote repository</strong> hosted online (e.g. GitLab) acts as the ultimate source of truth. Everyone syncs their individual workspaces through it using <code>push</code> and <code>pull</code>.",
         actionBtn: "What are Branches?",
         color: "#10b981"
     },
