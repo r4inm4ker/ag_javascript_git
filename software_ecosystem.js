@@ -112,16 +112,23 @@ function animateWaf() {
 }
 
 function animateRez() {
+    const profileBox = document.getElementById('profile-box');
     const pkgs = document.querySelectorAll('#scene-4 .rez-pkg');
     const shell = document.getElementById('rez-shell');
+    if (profileBox) profileBox.classList.remove('visible');
     pkgs.forEach(p => p.classList.remove('visible'));
     if (shell) shell.classList.remove('visible');
-    let delay = 200;
+
+    // Show profile box first
+    setTimeout(() => { if (profileBox) profileBox.classList.add('visible'); }, 200);
+
+    // Then reveal packages inside
+    let delay = 500;
     pkgs.forEach(p => {
         setTimeout(() => p.classList.add('visible'), delay);
         delay += 200;
     });
-    setTimeout(() => { if (shell) shell.classList.add('visible'); }, delay + 100);
+    setTimeout(() => { if (shell) shell.classList.add('visible'); }, delay + 200);
 }
 
 function animatePipeline() {

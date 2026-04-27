@@ -232,30 +232,60 @@
             color: #10b981;
         }
 
-        /* ---- Scene 4: Rez resolver ---- */
+        /* ---- Scene 4: Oz resolver ---- */
         .rez-visual {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1.2rem;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
+        }
+
+        .profile-box {
+            border: 2px solid rgba(245, 158, 11, 0.35);
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem 1.2rem;
+            position: relative;
+            background: rgba(245, 158, 11, 0.04);
+            width: 100%;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: all 0.5s ease;
+        }
+
+        .profile-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-label {
+            position: absolute;
+            top: -0.7rem;
+            left: 1.2rem;
+            background: var(--bg-dark);
+            padding: 0 0.6rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #f59e0b;
+            letter-spacing: 0.03em;
         }
 
         .rez-packages {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .rez-pkg {
             background: var(--bg-panel);
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            border: 1px solid rgba(245, 158, 11, 0.25);
             border-radius: 10px;
-            padding: 0.8rem 1.2rem;
+            padding: 0.7rem 1.1rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #f59e0b;
             opacity: 0;
             transform: scale(0.85);
@@ -509,11 +539,14 @@
                     <!-- Scene 4: Rez resolver -->
                     <div class="scene" id="scene-4">
                         <div class="rez-visual">
-                            <div class="rez-packages">
-                                <div class="rez-pkg">maya-2024</div>
-                                <div class="rez-pkg">python-3.10</div>
-                                <div class="rez-pkg">PySide2</div>
-                                <div class="rez-pkg">mayaTools-1.2.0</div>
+                            <div class="profile-box" id="profile-box">
+                                <span class="profile-label">vp23</span>
+                                <div class="rez-packages">
+                                    <div class="rez-pkg">maya-2024</div>
+                                    <div class="rez-pkg">python-3.10</div>
+                                    <div class="rez-pkg">PySide2</div>
+                                    <div class="rez-pkg">mayaTools-1.2.0</div>
+                                </div>
                             </div>
                             <div class="rez-shell" id="rez-shell">
                                 <div><span class="prompt">$</span> <span class="cmd">oz --using vp23</span></div>
