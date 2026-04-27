@@ -48,12 +48,12 @@
         return `
         <nav class="sidebar" id="sidebar" aria-label="Tutorial navigation">
             <div class="sidebar-header">
-                <a href="index.html" class="sidebar-logo" title="Git Workflow">
+                <a href="index.html" class="sidebar-logo" title="Let's Git Gud">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
-                    <span class="sidebar-logo-text">Git Workflow</span>
+                    <span class="sidebar-logo-text">Let's Git Gud</span>
                 </a>
                 <button class="sidebar-toggle-btn" id="sidebar-toggle-btn" title="Toggle sidebar" aria-label="Toggle sidebar">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
