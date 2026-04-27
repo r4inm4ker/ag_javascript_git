@@ -8,7 +8,7 @@ const steps = [
     {
         num: 1,
         title: "The Big Picture",
-        desc: "In a professional software studio, writing code is only <em>one piece</em> of the puzzle. You also need to <strong>track changes</strong>, <strong>build packages</strong>, and <strong>manage dependencies</strong>. Three specialised tools work together to cover this entire lifecycle: <strong>Git</strong>, <strong>Waf</strong>, and <strong>Rez</strong>.",
+        desc: "In a professional software studio, writing code is only <em>one piece</em> of the puzzle. You also need to <strong>track changes</strong>, <strong>build packages</strong>, and <strong>manage dependencies</strong>. Three specialised tools work together to cover this entire lifecycle: <strong>Git</strong>, <strong>Waf</strong>, and <strong>Oz</strong>.",
         actionBtn: "What does Git do?",
         color: "#8b5cf6"
     },
@@ -23,20 +23,20 @@ const steps = [
         num: 3,
         title: "Waf — Build System",
         desc: "<strong>Waf</strong> is a <em>build system</em>. Once your code is ready, Waf compiles, links, and packages it into a versioned release (e.g. <code>myTool-1.2.0</code>). It reads a <code>wscript</code> configuration file to know what to build and how, producing artefacts that can be distributed and installed consistently across machines.",
-        actionBtn: "What does Rez do?",
+        actionBtn: "What does Oz do?",
         color: "#10b981"
     },
     {
         num: 4,
-        title: "Rez — Environment & Dependencies",
-        desc: "<strong>Rez</strong> is a <em>package manager and environment resolver</em>. When you need to run or develop against specific versions of tools (e.g. <code>maya-2024</code>, <code>myTool-1.2.0</code>), Rez figures out a compatible set of packages and configures your shell environment so everything just works — no version conflicts, no missing libraries.",
+        title: "Oz — Environment & Dependencies",
+        desc: "<strong>Oz</strong> is a <em>package manager and environment resolver</em>. When you need to run or develop against specific versions of tools (e.g. <code>maya-2024</code>, <code>myTool-1.2.0</code>), Oz figures out a compatible set of packages and configures your shell environment so everything just works — no version conflicts, no missing libraries.",
         actionBtn: "How do they fit together?",
         color: "#f59e0b"
     },
     {
         num: 5,
         title: "The Full Pipeline",
-        desc: "The workflow flows naturally: you <strong>write & track</strong> code with Git, <strong>build & version</strong> packages with Waf, and <strong>resolve & run</strong> environments with Rez. Each tool owns one responsibility, and together they give your team a reliable, reproducible pipeline from first commit to final deployment.",
+        desc: "The workflow flows naturally: you <strong>write & track</strong> code with Git, <strong>build & version</strong> packages with Waf, and <strong>resolve & run</strong> environments with Oz. Each tool owns one responsibility, and together they give your team a reliable, reproducible pipeline from first commit to final deployment.",
         actionBtn: "Next: What is Git? →",
         color: "#ec4899"
     }
