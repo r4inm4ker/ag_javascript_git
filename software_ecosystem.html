@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Ecosystem</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .concept-stage {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .concept-visual {
+            width: 100%;
+            max-width: 900px;
+            min-height: 420px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .scene.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ---- Scene 1: Overview cards ---- */
+        .eco-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .eco-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.8rem 1.4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateY(18px);
+            transition: all 0.5s ease;
+        }
+
+        .eco-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .eco-card svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .eco-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .eco-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .eco-card.git-card {
+            border-color: rgba(59, 130, 246, 0.35);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.08);
+        }
+
+        .eco-card.waf-card {
+            border-color: rgba(16, 185, 129, 0.35);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.08);
+        }
+
+        .eco-card.rez-card {
+            border-color: rgba(245, 158, 11, 0.35);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.08);
+        }
+
+        /* ---- Scene 2: Git timeline ---- */
+        .git-timeline {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .git-snap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 2;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .git-snap.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .git-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            background: #3b82f6;
+            color: #fff;
+            box-shadow: 0 0 18px rgba(59, 130, 246, 0.4);
+        }
+
+        .git-snap-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 90px;
+        }
+
+        .git-line {
+            width: 50px;
+            height: 3px;
+            background: rgba(59, 130, 246, 0.3);
+            flex-shrink: 0;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .git-line.visible {
+            opacity: 1;
+        }
+
+        /* ---- Scene 3: Waf build pipeline ---- */
+        .waf-pipeline {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .waf-stage {
+            background: var(--bg-panel);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 14px;
+            padding: 1.4rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            min-width: 130px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s ease;
+        }
+
+        .waf-stage.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .waf-stage svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .waf-stage h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .waf-stage p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .waf-arrow {
+            display: flex;
+            align-items: center;
+            padding: 0 0.6rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .waf-arrow.visible {
+            opacity: 1;
+        }
+
+        .waf-arrow svg {
+            width: 28px;
+            height: 28px;
+            color: #10b981;
+        }
+
+        /* ---- Scene 4: Rez resolver ---- */
+        .rez-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .rez-packages {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .rez-pkg {
+            background: var(--bg-panel);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: #f59e0b;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .rez-pkg.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .rez-shell {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-radius: 12px;
+            padding: 1.2rem 1.6rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: #10b981;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .rez-shell.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rez-shell .prompt {
+            color: #f59e0b;
+        }
+
+        .rez-shell .cmd {
+            color: #e2e8f0;
+        }
+
+        .rez-shell .ok {
+            color: #10b981;
+        }
+
+        /* ---- Scene 5: Full pipeline ---- */
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pipe-step {
+            background: var(--bg-panel);
+            border-radius: 14px;
+            padding: 1.5rem 1.3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            min-width: 140px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.5s ease;
+        }
+
+        .pipe-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pipe-step svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .pipe-step h5 {
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .pipe-step p {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .pipe-step.ps-git {
+            border: 1px solid rgba(59, 130, 246, 0.35);
+        }
+
+        .pipe-step.ps-waf {
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .pipe-step.ps-rez {
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .pipe-conn {
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .pipe-conn.visible {
+            opacity: 1;
+        }
+
+        .pipe-conn svg {
+            width: 24px;
+            height: 24px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>Understanding the <code>Software Ecosystem</code></p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number"
+                        style="background: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">1</span>
+                    <h2 id="step-title">The Big Picture</h2>
+                </div>
+                <p id="step-description">In a professional software studio, writing code is only <em>one piece</em> of
+                    the puzzle. You also need to <strong>track changes</strong>, <strong>build packages</strong>, and
+                    <strong>manage dependencies</strong>. Three specialised tools work together to cover this entire
+                    lifecycle: <strong>Git</strong>, <strong>Waf</strong>, and <strong>Rez</strong>.
+                </p>
+                <div class="controls">
+                    <button id="btn-next" class="btn primary" style="background: #8b5cf6;">What does Git do?</button>
+                    <button id="btn-reset" class="btn secondary hidden">Restart</button>
+                </div>
+            </section>
+
+            <section class="concept-stage">
+                <div class="concept-visual">
+                    <!-- Scene 1: Three-tool overview -->
+                    <div class="scene active" id="scene-1">
+                        <div class="eco-grid">
+                            <div class="eco-card git-card">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <circle cx="12" cy="12" r="4" />
+                                    <line x1="1.05" y1="12" x2="7" y2="12" />
+                                    <line x1="17.01" y1="12" x2="22.96" y2="12" />
+                                </svg>
+                                <h4 style="color:#3b82f6">Git</h4>
+                                <p>Version Control — track every change to your source code over time.</p>
+                            </div>
+                            <div class="eco-card waf-card">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                <h4 style="color:#10b981">Waf</h4>
+                                <p>Build System — compile and package your code into versioned releases.</p>
+                            </div>
+                            <div class="eco-card rez-card">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                    <line x1="12" y1="22.08" x2="12" y2="12" />
+                                </svg>
+                                <h4 style="color:#f59e0b">Rez</h4>
+                                <p>Environment Manager — resolve dependencies and configure your shell.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 2: Git timeline -->
+                    <div class="scene" id="scene-2">
+                        <div class="git-timeline">
+                            <div class="git-snap">
+                                <div class="git-dot">1</div>
+                                <div class="git-snap-label">Initial commit</div>
+                            </div>
+                            <div class="git-line"></div>
+                            <div class="git-snap">
+                                <div class="git-dot">2</div>
+                                <div class="git-snap-label">Add feature</div>
+                            </div>
+                            <div class="git-line"></div>
+                            <div class="git-snap">
+                                <div class="git-dot">3</div>
+                                <div class="git-snap-label">Bug fix</div>
+                            </div>
+                            <div class="git-line"></div>
+                            <div class="git-snap">
+                                <div class="git-dot">4</div>
+                                <div class="git-snap-label">Release ready</div>
+                            </div>
+                            <div class="git-line"></div>
+                            <div class="git-snap">
+                                <div class="git-dot" style="background:#10b981; box-shadow:0 0 18px rgba(16,185,129,0.4);">5</div>
+                                <div class="git-snap-label">Current</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 3: Waf build -->
+                    <div class="scene" id="scene-3">
+                        <div class="waf-pipeline">
+                            <div class="waf-stage">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                                <h5>wscript</h5>
+                                <p>Build config</p>
+                            </div>
+                            <div class="waf-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </div>
+                            <div class="waf-stage">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <polyline points="16 18 22 12 16 6" />
+                                    <polyline points="8 6 2 12 8 18" />
+                                </svg>
+                                <h5>Compile</h5>
+                                <p>waf build</p>
+                            </div>
+                            <div class="waf-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </div>
+                            <div class="waf-stage">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                </svg>
+                                <h5>Package</h5>
+                                <p>myTool-1.2.0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 4: Rez resolver -->
+                    <div class="scene" id="scene-4">
+                        <div class="rez-visual">
+                            <div class="rez-packages">
+                                <div class="rez-pkg">maya-2024</div>
+                                <div class="rez-pkg">python-3.11</div>
+                                <div class="rez-pkg">myTool-1.2.0</div>
+                                <div class="rez-pkg">numpy-1.26</div>
+                            </div>
+                            <div class="rez-shell" id="rez-shell">
+                                <div><span class="prompt">$</span> <span class="cmd">rez env maya-2024 myTool-1.2.0</span></div>
+                                <div style="margin-top:0.4rem"><span class="ok">✔ Resolved:</span> maya-2024, python-3.11, myTool-1.2.0, numpy-1.26</div>
+                                <div style="margin-top:0.2rem"><span class="ok">✔ Environment configured — launching shell…</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scene 5: Full pipeline -->
+                    <div class="scene" id="scene-5">
+                        <div class="pipeline-flow">
+                            <div class="pipe-step ps-git">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                                    <circle cx="12" cy="12" r="4" />
+                                    <line x1="1.05" y1="12" x2="7" y2="12" />
+                                    <line x1="17.01" y1="12" x2="22.96" y2="12" />
+                                </svg>
+                                <h5 style="color:#3b82f6">Git</h5>
+                                <p>Write & track code</p>
+                            </div>
+                            <div class="pipe-conn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </div>
+                            <div class="pipe-step ps-waf">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                <h5 style="color:#10b981">Waf</h5>
+                                <p>Build & version</p>
+                            </div>
+                            <div class="pipe-conn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" /><polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </div>
+                            <div class="pipe-step ps-rez">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                    <line x1="12" y1="22.08" x2="12" y2="12" />
+                                </svg>
+                                <h5 style="color:#f59e0b">Rez</h5>
+                                <p>Resolve & run</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script src="software_ecosystem.js"></script>
+</body>
+
+</html>
