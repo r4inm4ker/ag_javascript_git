@@ -29,7 +29,7 @@ const steps = [
     {
         num: 4,
         title: "Oz — Environment & Dependencies",
-        desc: "<strong>Oz</strong> is a <em>package manager and environment resolver</em>. When you need to run or develop against specific versions of tools (e.g. <code>maya-2024</code>, <code>myTool-1.2.0</code>), Oz figures out a compatible set of packages and configures your shell environment so everything just works — no version conflicts, no missing libraries.",
+        desc: "<strong>Oz</strong> is an <em>environment configuration tool</em>. When you need to work with specific versions of tools, you simply reference a profile — for example <code>oz --using vp23</code> configures your shell with <code>maya-2024</code>, <code>python-3.10</code>, and <code>PySide2</code>. Oz resolves all the dependencies for you so everything just works — no version conflicts, no missing libraries.",
         actionBtn: "How do they fit together?",
         color: "#f59e0b"
     },
