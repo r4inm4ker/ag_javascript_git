@@ -22,7 +22,7 @@ const steps = [
     {
         num: 3,
         title: "Waf — Build System",
-        desc: "<strong>Waf</strong> is a <em>build system</em>. Once your code is ready, Waf compiles, links, and packages it into a versioned release (e.g. <code>myTool-1.2.0</code>). It reads a <code>wscript</code> configuration file to know what to build and how, producing artefacts that can be distributed and installed consistently across machines.",
+        desc: "<strong>Waf</strong> is a <em>build system</em>. Once your code is ready, Waf compiles, links, and packages it into a versioned release (e.g. <code>mayaTools-1.2.0</code>). It reads a <code>wscript</code> configuration file to know what to build and how, producing artefacts that can be distributed and installed consistently across machines.",
         actionBtn: "What does Oz do?",
         color: "#10b981"
     },
