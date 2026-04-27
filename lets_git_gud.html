@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Git Gud</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero-stage {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-visual {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        /* Animated Git logo */
+        .git-logo-wrap {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .git-logo-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid rgba(139, 92, 246, 0.25);
+            animation: ringPulse 3s ease-in-out infinite;
+        }
+
+        .git-logo-ring:nth-child(2) {
+            inset: -12px;
+            border-color: rgba(59, 130, 246, 0.15);
+            animation-delay: 0.5s;
+        }
+
+        .git-logo-ring:nth-child(3) {
+            inset: -24px;
+            border-color: rgba(16, 185, 129, 0.1);
+            animation-delay: 1s;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.06); opacity: 0.6; }
+        }
+
+        .git-logo-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.35);
+            transform: rotate(45deg);
+            z-index: 2;
+        }
+
+        .git-logo-icon svg {
+            width: 36px;
+            height: 36px;
+            transform: rotate(-45deg);
+            color: #fff;
+        }
+
+        /* Tagline */
+        .hero-tagline {
+            text-align: center;
+        }
+
+        .hero-tagline h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-tagline p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            max-width: 460px;
+        }
+
+        /* Feature pills */
+        .feature-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .feature-pill {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.6rem 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: pillIn 0.5s ease forwards;
+        }
+
+        .feature-pill:nth-child(1) { animation-delay: 0.3s; }
+        .feature-pill:nth-child(2) { animation-delay: 0.5s; }
+        .feature-pill:nth-child(3) { animation-delay: 0.7s; }
+        .feature-pill:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes pillIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Git Workflow</h1>
+            <p>A beginner guide to git for better code management</p>
+        </header>
+
+        <main>
+            <section class="explanation-panel">
+                <div class="step-indicator">
+                    <span id="step-number"
+                        style="background: #8b5cf6; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);">✦</span>
+                    <h2 id="step-title">Welcome</h2>
+                </div>
+                <p id="step-description">
+                    <strong>Let's Git Gud</strong> is an interactive, visual tutorial series designed to teach you Git
+                    from the ground up. Each lesson walks you through a core concept with step-by-step animations
+                    — no prior experience required.<br><br>
+                    You'll learn how code flows through a modern development pipeline: from your very first commit,
+                    through branching and merging, all the way to collaborating with a team via remote repositories.
+                </p>
+                <div class="controls">
+                    <button id="btn-start" class="btn primary" style="background: #8b5cf6;"
+                        onclick="window.location.href='software_ecosystem.html'">
+                        Start Learning →
+                    </button>
+                </div>
+            </section>
+
+            <section class="hero-stage">
+                <div class="hero-visual">
+                    <!-- Animated logo -->
+                    <div class="git-logo-wrap">
+                        <div class="git-logo-ring"></div>
+                        <div class="git-logo-ring"></div>
+                        <div class="git-logo-ring"></div>
+                        <div class="git-logo-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="4" />
+                                <line x1="1.05" y1="12" x2="7" y2="12" />
+                                <line x1="17.01" y1="12" x2="22.96" y2="12" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Tagline -->
+                    <div class="hero-tagline">
+                        <h2>Let's Git Gud</h2>
+                        <p>Master version control one concept at a time with animated, hands-on tutorials.</p>
+                    </div>
+
+                    <!-- Feature pills -->
+                    <div class="feature-row">
+                        <div class="feature-pill">
+                            <span class="pill-dot" style="background:#8b5cf6;"></span>
+                            Interactive
+                        </div>
+                        <div class="feature-pill">
+                            <span class="pill-dot" style="background:#3b82f6;"></span>
+                            Visual
+                        </div>
+                        <div class="feature-pill">
+                            <span class="pill-dot" style="background:#10b981;"></span>
+                            Step-by-step
+                        </div>
+                        <div class="feature-pill">
+                            <span class="pill-dot" style="background:#f59e0b;"></span>
+                            Beginner-friendly
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="sidebar.js"></script>
+</body>
+
+</html>

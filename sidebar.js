@@ -2,6 +2,7 @@
     'use strict';
 
     const PAGES = [
+        { num: 0, file: 'lets_git_gud.html', label: "Let's Git Gud", color: '#8b5cf6' },
         { num: 1, file: 'software_ecosystem.html', label: 'Software Ecosystem', color: '#ec4899' },
         { num: 2, file: 'what_is_git.html', label: 'What is Git?', color: '#8b5cf6' },
         { num: 3, file: 'what_is_commit.html', label: 'What is a Commit?', color: '#3b82f6' },
